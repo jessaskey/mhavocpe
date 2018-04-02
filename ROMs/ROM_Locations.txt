@@ -1,0 +1,19 @@
+ROM Images for Major Havoc - The Promised End
+
+The release version of the ROM's are in the filename
+X = Major Version
+Y = Minor Version
+
+Major Version = 0 is for pre-release builds
+
+Filename	Location	Description
+mhpe_XYY.101 	1L		Alpha High
+mhpe_XYY.102	1M/N		Alpha Low
+mhpe_XYY.103	1N/P		Alpha Paged High
+mhpe_XYY.104	1Q		Alpha Paged Low
+mhpe_XYY.105	6K/L		Vector Base
+mhpe_XYY.106	6J/K		Vector Page High
+mhpe_XYY.107	6H		Vector Page Low
+mhpe_XYY.108	9S		Gamma
+
+

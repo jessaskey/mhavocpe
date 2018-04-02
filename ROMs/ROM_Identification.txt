@@ -1,0 +1,9 @@
+ROM Images will be published in folders according to their released version. In order to track the ROM's each ROM image has
+a 4 byte identifier at the start. This will help identify all ROM images that have been released and also will ensure that 
+individual images can be identified to a specific release and PCB Location
+
+Byte 1 - ROM Location Identifier
+Byte 2 - Always zero
+Byte 3 - ROM Major Version
+Byte 4 - ROM Minor Version
+

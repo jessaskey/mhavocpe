@@ -1,1 +1,1 @@
-ROM's will go here
+This folder contains information about the ROM's for Major Havoc - The Promised End
