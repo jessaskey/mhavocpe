@@ -10,6 +10,7 @@ Changes in this version:
 
 1. Removed 'Bonus 5000' from the Tube lauch screen
 2. Re-Arranged a ton of code for making more space for Maze Object Data tables
-3. I *think* I fixed the changing walls issue, I found a paging issue here in code.
-4. I *think* I fixed the Trip Pads doing strange things too.
+3. Fixed bad text on Level 1 maze hind.
+4. I *think* I fixed the changing walls issue, I found a paging issue here in code.
+5. I *think* I fixed the Trip Pads doing strange things too.
 
