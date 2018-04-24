@@ -4,7 +4,7 @@ v0.14
 
 **For ROM locations see the document at https://github.com/jessaskey/mhavocpe/blob/master/ROMs/ROM_Locations.txt 
 
--This is a non-functional release, it runs in MAME but not on the actual hardware yet for some reason.
+-This should run fine on both physical hardware *and* MAME
 
 Changes in this version:
 
