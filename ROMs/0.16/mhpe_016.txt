@@ -1,0 +1,25 @@
+Release notes for Major Havoc - The Promised End 
+v0.16
+05/08/2018
+
+**For ROM locations see the document at https://github.com/jessaskey/mhavocpe/blob/master/ROMs/ROM_Locations.txt 
+
+-This should run fine on both physical hardware *and* MAME
+
+Changes in this version:
+
+1. Moved Level Specific Oxygen bonus levels into Maze data
+2. Moved around Maze Data to allow for complete flexibility with the Level Editor Software
+3. Added in speech command hook for Scott Swazey (write to $8000)
+4. Fixed Breakout bugs
+5. Breakout should now have additional ball launched after each completion (still needs tweaked).
+
+** Current issues are listed here - https://github.com/jessaskey/mhavocpe/issues
+
+KNOWN BUGS AS OF THIS RELEASE:
+
+1. Space Maze Colors are messed up
+2. Game Play from 17 onwards may not work
+3. Many unfished sections of new development
+
+
