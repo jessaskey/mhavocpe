@@ -13,6 +13,7 @@ Changes in this version:
 3. Added in speech command hook for Scott Swazey (write to $8000)
 4. Fixed Breakout bugs
 5. Breakout should now have additional ball launched after each completion (still needs tweaked).
+6. Fixed issues with Oxygen objects 'wandering' around maze.
 
 ** Current issues are listed here - https://github.com/jessaskey/mhavocpe/issues
 
