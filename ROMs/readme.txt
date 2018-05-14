@@ -1,1 +1,3 @@
 This folder contains information about the ROM's for Major Havoc - The Promised End
+
+NOTE: These ROM's *are not complete*!!!
