@@ -6,14 +6,14 @@ Y = Minor Version
 
 Major Version = 0 is for pre-release builds
 
-Filename	Location	Size	EPROM	Description
-mhpe_XYY.101 	1L		16K	27128	Alpha High
-mhpe_XYY.102	1M/N		16K	27128	Alpha Low
-mhpe_XYY.103	1N/P		32K	27256	Alpha Paged High
-mhpe_XYY.104	1Q		32K	27256	Alpha Paged Low
-mhpe_XYY.105	6K/L		8K	2764	Vector Base
-mhpe_XYY.106	6J/K		16K	27128	Vector Page High
-mhpe_XYY.107	6H		16K	27128	Vector Page Low
-mhpe_XYY.108	9S		32K	27256	Gamma
+Filename		Location	Size	EPROM	Description
+mhpe_XYY.1L 	1L			16K		27128	Alpha High
+mhpe_XYY.1MN	1M/N		16K		27128	Alpha Low
+mhpe_XYY.1NP	1N/P		32K		27256	Alpha Paged High
+mhpe_XYY.1Q 	1Q			32K		27256	Alpha Paged Low
+mhpe_XYY.6KL	6K/L		8K		2764	Vector Base
+mhpe_XYY.6JK	6J/K		16K		27128	Vector Page High
+mhpe_XYY.6H 	6H			16K		27128	Vector Page Low
+mhpe_XYY.9S 	9S			32K		27256	Gamma
 
 

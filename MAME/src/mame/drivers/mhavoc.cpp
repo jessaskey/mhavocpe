@@ -6,7 +6,7 @@
 
     driver by Mike Appolo
 
-	Modified 3/18/2017 by Jess M. Askey for Expanded ROM space for Major Havoc - The Promised End
+	Modified 3/18/2018 by Jess M. Askey for Expanded ROM space for Major Havoc - The Promised End
 	
     Modified 10/08/2006 by Jess M. Askey to include support for Speech which was not stuffed on production
     Major Havoc PCB's. However, the hardware if stuffed is functional. Speech is used in Major Havoc Return
@@ -904,24 +904,24 @@ ROM_START( mhavocpe )
 	/* Alpha Processor ROMs */
 	ROM_REGION( 0x28000, "alpha", 0 )   /* 152KB for ROMs */
 	/* Vector Generator ROM */
-	ROM_LOAD( "mhpe.105",   0x05000, 0x2000, CRC(c67284ca) SHA1(d9adad80c266d36429444f483cac4ebcf1fec7b8) )
+	ROM_LOAD( "MHPE.6KL",   0x05000, 0x2000, CRC(c67284ca) SHA1(d9adad80c266d36429444f483cac4ebcf1fec7b8) )
 
 	/* Program ROM */
-	ROM_LOAD( "mhpe.102",   0x08000, 0x4000, CRC(1255bd7f) SHA1(e277fe7b23ce8cf1294b6bfa5548b24a6c8952ce) )
-	ROM_LOAD( "mhpe.101",   0x0c000, 0x4000, CRC(21889079) SHA1(d1ad6d9fa1432912e376bca50ceeefac2bfd6ac3) )
+	ROM_LOAD( "MHPE.1MN",   0x08000, 0x4000, CRC(1255bd7f) SHA1(e277fe7b23ce8cf1294b6bfa5548b24a6c8952ce) )
+	ROM_LOAD( "MHPE.1L",   0x0c000, 0x4000, CRC(21889079) SHA1(d1ad6d9fa1432912e376bca50ceeefac2bfd6ac3) )
     
     /* Paged Program ROM */
-	ROM_LOAD( "mhpe.104",   0x10000, 0x8000, CRC(4c7235dc) SHA1(67cafc2ce438ec389550efb46c554a7fe7b45efc) ) /* page 0+1+4+5 */
-	ROM_LOAD( "mhpe.103",   0x18000, 0x8000, CRC(84735445) SHA1(21aacd862ce8911d257c6f48ead119ee5bb0b60d) ) /* page 2+3+6+7 */
+	ROM_LOAD( "MHPE.1Q",   0x10000, 0x8000, CRC(4c7235dc) SHA1(67cafc2ce438ec389550efb46c554a7fe7b45efc) ) /* page 0+1+4+5 */
+	ROM_LOAD( "MHPE.1NP",   0x18000, 0x8000, CRC(84735445) SHA1(21aacd862ce8911d257c6f48ead119ee5bb0b60d) ) /* page 2+3+6+7 */
 
 	/* Paged Vector Generator ROM */
-	ROM_LOAD( "mhpe.107",   0x20000, 0x4000, CRC(2ca83c76) SHA1(cc1adca32f70af30c4590e9fd6b056b051ccdb38) ) /* page 0+1 */
-	ROM_LOAD( "mhpe.106",   0x24000, 0x4000, CRC(4deea2c9) SHA1(c4107581748a3f2d2084de2a4f120abd67a52189) ) /* page 2+3 */
+	ROM_LOAD( "MHPE.6H",   0x20000, 0x4000, CRC(2ca83c76) SHA1(cc1adca32f70af30c4590e9fd6b056b051ccdb38) ) /* page 0+1 */
+	ROM_LOAD( "MHPE.6JK",   0x24000, 0x4000, CRC(4deea2c9) SHA1(c4107581748a3f2d2084de2a4f120abd67a52189) ) /* page 2+3 */
 	/* the last 0x1000 is used for the 2 RAM pages */
 
 	/* Gamma Processor ROM */
 	ROM_REGION( 0x10000, "gamma", 0 )
-	ROM_LOAD( "mhpe.108",   0x08000, 0x8000, CRC(c52ec664) SHA1(08120a385f71b17ec02a3c2ef856ff835a91773e) ) /* 32K Here */
+	ROM_LOAD( "MHPE.9S",   0x08000, 0x8000, CRC(c52ec664) SHA1(08120a385f71b17ec02a3c2ef856ff835a91773e) ) /* 32K Here */
 
 	/* AVG PROM */
 	ROM_REGION( 0x100, "user1", 0 )
