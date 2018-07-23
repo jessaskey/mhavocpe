@@ -1,0 +1,28 @@
+Release notes for Major Havoc - The Promised End 
+v0.19
+07/22/2018
+
+**For ROM locations see the document at https://github.com/jessaskey/mhavocpe/blob/master/ROMs/ROM_Locations.txt 
+
+-This should run fine on both physical hardware *and* MAME
+
+Changes in this version:
+
+1. NOTE: This is the second release where the ROM Names have changed in this release to have PCB locations 
+   instead of old 3 digit numbers. This impacts MAME users as you must now ensure you have the current *special*
+   build of MAME from this site.
+2. This version has a functional Star Castle level.. the downside is you have to get to level 25 in order to see 
+   it. :-)  
+3. Restored Atari copyright message.
+
+** Current issues are listed here - https://github.com/jessaskey/mhavocpe/issues
+
+KNOWN BUGS AS OF THIS RELEASE:
+
+1. Space Maze Colors are messed up
+2. No homeworld
+3. Star Castle is mostly complete, still needs attention for sure.
+4. Many unfished sections of new development
+
+
+
