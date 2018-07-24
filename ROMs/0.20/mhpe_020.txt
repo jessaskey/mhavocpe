@@ -1,0 +1,27 @@
+Release notes for Major Havoc - The Promised End 
+v0.20
+07/23/2018
+
+**For ROM locations see the document at https://github.com/jessaskey/mhavocpe/blob/master/ROMs/ROM_Locations.txt 
+
+-This should run fine on both physical hardware *and* MAME
+
+Changes in this version:
+
+1. BUGFIXES from v0.19
+   a. On Level 2 and beyond, you can now start the breakout game. This was broken in 0.19.
+   b. On Levels with Transporters, after transporting you would not have any shields remaining.
+2. Star Castle Tweaks - While this is still incomplete, I increased the Y velocity by 33% and also made the fireball
+   shots track the player a bit more.
+
+** Current issues are listed here - https://github.com/jessaskey/mhavocpe/issues
+
+KNOWN BUGS AS OF THIS RELEASE:
+
+1. Space Maze Colors are messed up
+2. No homeworld
+3. Star Castle is mostly complete, still needs finalized. More enemies.
+4. Many unfished sections of new development
+
+
+
