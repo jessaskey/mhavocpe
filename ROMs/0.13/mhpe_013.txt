@@ -1,7 +1,0 @@
-Release notes for Major Havoc - The Promised End 
-v0.13
-
-**For ROM locations see the document at https://github.com/jessaskey/mhavocpe/blob/master/ROMs/ROM_Locations.txt 
-
--This *should* run Self Test AND Game Mode on both MAME and the actual PCB.
-

@@ -1,7 +1,0 @@
-Release notes for Major Havoc - The Promised End 
-v0.12
-
-**For ROM locations see the document at https://github.com/jessaskey/mhavocpe/blob/master/ROMs/ROM_Locations.txt 
-
--This is a non-functional release, it runs in MAME but not on the actual hardware yet for some reason.
-
