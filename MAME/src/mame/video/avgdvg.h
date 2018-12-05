@@ -9,7 +9,7 @@
 #include "video/vector.h"
 
 #define MCFG_AVGDVG_VECTOR(_tag) \
-	downcast<avgdvg_device &>(*device).set_vector_tag("^" _tag);
+	downcast<avgdvg_device &>(*device).set_vector_tag(_tag);
 
 // ======================> avgdvg_device
 
@@ -32,7 +32,7 @@ public:
 	TIMER_CALLBACK_MEMBER(vg_set_halt_callback);
 	TIMER_CALLBACK_MEMBER(run_state_machine);
 protected:
-	static constexpr unsigned MAXVECT = 25000;
+	static constexpr unsigned MAXVECT = 20000;   /* JMA - Increased from 10000 because this was not high enough for Major Havoc */
 
 	struct vgvector
 	{
