@@ -13,3 +13,7 @@ Instructions:
 4. Run the 'patch_roms.bat' file or manually apply the patches yourself.
 5. You should now have 8 new files named 'mhpe.*' where the * is the PCB location of the file.
 6. These ROM's can now be burned on your PCB (with modifications) or tested in MAME.
+
+The patching process uses the bsdiff compression tool which more info is available here - https://www.romhacking.net/utilities/929/ 
+
+Reference: http://www.daemonology.net/papers/bsdiff.pdf 
