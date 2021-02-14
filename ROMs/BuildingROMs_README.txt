@@ -11,8 +11,9 @@ Instructions:
 2. You will need Major Havoc Version 3 ROM images to start, these are numbered .106,.107,.108,.210,.215,.216,.217 and .318
 3. Download the bspatch.exe (part of bsdiff) file or get a copy from the internet for your platform - Im running Windows 10 64-bit.
 4. Run the 'patch_roms.bat' file or manually apply the patches yourself.
-5. You should now have 8 new files named 'mhpe.*' where the * is the PCB location of the file.
+5. You should now have 10 new files named 'mhpe.*' where the * is the PCB location of the file.
 6. These ROM's can now be burned on your PCB (with modifications) or tested in MAME.
+7. NOTE: The two ROM's at location 1B/C and 1D are *NOT REQUIRED* to be stuffed in your PCB and can be IGNORED currently.
 
 The patching process uses the bsdiff compression tool which more info is available here - https://www.romhacking.net/utilities/929/ 
 
