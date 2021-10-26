@@ -1,6 +1,8 @@
 This file will walk through the steps required to create playable ROM images 
 for Major Havoc - The Promised End
 
+NOTE: Patch files were used for the early BETA versions of the ROMs. Starting with version XXX, the ROM files are complete AS-IS and no longer need to be generated via patching.
+
 DISCLAIMER: The files on this site are patch files which will modify your existing ROM image backups into ROMs that play 
 'THE PROMISED END'. I am not allowed to distribute Atari ROM images directly, so you will need to supply your own images.
 These steps will apply patches to your ROM images to have updated features in 'THE PROMISED END'.
