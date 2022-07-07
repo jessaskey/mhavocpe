@@ -1,6 +1,0 @@
-Released 7/3/2022
-Maze Collections: mhpe 13720 07032022 069
-Notes:
-
-1. Fixed bug introduced in v0.82 where GAMMA EEROM Reading/Writing got broken
-2. Included new Mazes for both PE and TE from Jerky
