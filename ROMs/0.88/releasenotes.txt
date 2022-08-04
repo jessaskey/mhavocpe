@@ -1,0 +1,24 @@
+Version 0.88 BETA
+Released 8/3/2022
+Maze Collections: MHPE 13720 08032022
+
+Fixes:
+
+1. Fixed issue where maze objects placed on far right of design canvas were popping over to the right side of the screen.
+2. Think I fixed the random 'fast' shot on the space fighter levels.
+3. Fixed issue with top maze scanner not showing in final station.
+4. Fixed issue with Shields not restoring between final station levels.
+
+Remaining Issues - https://github.com/jessaskey/mhavocpe/issues
+
+Bonus Issues:
+
+1. Level 22 Flashing Transporter sends player to wrong location in Level 23/Level 23 drawing it exit one in the wrong spot (instant death in both cases for both versions...same as I detailed for the last pre-CAX romset).
+2. Trip pads shots passing right through Maxoids after killing first Maxoid, and then after player dies on level 27 (PE and TE).
+3. In Demo Mode if you play through Maxoid level 28, the game then generates a Level 29 that is a messed up version of Level 21...and during the Star Castle battle all enemies, their shots and even the wall sections gain perfect home in ability on the player making them impossible to avoid. I guess the game should just go back to Level 1 (not the multi colored version of course), or maybe Maxoid level 25 so players can cycle through just those ones instead of going back to 1?
+
+
+
+
+
+
