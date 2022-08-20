@@ -1,0 +1,16 @@
+Version 0.89 BETA
+Released 8/20/2022
+Maze Collections: MHPE 13720 08032022
+
+Fixes:
+
+1. Fixed issue where killing Maxoid was not awarding points
+2. I *think* I fixed a bug where collisions between Max and Pyroids where not working after one Max has been killed.
+3. Found another bug that was causing random 'fast shots' in the Star Castle battle
+4. Fixed Vaxx mainframe graphics that had mis-aligned vectors.
+5. Fixed issue where playing level 28/lastXX in Demo mode would continue to 'level 29' rather than resetting back to Level 1 and tokens were retained which caused weird levels.
+6. Fixed issue where Red key would not be carried over to the final space station section
+7. Fixed issue where doors placed at far left of screen would not be hidden (was issue on level 23)
+
+Remaining Issues - https://github.com/jessaskey/mhavocpe/issues
+
