@@ -1,0 +1,12 @@
+Version 0.90 BETA
+Released 8/20/2022
+Maze Collections: MHPE 13720 08032022
+
+Fixes:
+
+1. Updated several French tranlations from Jerome V.
+2. Rex WooHoo is now a 50/50 chance on exit when Reactor counter is less than 10
+3.
+
+Remaining Issues - https://github.com/jessaskey/mhavocpe/issues
+
