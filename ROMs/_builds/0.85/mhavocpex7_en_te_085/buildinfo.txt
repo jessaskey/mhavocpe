@@ -1,0 +1,5 @@
+BuildDate: Thursday 07/07/2022 08:48 -06:00
+Version: 085
+Language: en
+Edition: te
+Collection: mhpe 13720 07032022 069 tournament edition.mhc

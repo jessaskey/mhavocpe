@@ -1,0 +1,6 @@
+BuildDate: Saturday 08/20/2022 00:00 -06:00
+Version: 089
+Language: fr
+Edition: promisedend
+Collection: mhpe 13720 08032022 promised end.mhc
+Speech: 0
