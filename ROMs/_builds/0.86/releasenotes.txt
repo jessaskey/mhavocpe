@@ -1,0 +1,23 @@
+Verstion 0.86 BETA
+Released 7/19/2022
+Maze Collections: MHPE 13720 07172022 069
+
+Fixes:
+
+1. Updated to Maze collection MHPE 13720 07132022 069 from Jerky
+2. Hidden Transporter on Level 21 and Level 14 is now fixed, issue was a bad test for hidden transporters.
+3. Fixed issue with Fishoids looping idefinitely and offscreen on Level 13+
+4. Rex WooHoo only happens randomly when maze exit is done with less than 10 seconds remaining
+5. Red 'Come On' is 1/256 chance of happening now.
+6. Fixed issue where when Max would kill Rex, the screen would blank out for a second.
+7. Revised Brick Colors, eliminated 'flash' color which was inadvertant.
+8. Fixed issue where tact scanner would end after 1.5 seconds (demo mode issue only I believe)
+9. Fixed issue where Max sound would continue after maze exit
+
+Issues - https://github.com/jessaskey/mhavocpe/issues
+
+
+
+
+
+
