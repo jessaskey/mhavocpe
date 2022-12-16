@@ -1,0 +1,96 @@
+" TASM Atari Major Havoc Custom Text Definition.    "
+/****************************************************************************
+/* Id: $ atext.tab 1.1 2016/08/20 01:12:40 jma Exp $
+/****************************************************************************
+/* This is the custom text definition file for TASMx. For each character
+/* at the start of the line (single characters only - ASCII only) the 
+/* value will be written. The value may be in normal numeric representation
+/* just like the rest of TASMx.
+/*
+/*CHAR 	VALUE */
+/*-------------------------------------------*/
+/* note that this first line has a 'space' character in it */
+ 		00
+/* normal characters from here on out */		
+0		02
+1		04
+2		06
+3		08
+4		0a
+5		0c
+6		0e
+7		10
+8		12
+9		14
+A		16
+B		18
+C		1a
+D		1c
+E 	1e
+F 	20 
+G		22
+H 	24
+I		26
+J		28
+K		2a
+L		2c
+M		2e
+N		30
+O		32
+P		34
+Q		36
+R		38
+S		3a
+T 	3c
+U		3e
+V		40
+W		42
+X		44
+Y		46
+Z		48
+.		4a
+!		4c
+-		4e
+,		50
+%		52
+:		54
+/* this next one is the 1/2 symbol, we can't use unicode in this file, so use the little 'o' 
+h		56
+(   58
+)   5A
+/* forward slash */
+s   5C
+@   5E
+/* right pointing arrow */
+>  60
+/* left pointing triangle */
+<  62
+?	 64
+/* finally, the copyright symbol, which we will use the c symbol for
+c	 66
+'	 68
+/* Now we are defining special characters for our non-english language text strings */
+/*È	*/	
+e  6A
+/*É */
+f	 6C
+/*Ê */		
+g  6E
+/*À */
+a	 70
+/*Â */
+b  72
+/*Ù */
+u	 74
+/*Û */
+w  76
+/*Ï */
+i  78
+/*Ô */
+o  7A
+/*Ü */
+v	 7C
+/*Ä */
+w  7E
+/* Ö */
+p  80

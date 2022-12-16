@@ -1,0 +1,632 @@
+ .module alpha
+
+;***********************************************************
+;*   RAM Space Allocation                                  
+;***********************************************************
+    .sbttl  "Zero Page Declarations"
+    .org $0000
+;***********************************************************
+vgbrit      .block  1           ;Vector Brightness
+vglist      .block  2           ;VGList Pointer
+picind      .block  2           ;Next Rex Picture Pointer
+xmot        .block  2           ;X Motion Scroll Amount
+ymot        .block  2           ;Y Motion Scroll Amount
+mazpt       .block  2           ;Indirect Pointer for Maze Draw Routine
+temp1       .block  2           ;Temporary Variables
+temp2       .block  2
+temp3       .block  2
+temp4       .block  2
+temp5       .block  2
+temp6       .block  2
+temp7       .block  2
+temp8       .block  2
+temp9       .block  2
+tempa       .block  2
+vdata       .block  4           ;Used by Vector Utilities for positioning
+;vdatax       .block  4          ;Alt used by Vector Utilities for positioning
+ltcolm
+ltcol       .block  nmmotobj       ;Collision Flag for Man/Maze
+rtcolm
+rtcol       .block  nmmotobj       ;Collision Flag for Man/Maze
+undg        .block  1           ;80 if Underground
+abvg        .block  1           ;80 if head above ceiling
+ltcolv      .block  1           ;Left wall collision value
+rtcolv      .block  1           ;Right wall collision value
+scalef      .block  2           ;Offset in size for Posvec
+mzgame      .block  1           ;=80 if Maze Playing
+                                ;=40 if in Tube, could be in Select-A-Level if addtim > 0
+                                ;=20 if in Shrink Mode
+                                ;=10 if End of Battle
+                                ;=08 if in Upwards Transition
+                                ;=04 if in 3rd Person (Play)
+                                ;=02 if ???? (Zooming Out?)
+                                ;=01 if Docking Sequence, Maze Start
+                                ;=00 if in Space
+gamest      .block  1           ;Game Status
+                                ;$80=1=Player Playing
+                                ;$40=1=Sucessful Exit
+                                ;$20=1=In Maze
+                                ;$10=1=Clock Hold
+                                ;$08=1=Just Entering Maze
+seqx        .block  1           ;Copypic Index(s)
+seqst       .block  1           ;Copypic Status
+                                ;80 = Whole pic drawn
+                                ;40 = Last vector is Long
+                                ;20 = Erase Mode On
+                                ;10 = Display On
+seqp        .block  1           ;Picture Number
+targf       .block  1           ;Flag for targship routine in TWShip
+frame       .block  2           ;Frame Number
+tframe      .block  1           ;Timer for Game Time ($34=1sec)
+vgrestart   .block  1           ;if -, Interrupt Routine will restart VG.
+
+trindptr    .block  2           ;Trip Point Indirect Register
+player      .block  1           ;Which player playing 0 = 1 Player Game, 1 = 2 Player Game
+playrlast	.block 	1			;Last value of Player sent to Gamma (prevents lots of sends)
+twopl       .block  1           ;0= 1 Player Game, Else 2 Player Game
+pl2int      .block  1           ;0= Player 2 has not yet Played
+out1s       .block  1           ;Output 1 Shadow
+lastswitch  .block  1           ;Copy of Buttons from Gamma
+
+;Coin Routine Variables
+c_cctim     .block  emctrs      ;Coin Counter Timers (- for Counter On)
+c_crdt      .block  1           ;Total Credit
+c_oldc      .block  1           ;Old Credit Status
+c_oldcnt    .block  1           ;Old Coin Count
+c_pstsl     .block  mechs       ;Post Coin Slam Timer
+c_cnstt     .block  mechs       ;Coin Status/Timer
+c_lmtim     .block  1           ;Pre Coin Slam Timer
+c_cmode     .block  1           ;Coin Mode Byte
+c_cnct      .block  1           ;Unit Coin Count
+c_intct     .block  1           ;Interrupt Counter
+tries       .block  1           ;Tries waiting for reset
+animate     .block  1           ;General Animation flag, used for 
+								; Attract Mode - Next Level on Logo
+								; Black Hole - Animation control
+								; Homeworld Animation - Animation Control
+								
+;So sounds don't clobber each other, if this is not zero, then don't do sound	
+sndcuecnt	= 3					
+sndcue     	.block  sndcuecnt  	;sndcue is for tactical display alert and fishoids
+								;sndcue+1 is for reactor hum
+								;sndcue+2 is for reactor countdown alarm      
+                                
+unstik      .block  1           ;Get Man Unstuck from Floor
+teeter      .block  1           ;When is he Teetering???
+nxtbonus    .block  1           ;Bonus life score level
+sndatt      .block  1           ;Attract Sounds     
+    
+    .sbttl "Cerny's Zero Page"
+;These Are All Global
+perm1       .block  2           ;Something more Permanant than temp1
+perm2       .block  2           ;Something more Permanant than temp2
+perm3       .block  2           ;Something more Permanant than temp3
+perm4       .block  2           ;Something more Permanant than temp4
+perm5       .block  2           ;Something more Permanant than temp5
+webscur     .block  1           ;Current Spinner being looked at
+cxflip      .block  1           ;=0, no XFlip on Object. =1 there is XFlip
+shotcur     .block  1           ;Current Shot being looked at in Space Maze
+lincur      .block  1           ;Current line being looked at in Space Maze
+scbdis      .block  4           ;Score display fade out buffer
+eeok        .block  1           ;EEROM ok = 80
+wrpdat      .block  3           ;Warp Data
+wrpwh       .block  1           ;Warp Digit being worked on
+wrpdl       .block  2           ;LSB of same
+wrhflg      .block  1           ;Write Initials Flag
+pl1last     .block  3           ;Last Initails for Player 1
+pl2last     .block  3           ;Last Initials for Player 2
+atdata      .block  1           ;For Rolly-gig in Attract
+sellvl      .block  1           ;Select Level Register
+tactln      .block  1           ;Length of Tactical Scan Line
+swtc1       .block  1           ;Switch Player 1 Debounce
+swtc2       .block  1
+;Idiot Message Variables Here
+jmptim      .block  1           ;Time Spent in Latest Jump
+fldcnt      .block  1           ;Number of Failed Jumps
+mestim      .block  1           ;Display Time for Message
+jumprv      .block  1           ;jumpst from the previous frame
+cabsel		.block  1			;Cabinet: 80=upright 00=cocktail
+rollmult	.block	1			;Roller multiplier 0 = 1x, 1 = 2x
+
+;Old Page 8 stuff - Moved to ZP because high usage
+sync        .block  1           ;IRQ Snyc
+#IF DISABLE_FASTTRANSITIONS = 0
+gofast      .block  1           ;If 80, Skip IRQ sync, which makes gameplay accelerate
+#ENDIF
+;currpage    .block  1           ;The current ROM Page
+;lastpage    .block  1           ;The last ROM Page
+
+#IF DISABLE_HCOUNT = 0
+hcount      .block  1           ;Vector Generator running to Long Counter
+#ENDIF
+
+rawgamedif	.block 	1			;Original blended demo+difficult value
+demo        .block  1           ;Demo Mode Flag: $80 = DEMO
+gamedif		.block	1			;Base game difficulty from dips/setting	(00=easy,01=med,02=hard)
+newmzr      .block  1           ;New Maze Requested
+upflg       .block  1           ;He's getting up, dont move
+waitim      .block  1           ;How Long Standing Still
+zindex      .block  1           ;Index for for current maze object
+
+msg_x		.block	1			;X position for messages
+msg_y		.block  1			;Y position for messages
+msg_idx		.block 	1			;Current message index
+has_beta	.block	1			;Is BETA Processor present
+
+#IF (DEBUG != 0) | (LEVEL_EDITOR != 0)
+mloopcnt	.block	1			;Main Loop Counter
+mloopdis	.block	1			;Main Loop Value to Display (if not zero)
+#ENDIF
+
+    orgchk($0100,$)
+    .sbttl "RAM based page and Stack"
+    
+updflg      .block  1       ;High Score Update in Progress
+updint      .block  1       ;Initial Being Entered
+updwho      .block  1       ;Who to Update
+updcur      .block  1       ;Number of Last Entered High Score
+
+;Global Statistics here - More in Paged RAM for P1/P2 Specific ones
+starts                      		;Start of Stats Block RAM
+st_extlie   .block  1*g_numstxl     ;Extra Lives Earned
+st_warps    .block  2*g_numwarps    ;Number of Warps Done - 2 bytes per warp
+
+st_gtime1   .block  4       ;Game time for 1 Player
+st_gtime2   .block  4       ;Game time for 2 Player
+                               
+initl       .block  3*10d   ;High Score Inital Space
+hscore      .block  4*10d   ;High Scores
+gtesser		.block  1*10d	;Tesseracts
+
+;We need at least 64d bytes for the Stack
+	orgchk($0200-64d,$)
+
+;Post Stack Memory Allocation
+    orgchk($0200,$)
+    .sbttl "Other RAM Not Zero Page"
+
+sobjxl      .block  nmspace+nmsshots        ;Space Ships in Space!
+sobjxh      .block  nmspace+nmsshots
+sobjyl      .block  nmspace+nmsshots
+sobjyh      .block  nmspace+nmsshots
+sobjst      .block  nmspace+nmsshots
+                                ;D7=1=Exploding
+                                ;D6=1=Once Past Bonus eq 0
+                                ;D5=1=Set-Up Mode
+                                ;D4=1=Active
+                                ;D2-D0=Coreg Number Working On
+sobjs2      .block  nmspace     ;D7=Past Bottom Once
+                                ;D6=Hold in Set-Up
+                                ;D5=Follow a Leader (See sobjst, D3-0 for who to follow)
+                                ;D4=Kamakazi Player
+                                ;D3=1=Turn Right; 0=Turn Left (for kamikazi tracking)
+                                ;D2=1=Move to Top of Screen for Start of Correg
+sobdir      .block  nmspace     ;Directions/Time
+sobcog      .block  nmspace     ;Current Correg Table Entry
+cognum      .block  1           ;Current Coreography
+bonusa      .block  1           ;Bonus Amount
+tactde      .block  1           ;80=Do Display This Time, 03=Times that breakout has been completed
+breakx		.block  1			;Number of times breakout completed
+trinds      .block  2           ;Trip Point Indirect Register Shadow(Changes with Player)
+;incdif      .block  1           ;Incrementing Difficulty Number
+castsnd		.block  1		;Star Castle background sound play flag
+
+    orgchk($0300,$)
+    .sbttl "More Paged RAM"
+    
+nenemy      .block  1       ;Number of Enemy Out
+nenstr      .block  1       ;Number of Enemy to Start
+shotspeed   .block  1       ;Shot Speed for Fighters and Bases
+wtcnt       .block  1       ;Number Yet to Stage
+lauen       .block  1       ;80=Launch Fighters
+widthl      .block  2       ;Width of Landing Sight
+widthh      = widthl+1      ;40=Skip to Landing
+
+brick       .block  3       ;Breakout brick data for each player
+bronce      .block  1       ;80= finished breakout, 03= number of balls to launch (zero based)
+difcty      .block  1       ;Difficulty Level
+maznum      .block  1       ;Maze Number
+dif4mz      .block  1       ;difcty*4+maznum
+maztype		.block	1		;Maze Type (0-3) - This is configured now so it may be different than maznum 
+olmznm      .block  1       ;Last Maze Number (Look for Maze Change)
+holmz       .block  1       ;If 80, Don't Re-Init Objects or Disc's
+mzgms       .block  1       ;Maze Game Shadow Register
+
+;More Shared Cerny Stuff 
+websnum     .block  1       ;Number of Hives this wave
+diedyet     .block  1       ;80=He dies Once this game
+initcz      .block  1       ;Flag=80 if init for web play needed - Sphere and Web
+
+;Cerny Stuff for Tacscan code
+jblast      .block  1       ;For Debounce
+wrplvl      .block  1       ;What warp level this time
+;colcnt      .block  1       ;Paddle Hits
+
+;Star Castle Stuff
+scflags     .block  1		;Star Castle Mode - Details in tw_castle.asm
+shibits		.block  1		;Bits defining the shield wall segements for drawing
+shirotl		.block 	1		;Minor (Low Count) Rotation position of shield 
+shiroth		.block  1		;Major (High Count) Rotational reference of shield
+shiests		.block 	8		;One byte for each shield
+							;0x07 is Hits (0-5 hits plus two special states)
+							;0x18 is Flash counter (0-3)
+							;0x60 is rotation counter (0-3)
+shiroen		.block  1		;Enable rotation of Shield = $80, Paused = $00
+shiecovr	.block  1		;Color override for all panels - no override if 0x00
+
+
+mzgrnd
+ground      .block  nmmotobj   		;On Ground = 80
+;if !jumpst & !ground then state = falling
+tempgrnd    .block  1       		;Temp Ground Flag
+;Used in Pre-Colision Check
+
+lastgnd     .block  1 ;nmmotobj   		;Save State for Last Ground State
+pastbit     .block  1       		;Used in Ground Check in manact
+mazhed
+headcol     .block  nmmotobj   		;Possible Head Collision = 80
+manstat
+
+objst       .block  nmmotobj   		;Object Status - Essays can be written on this, see tw_mazeo for explanations for each object type
+obsst       .block  nmrshp+nmtoke  	;Special Object Status
+obnew       .block  nmnew   ;Status of New Objects
+
+velxl       .block  nmmotobj   		;LSB X Velocity (for some objects)
+velxh       .block  nmmotobj   		;MSB X
+
+velyl       .block  nmmotobj   		;LSB Y Velocity
+velyh       .block  nmmotobj   		;MSB Y
+
+mazexl                      		;First Byte = Current Stamp
+objxl       .block  nmmotobj   		;
+obssxl      .block  nmrshp+nmtoke  	;For Placement of Special Objects
+oldxl       .block  nmmotobj   		;Man's Old xlsb for Collision problem
+
+mazexh                      		;Second Byte = Stamp Position
+objxh       .block  nmmotobj   		;
+obssxh      .block  nmrshp+nmtoke  	;For Placement of Extra-Special Objects
+obspxh      .block  nmspec  		;Special Objects
+
+mazeyl                      		;Same for Y
+objyl       .block  nmmotobj   		;
+obssyl      .block  nmrshp+nmtoke  	;For Placement of Special Objects
+
+mazeyh      
+objyh       .block  nmmotobj       
+obssyh      .block  nmrshp+nmtoke  	;For Placement of Special Objects
+obspyh      .block  nmspec  		;Special Objects
+
+ardir       .block  nmarow  		;Direction of Arrows
+robdir      .block  nmrob   		;Saved Direction for Robots
+robvel      .block  nmrob   		;Saved Velocity for Robots
+maxdata     .block  nmmax   		;Special flags for Max Robots
+									; $C0 - Number of Hits (0-3, Max dies on 4th hit)
+									; $30 - Max Speed (4 levels, 0-3)
+									; $10 - Active Flag (triggered)
+									; $0F - Trigger Distance (0-16)
+onewst      .block  nmonew  		;One Way Wall Stat
+limbo       .block  nmmotobj   		;Objects in Limbo while using transporter
+stasav      .block  nmmotobj   		;Save away the status while in limbo
+
+    .sbttl "Cannon Parameters"
+cannfr      .block  nmcann  		;Frames to wait before next action
+cannss      .block  nmcann  		;Counter for Barrel Rotation/Firing
+cannin      .block  nmcann  		;Index to Action Table
+canndf      .block  nmcann  		;Difficulty/Speed of Cannon
+canngr      .block  nmcann  		;D7-D6 Barrel
+									;D5-D4 Tubing
+									;D3-D1 Angle
+cannp1      .block  nmcann  		;Pointer to Cannon Action Table
+cannp2      .block  nmcann  		;Pointer to Cannon Action Table (Byte 2)
+
+    .sbttl "Miscellaneous New Maze Object Parameters"
+epodfr      .block  1       ;Escape Pod Frames until next Instruction
+epodgr      .block  1       ;Escape Pod Picture Currently Being Used
+sldnfr      .block  1       ;Slow Down Frame Counter for Clock
+tspark      .block  1       ;Sparkle Maze In and Out for Transporter
+tmatch		.block	1		;This is the match for transporting
+nodraw      .block  1       ;Skip Draw on Maze Part
+lastreac    .block  1       ;Last amount of Reactor Time Left if 'untouched'
+cktran      .block  zmax	;Only objects before Max roboto are checked for Transporter nmmotobj+8 ;Needs to be checked agains transporter?
+xtran       .block  ntrans  ;Transporter Booth Sparkels X Coord
+ytran       .block  ntrans  ;Transporter Booth Sparkels Y Coord
+ttran       .block  ntrans  ;Timing Constant
+ctran       .block  ntrans  ;Color of Sparkle
+tranhi      .block  nmtran  ;Number of Sparkels in a Transporter
+
+hxtend      .block  1       ;Horizontal Extension of De Hand
+hytend      .block  1       ;Vertical Extension of De Hand
+naccx       .block  1       ;Number of Horizontal Accordians
+naccy       .block  1       ;Number of Vertical Accordians
+daccx       .block  1       ;Degrees of Horizontal Accordians
+daccy       .block  1       ;Degrees of Vertical Accordians
+maccx       .block  1       ;Maximum Horizontal Degrees
+maccy       .block  1       ;Maximum Vertical Degrees
+raccy       .block  1       ;Rest Position
+objfrm      .block  1       ;When to Update Radar Screen
+face        .block  1       ;80=Smashed Face
+
+;Player Specific Maze Stats - Per player because they are on Paged RAM
+st_plrmzl   .block  1       ;Current Level of Player for Maze Stats
+st_plrmzs   .block  8       ;Current Level Deaths (4 numbers, 2 bytes each)
+
+
+	orgchk($07F9,$)				;We have to do this because the Space Maze level
+								;Currently writes a bunch of data right below this
+								;and will clobber these values.
+								
+vxstat      .block  1           ;Vaxxx Status bits
+                                ;$80=1=Time to start Vaxx bonus
+                                ;$40=1=Vaxx Bonus countup completed
+								;$20=1=Maynard Animation completed as well
+								;$10=1=Final Story is completed
+								
+;Hidden maze stuff - player specfic token data
+toktarg		.block	1		;The level index that Rex diverts too after collecting
+tokretr		.block 	1		;The level index to return too after playing the diversion	
+							; This has bit $80 set when the tesseract is collected and active
+;tokvisi		.block	1		;The visibility distance for the token	
+tokpock		.block	1		;The tokens that Rex has collected in total
+							; 01 - Token A
+							; 02 - Token B
+							; 04 - Token C 
+							; 08 - Token D
+							; 10 - Homeworld complete
+lasttok		.block  1		;The last token index touched, used for animating the tact after pickup
+isfinal		.block	1		;Flag for Star Castle
+vxcount		.block	1		;Count of times to final Vaxxx Bonus	
+
+    
+;*********************************************************
+    orgchk($0800,$)
+    .sbttl "Page 8 RAM, No Save Game Variables"
+;*********************************************************
+
+stbflg      .block  1       ;Space Station Motion Select
+                            ;$80=1=Vertical Motion Enable
+                            ;$40=1=Move Up Screen (0=Move Down Screen)
+                            ;$20=1=Horizontal Motion Enable
+                            ;$10=1=Move Right (0=Move Left)
+stbix       .block  1       ;Current Direction Index
+outflg      .block  1       ;=$80 if in a stamp outside maze
+openflg     .block  1       ;=$80 if doors closed
+picdely     .block  1       ;Frames until next pic
+piccur      .block  1       ;Current Mans Pic
+picseq      .block  1       ;Current Mans Pic Sequence
+jbstat      .block  1       ;Jump Pressed = 80
+jboswt      .block  1       ;Debounce for the jump button
+jumpst      .block  1       ;Jumping (State good)
+landflg     .block  1       ;80 = Landing
+stopflg     .block  1       ;Force to Stop Seq Flag (After Land, needed to get out of land sequence)
+curstmp     .block  1       ;Type of current stamp
+abvstmp     .block  1       ;Stamp above Head
+direct      .block  1       ;Direction 1=left
+rgdd        .block  1       ;Rolly Gig Data Byte
+oldata      .block  1       ;Old Rolly Gig Data
+lastfire	.block  1		;X index for fireworks
+
+tcount      .block  1       ;Tube Seqence Count
+tstat       .block  1       ;80=Fly!!
+tcolsq		.block	1		;Tube Color Sequence
+shipst      .block  1       ;Ship Status (80=Exploding)
+shipxl      .block  1       ;Ship Xl
+shipxh      .block  1       ;Ship Xh
+shipyl      .block  1       ;Ship Yl
+shipyh      .block  1       ;Ship Yh
+shppic      .block  1       ;Current Ship Picture
+shppbs      .block  1       ;Base of Current Pic (Used 0 Fire Shots)
+shpvel      .block  2       ;Landing Velocity
+lastflip    .block  1       ;Flag for Hysterisis on Ship Picture
+shpscl      .block  1       ;Ships scale LSB
+shpsch      .block  1       ;Ships scale MSB
+shotdb      .block  1       ;Ship's Shot Switch Debounce
+nxtsid      .block  1       ;Next Side (80=Left Side Shot)
+statxl      .block  1       ;Space Station X LSB
+statxh      .block  1       ;Space Station X MSB
+statyl      .block  1       ;Space Station Y LSB
+statyh      .block  1       ;Space Station Y MSB
+statst      .block  1       ;Station Status (80=Active), Also Speed of Station and Stars in 3rd Person
+stscll      .block  1       ;Base Star Scale LSB
+stsclh      .block  1       ;Base Star Scale MSB
+landsl      .block  1       ;Landing Sight LSB
+landsh      .block  1
+gunctl      .block  2       ;Base Guns Control Bytes
+lstsxl      .block  1       ;Laser Target
+lstsxh      .block  1
+lstsyl      .block  1
+lstsyh      .block  1
+lsdsxl      .block  1       ;Laser Source
+lsdsxh      .block  1
+lsdsyl      .block  1
+lsdsyh      .block  1
+lasst       .block  1       ;Laser Status
+laspd       .block  1       ;Laser Speed
+lascol      .block  1       ;Laser Collision (Above 80 if collision at end, ok to add fireball)
+toolong     .block  1       ;Too Long Timer in Space Wave
+
+side        .block  1       ;Used by Collision Routine
+							; C0 = Below/Right
+							; 80 = Above/Right
+							; 40 = Below/Left
+							; 00 = Above/Left
+
+mtim        .block  1       	;Help Message Timer
+sparkangle  .block  nmsparks    ;Spark Angles
+
+;Breakout Variables
+nmballs = 2
+ballxl      .block  nmballs  
+ballxh      .block  nmballs     
+ballyl      .block  nmballs
+ballyh      .block  nmballs
+ballvx      .block  nmballs      ;Velocity
+ballvy      .block  nmballs
+colflg      .block  nmballs 	;Brick Collision Flag (0=Waiting to Serve)
+ballsp		.block  nmballs		;what speed the ball is (0=normal, !0 = fast)
+ballsout	.block	1			;Number of balls currently being played
+balltime	.block	1			;Timer until next ball can be launched
+brstat      .block  1       	;Breakout Status
+									;80= Playing
+									;40= Small Paddle
+									;20= Skip ball drawing when set
+									;01/02 = Number of Balls to serve
+paddle      .block  1       	;Paddle
+ttime       .block  1       	;Time Left in This tact display
+tcond       .block  1       		;0=Green
+									;1=Yellow
+									;2=Red
+lroff       .block  1       	;Long Range Motion Offset
+hscan       .block  1       	;Heart Scan Variable
+condition   .block  1       	;Status Condition
+									;0=Dead
+									;1=Green
+									;2=Yellow
+									;3=Red
+tact        .block  1       	;Tact display is On if -, ending if $40
+
+dropcnt     .block  1       	;Count of Shots to Drop
+saucvl      .block  1       	;Velocity Counter for "weighted" motion
+saucvd      .block  1       	;Direction of change for Above, plus counter 
+target      .block  1       	;80=target player 0=no target of player
+nxtptr      .block  1       	;Next Coreography Pointer
+nxtdly      .block  1       	;Delay to Start Next
+nxtskp      .block  1       	;If Set 80, This Start didn't happen
+snakec      .block  1       	;Snake coreg and Count Byte
+snakef      .block  1       	;Snake coreg on Flag = 80
+snakex      .block  1       	;Next to Start in Snake Coreg
+map0        .block  1       	;Bit Map Buffer
+map1        .block  1       	;Bit Map Buffer
+map2        .block  1       	;Bit Map Buffer
+map3        .block  1       	;Bit Map Buffer
+map4        .block  1       	;Bit Map Buffer
+map5        .block  1       	;Bit Map Buffer
+map6        .block  1       	;Bit Map Buffer
+sittime     .block  1       	;Time to Sit on the Ground
+tumble      .block  1       	;If 80, He fall down!
+recolr      .block  1       	;Reactor Color
+reintn      .block  1       	;Reactor Intensity
+retime      .block  2       	;Reactor Time-to-Blow
+rodstat     .block  1       	;Rod Picture Status for Reactor
+oxygen      .block  2       	;Current Oxygen amount for player
+lives       .block  2       	;Lives Player 1&2
+slives      .block  1       	;Switch Lives
+scrflg      .block  3       	;Scroll Flags 0=x 1=y
+dcreq       .block  1       	;Direction Change Request - If set, Rolly-Gig going oppisite direction than last, force stop.
+linen       .block  1       	;Line Number Drawing in Maze
+manstmp     .block  1       	;Save byte for man's stamp #
+bonbuf		.block 	3			;Buffer for final bonus (100,000 and 10,000 digits only)
+scrbuf      .block  2       	;Buffer of Thousands
+scoflg      .block  1       	;If 80, Lives or Score Changed
+score       .block  4       	;Score Player 1
+score2      .block  4       	;Score Player 2
+hitpts      .block  1       	;Space Wave Collision Point Value
+numstr      .block  1       	;Number of Active Stars
+blowst      .block  1       	;Blow Station Status Byte
+									;80=1=Blow Base Ship
+									;40=1=Start Moving Backwards
+									;20=1=Start Moving Forwards
+									;10=1=Move Starbase In
+									;All=0=Moving Forward Ready for Next Wave
+nxtexp      .block  1       	;Next Explosion Entry
+blscll      .block  1       	;Base Station Explosion Size
+blsclh      .block  1       	;MSB
+chngplr     .block  1       	;Change Player Message
+gmov        .block  2       	;Game Over Flags
+shldok      .block  1       	;If 80, Shield Exists
+shldht      .block  1       	;How Many shot hits left
+atflag      .block  1       	;80=Attract Playing
+thisawr     .block  1       	;Arrow to Highlight
+markgm      .block  1       	;80=Mark Control
+markpt      .block  1       	;Ptr to Attract Play Table
+markls      .block  1       	;Yet Another Pointer
+strtst      .block  1       	;Story Status (80=Running Story,40=scoring/backstory,20=flag for showing designers, bottom nybble is counter for designer screen)
+strtln      .block  1       	;Start Line in Story
+strtyl      .block  1       	;Scroll Line Y LSB
+strtyh      .block  1       	;Scroll Line Y MSB
+thisarw     .block  1       	;Arrow to Highlight Next
+addtim      .block  1       	;Add-a-Coin Time Left
+;addmn       .block  1       	;Add-a-Coin Diff Maze Number
+;adddif      .block  1       	;Add-a-Coin Diff Level 
+add4mz		.block  1			;The raw maze number, equivalent to dif4mz
+adden		.block 	1			;Flag that enables Select-a-Level
+								; 00 = Nada/Normal
+								; 80 = Select-a-level enabled
+								
+;HACK: Removed from Select-A-Level 
+;addmz       .block  1       	;Add Diff Ending Level of mzgame
+nxtdisc     .block  1       	;Points for Next Disc
+oxystat		.block	nmdisc		;Animation data for Oxygen (discs)
+
+olddata     .block  1           ;Gamma Return Unexpected Data
+cntrs       .block  mechs       ;Coin Counter Pulses to Gamma Regs
+nogamma     .block  1           ;If 80, No Gamma Sending Please
+atsnd       .block  1           ;Do a Sound every X loops in Attract
+bonsnd      .block  1           ;Bonus Sound
+maxsnd		.block 	1			;$FF means no max sound, other numbers are the distance from Rex
+;maxsndl		.block	1			;The last value sent to gamma for lastsnd
+warpcodes   .block  g_numwarps*2
+rmazenum	.block  1			;The Random Maze message we will use (-1) if not yet assigned
+d6502       .block  1           ;Flags for 6502 Detection
+emoteix		.block  1			;The current emote index
+		
+
+    orgchk($0900,$)
+    .sbttl "Special RAM"
+    
+mazebuf                         ;RAM Buffer for Maze
+stroyl      .block  1           ;Star Origin YLSB
+stroyh      .block  1           ;Star Origin YMSB
+strxl       .block  maxstr  
+strxh       .block  maxstr
+stryl       .block  maxstr
+stryh       .block  maxstr
+strflg      .block  maxstr
+spcspd      .block  1           ;Star Speed
+rearview    .block  1           ;If -,We are moving backwards
+sxxl        .block  nmexp       ;Number of Explosion Pieces
+sxxh        .block  nmexp
+sxyl        .block  nmexp
+sxyh        .block  nmexp
+sxst        .block  nmexp
+sxxv        .block  nmexp
+sxyv        .block  nmexp
+
+	orgchk($0A00-nmsparks,$)	
+rands       .block  nmsparks    ;A Place for Random Numbers
+    
+    
+;Add this check to make sure we haven't overrun the end of our RAM area
+    orgchk($0A00,$)
+    
+
+;*********************************************************
+;* BETA COM RAM - NOT Used
+;*********************************************************  
+;   .org comram
+;   .sbttl "Beta Communication RAM Equates"
+;   
+;flag       .block  1       ;Comm Wait Flag
+;bframe     .block  2       ;Copy for Beta to Use
+;
+;*********************************************************
+
+;"Special Equates to main RAM vars for Space vars
+shotst      =   sobjst+nmspace      ;Players Shots
+shotxl      =   sobjxl+nmspace
+shotxh      =   sobjxh+nmspace
+shotyl      =   sobjyl+nmspace
+shotyh      =   sobjyh+nmspace
+webssta     =   sobjst
+webss2      =   sobjs2
+websxl      =   sobjxl
+websxh      =   sobjxh
+websyl      =   sobjyl
+websyh      =   sobjyh
+websseg     =   sobdir
+websper     =   sobcog
+
+
+
+    
+
+

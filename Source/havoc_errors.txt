@@ -1,0 +1,261 @@
+TASM 6502 Assembler.    Version 3.1  February, 1998.
+Copyright (C) 1998 Squak Valley Software
+tasm: pass 1 complete.
+tasm: pass 2 complete.
+tasm: Number of errors = 0
+Elapsed time = 0.41 secs  lines = 2964   lines/sec = 7176
+TASM 6502 Assembler.    Version 3.1  February, 1998.
+Copyright (C) 1998 Squak Valley Software
+tasm: pass 1 complete.
+tasm: pass 2 complete.
+tasm: Number of errors = 0
+Elapsed time = 0.40 secs  lines = 4395   lines/sec = 10798
+TASM 6502 Assembler.    Version 3.1  February, 1998.
+Copyright (C) 1998 Squak Valley Software
+tasm: pass 1 complete.
+tasm: pass 2 complete.
+tasm: Number of errors = 0
+Elapsed time = 0.30 secs  lines = 3328   lines/sec = 10875
+TASM 6502 Assembler.    Version 3.1  February, 1998.
+Copyright (C) 1998 Squak Valley Software
+tasm: pass 1 complete.
+tasm: pass 2 complete.
+tasm: Number of errors = 0
+Elapsed time = 0.27 secs  lines = 2674   lines/sec = 9584
+TASM 6502 Assembler.    Version 3.1  February, 1998.
+Copyright (C) 1998 Squak Valley Software
+tasm: pass 1 complete.
+tasm: pass 2 complete.
+tasm: Number of errors = 0
+Elapsed time = 0.40 secs  lines = 4017   lines/sec = 9869
+ TASM Atari Major Havoc Custom Text Definition.    Version 3.1  February, 1998.
+Copyright (C) 1998 Squak Valley Software
+tasm: pass 1 complete.
+tasm: pass 2 complete.
+tasm: Number of errors = 0
+Elapsed time = 0.88 secs  lines = 6901   lines/sec = 7824
+TASM 6502 Assembler.    Version 3.1  February, 1998.
+Copyright (C) 1998 Squak Valley Software
+tasm: pass 1 complete.
+ERROR: ./tw_msg.asm line 0150: CTEXT directive requires a custom text file to be defined in the command line. 
+ERROR: ./tw_msg.asm line 0153: CTEXT directive requires a custom text file to be defined in the command line. 
+ERROR: ./tw_msg.asm line 0156: CTEXT directive requires a custom text file to be defined in the command line. 
+ERROR: ./tw_msg.asm line 0159: CTEXT directive requires a custom text file to be defined in the command line. 
+ERROR: ./tw_msg.asm line 0162: CTEXT directive requires a custom text file to be defined in the command line. 
+ERROR: ./tw_msg.asm line 0165: CTEXT directive requires a custom text file to be defined in the command line. 
+ERROR: ./tw_msg.asm line 0168: CTEXT directive requires a custom text file to be defined in the command line. 
+ERROR: ./tw_msg.asm line 0171: CTEXT directive requires a custom text file to be defined in the command line. 
+ERROR: ./tw_msg.asm line 0174: CTEXT directive requires a custom text file to be defined in the command line. 
+ERROR: ./tw_msg.asm line 0177: CTEXT directive requires a custom text file to be defined in the command line. 
+ERROR: ./tw_msg.asm line 0180: CTEXT directive requires a custom text file to be defined in the command line. 
+ERROR: ./tw_msg.asm line 0183: CTEXT directive requires a custom text file to be defined in the command line. 
+ERROR: ./tw_msg.asm line 0186: CTEXT directive requires a custom text file to be defined in the command line. 
+ERROR: ./tw_msg.asm line 0189: CTEXT directive requires a custom text file to be defined in the command line. 
+ERROR: ./tw_msg.asm line 0192: CTEXT directive requires a custom text file to be defined in the command line. 
+ERROR: ./tw_msg.asm line 0195: CTEXT directive requires a custom text file to be defined in the command line. 
+ERROR: ./tw_msg.asm line 0198: CTEXT directive requires a custom text file to be defined in the command line. 
+ERROR: ./tw_msg.asm line 0201: CTEXT directive requires a custom text file to be defined in the command line. 
+ERROR: ./tw_msg.asm line 0204: CTEXT directive requires a custom text file to be defined in the command line. 
+ERROR: ./tw_msg.asm line 0207: CTEXT directive requires a custom text file to be defined in the command line. 
+ERROR: ./tw_msg.asm line 0210: CTEXT directive requires a custom text file to be defined in the command line. 
+ERROR: ./tw_msg.asm line 0213: CTEXT directive requires a custom text file to be defined in the command line. 
+ERROR: ./tw_msg.asm line 0216: CTEXT directive requires a custom text file to be defined in the command line. 
+ERROR: ./tw_msg.asm line 0219: CTEXT directive requires a custom text file to be defined in the command line. 
+ERROR: ./tw_msg.asm line 0222: CTEXT directive requires a custom text file to be defined in the command line. 
+ERROR: ./tw_msg.asm line 0225: CTEXT directive requires a custom text file to be defined in the command line. 
+ERROR: ./tw_msg.asm line 0228: CTEXT directive requires a custom text file to be defined in the command line. 
+ERROR: ./tw_msg.asm line 0231: CTEXT directive requires a custom text file to be defined in the command line. 
+ERROR: ./tw_msg.asm line 0234: CTEXT directive requires a custom text file to be defined in the command line. 
+ERROR: ./tw_msg.asm line 0237: CTEXT directive requires a custom text file to be defined in the command line. 
+ERROR: ./tw_msg.asm line 0240: CTEXT directive requires a custom text file to be defined in the command line. 
+ERROR: ./tw_msg.asm line 0243: CTEXT directive requires a custom text file to be defined in the command line. 
+ERROR: ./tw_msg.asm line 0246: CTEXT directive requires a custom text file to be defined in the command line. 
+ERROR: ./tw_msg.asm line 0249: CTEXT directive requires a custom text file to be defined in the command line. 
+ERROR: ./tw_msg.asm line 0252: CTEXT directive requires a custom text file to be defined in the command line. 
+ERROR: ./tw_msg.asm line 0255: CTEXT directive requires a custom text file to be defined in the command line. 
+ERROR: ./tw_msg.asm line 0258: CTEXT directive requires a custom text file to be defined in the command line. 
+ERROR: ./tw_msg.asm line 0261: CTEXT directive requires a custom text file to be defined in the command line. 
+ERROR: ./tw_msg.asm line 0264: CTEXT directive requires a custom text file to be defined in the command line. 
+ERROR: ./tw_msg.asm line 0267: CTEXT directive requires a custom text file to be defined in the command line. 
+ERROR: ./tw_msg.asm line 0270: CTEXT directive requires a custom text file to be defined in the command line. 
+ERROR: ./tw_msg.asm line 0273: CTEXT directive requires a custom text file to be defined in the command line. 
+ERROR: ./tw_msg.asm line 0276: CTEXT directive requires a custom text file to be defined in the command line. 
+ERROR: ./tw_msg.asm line 0283: CTEXT directive requires a custom text file to be defined in the command line. 
+ERROR: ./tw_msg.asm line 0286: CTEXT directive requires a custom text file to be defined in the command line. 
+ERROR: ./tw_msg.asm line 0289: CTEXT directive requires a custom text file to be defined in the command line. 
+ERROR: ./tw_msg.asm line 0292: CTEXT directive requires a custom text file to be defined in the command line. 
+ERROR: ./tw_msg.asm line 0295: CTEXT directive requires a custom text file to be defined in the command line. 
+ERROR: ./tw_msg.asm line 0298: CTEXT directive requires a custom text file to be defined in the command line. 
+ERROR: ./tw_msg.asm line 0301: CTEXT directive requires a custom text file to be defined in the command line. 
+ERROR: ./tw_msg.asm line 0304: CTEXT directive requires a custom text file to be defined in the command line. 
+ERROR: ./tw_msg.asm line 0307: CTEXT directive requires a custom text file to be defined in the command line. 
+ERROR: ./tw_msg.asm line 0310: CTEXT directive requires a custom text file to be defined in the command line. 
+ERROR: ./tw_msg.asm line 0313: CTEXT directive requires a custom text file to be defined in the command line. 
+ERROR: ./tw_msg.asm line 0316: CTEXT directive requires a custom text file to be defined in the command line. 
+ERROR: ./tw_msg.asm line 0319: CTEXT directive requires a custom text file to be defined in the command line. 
+ERROR: ./tw_msg.asm line 0322: CTEXT directive requires a custom text file to be defined in the command line. 
+ERROR: ./tw_msg.asm line 0325: CTEXT directive requires a custom text file to be defined in the command line. 
+ERROR: ./tw_msg.asm line 0328: CTEXT directive requires a custom text file to be defined in the command line. 
+ERROR: ./tw_msg.asm line 0331: CTEXT directive requires a custom text file to be defined in the command line. 
+ERROR: ./tw_msg.asm line 0334: CTEXT directive requires a custom text file to be defined in the command line. 
+ERROR: ./tw_msg.asm line 0337: CTEXT directive requires a custom text file to be defined in the command line. 
+ERROR: ./tw_msg.asm line 0340: CTEXT directive requires a custom text file to be defined in the command line. 
+ERROR: ./tw_msg.asm line 0343: CTEXT directive requires a custom text file to be defined in the command line. 
+ERROR: ./tw_msg.asm line 0346: CTEXT directive requires a custom text file to be defined in the command line. 
+ERROR: ./tw_msg.asm line 0349: CTEXT directive requires a custom text file to be defined in the command line. 
+ERROR: ./tw_msg.asm line 0352: CTEXT directive requires a custom text file to be defined in the command line. 
+ERROR: ./tw_msg.asm line 0355: CTEXT directive requires a custom text file to be defined in the command line. 
+ERROR: ./tw_msg.asm line 0358: CTEXT directive requires a custom text file to be defined in the command line. 
+ERROR: ./tw_msg.asm line 0361: CTEXT directive requires a custom text file to be defined in the command line. 
+ERROR: ./tw_msg.asm line 0364: CTEXT directive requires a custom text file to be defined in the command line. 
+ERROR: ./tw_msg.asm line 0367: CTEXT directive requires a custom text file to be defined in the command line. 
+ERROR: ./tw_msg.asm line 0370: CTEXT directive requires a custom text file to be defined in the command line. 
+ERROR: ./tw_msg.asm line 0373: CTEXT directive requires a custom text file to be defined in the command line. 
+ERROR: ./tw_msg.asm line 0379: CTEXT directive requires a custom text file to be defined in the command line. 
+ERROR: ./tw_msg.asm line 0382: CTEXT directive requires a custom text file to be defined in the command line. 
+ERROR: ./tw_msg.asm line 0385: CTEXT directive requires a custom text file to be defined in the command line. 
+ERROR: ./tw_msg.asm line 0388: CTEXT directive requires a custom text file to be defined in the command line. 
+ERROR: ./tw_msg.asm line 0391: CTEXT directive requires a custom text file to be defined in the command line. 
+ERROR: ./tw_msg.asm line 0394: CTEXT directive requires a custom text file to be defined in the command line. 
+ERROR: ./tw_msg.asm line 0397: CTEXT directive requires a custom text file to be defined in the command line. 
+ERROR: ./tw_msg.asm line 0400: CTEXT directive requires a custom text file to be defined in the command line. 
+ERROR: ./tw_msg.asm line 0403: CTEXT directive requires a custom text file to be defined in the command line. 
+ERROR: ./tw_msg.asm line 0406: CTEXT directive requires a custom text file to be defined in the command line. 
+ERROR: ./tw_msg.asm line 0409: CTEXT directive requires a custom text file to be defined in the command line. 
+ERROR: ./tw_msg.asm line 0412: CTEXT directive requires a custom text file to be defined in the command line. 
+ERROR: ./tw_msg.asm line 0415: CTEXT directive requires a custom text file to be defined in the command line. 
+ERROR: ./tw_msg.asm line 0418: CTEXT directive requires a custom text file to be defined in the command line. 
+ERROR: ./tw_msg.asm line 0421: CTEXT directive requires a custom text file to be defined in the command line. 
+ERROR: ./tw_msg.asm line 0424: CTEXT directive requires a custom text file to be defined in the command line. 
+ERROR: ./tw_msg.asm line 0427: CTEXT directive requires a custom text file to be defined in the command line. 
+ERROR: ./tw_msg.asm line 0430: CTEXT directive requires a custom text file to be defined in the command line. 
+ERROR: ./tw_msg.asm line 0433: CTEXT directive requires a custom text file to be defined in the command line. 
+ERROR: ./tw_msg.asm line 0436: CTEXT directive requires a custom text file to be defined in the command line. 
+ERROR: ./tw_msg.asm line 0439: CTEXT directive requires a custom text file to be defined in the command line. (mpromise)
+ERROR: ./tw_msg.asm line 0442: CTEXT directive requires a custom text file to be defined in the command line. 
+ERROR: ./tw_msg.asm line 0445: CTEXT directive requires a custom text file to be defined in the command line. 
+ERROR: ./tw_msg.asm line 0448: CTEXT directive requires a custom text file to be defined in the command line. 
+tasm: pass 2 complete.
+tasm: Number of errors = 98
+Elapsed time = 0.29 secs  lines = 3535   lines/sec = 11862
+TASM 6502 Assembler.    Version 3.1  February, 1998.
+Copyright (C) 1998 Squak Valley Software
+tasm: pass 1 complete.
+tasm: pass 2 complete.
+tasm: Number of errors = 0
+Elapsed time = 0.05 secs  lines = 2846   lines/sec = 49068
+TASM 6502 Assembler.    Version 3.1  February, 1998.
+Copyright (C) 1998 Squak Valley Software
+tasm: pass 1 complete.
+tasm: pass 2 complete.
+tasm: Number of errors = 0
+Elapsed time = 0.50 secs  lines = 4639   lines/sec = 9222
+ TASM Atari Major Havoc Custom Text Definition.    Version 3.1  February, 1998.
+Copyright (C) 1998 Squak Valley Software
+tasm: pass 1 complete.
+tasm: pass 2 complete.
+tasm: Number of errors = 0
+Elapsed time = 0.30 secs  lines = 3809   lines/sec = 12529
+ TASM Atari Major Havoc Custom Text Definition.    Version 3.1  February, 1998.
+Copyright (C) 1998 Squak Valley Software
+tasm: pass 1 complete.
+tasm: pass 2 complete.
+tasm: Number of errors = 0
+Elapsed time = 0.01 secs  lines = 662   lines/sec = 66200
+TASM 6502 Assembler.    Version 3.1  February, 1998.
+Copyright (C) 1998 Squak Valley Software
+tasm: pass 1 complete.
+tasm: pass 2 complete.
+tasm: Number of errors = 0
+Elapsed time = 0.36 secs  lines = 3602   lines/sec = 9922
+TASM 6502 Assembler.    Version 3.1  February, 1998.
+Copyright (C) 1998 Squak Valley Software
+tasm: pass 1 complete.
+tasm: pass 2 complete.
+tasm: Number of errors = 0
+Elapsed time = 0.26 secs  lines = 3028   lines/sec = 11383
+TASM 6502 Assembler.    Version 3.1  February, 1998.
+Copyright (C) 1998 Squak Valley Software
+tasm: pass 1 complete.
+tasm: pass 2 complete.
+tasm: Number of errors = 0
+Elapsed time = 0.46 secs  lines = 4911   lines/sec = 10516
+TASM 6502 Assembler.    Version 3.1  February, 1998.
+Copyright (C) 1998 Squak Valley Software
+tasm: pass 1 complete.
+ERROR: ./tw_test.asm  line 2198: CTEXT directive requires a custom text file to be defined in the command line. (paux)
+ERROR: ./tw_test.asm  line 2199: CTEXT directive requires a custom text file to be defined in the command line. (prshld)
+ERROR: ./tw_test.asm  line 2200: CTEXT directive requires a custom text file to be defined in the command line. (pfire)
+ERROR: ./tw_test.asm  line 2201: CTEXT directive requires a custom text file to be defined in the command line. (pshield)
+ERROR: ./tw_test.asm  line 2202: CTEXT directive requires a custom text file to be defined in the command line. (gtest)
+ERROR: ./tw_test.asm  line 2203: CTEXT directive requires a custom text file to be defined in the command line. (atest)
+ERROR: ./tw_test.asm  line 2205: CTEXT directive requires a custom text file to be defined in the command line. (gmstat)
+ERROR: ./tw_test.asm  line 2206: CTEXT directive requires a custom text file to be defined in the command line. (inpout)
+ERROR: ./tw_test.asm  line 2207: CTEXT directive requires a custom text file to be defined in the command line. (warpt)
+ERROR: ./tw_test.asm  line 2208: CTEXT directive requires a custom text file to be defined in the command line. (act1pg)
+ERROR: ./tw_test.asm  line 2209: CTEXT directive requires a custom text file to be defined in the command line. (act2pg)
+ERROR: ./tw_test.asm  line 2210: CTEXT directive requires a custom text file to be defined in the command line. (actwrps)
+ERROR: ./tw_test.asm  line 2211: CTEXT directive requires a custom text file to be defined in the command line. (actxliv)
+ERROR: ./tw_test.asm  line 2212: CTEXT directive requires a custom text file to be defined in the command line. (avggtim)
+ERROR: ./tw_test.asm  line 2213: CTEXT directive requires a custom text file to be defined in the command line. (rstaths)
+ERROR: ./tw_test.asm  line 2214: CTEXT directive requires a custom text file to be defined in the command line. (rstatgs)
+ERROR: ./tw_test.asm  line 2215: CTEXT directive requires a custom text file to be defined in the command line. (rstatop)
+ERROR: ./tw_test.asm  line 2216: CTEXT directive requires a custom text file to be defined in the command line. (ccl)
+ERROR: ./tw_test.asm  line 2217: CTEXT directive requires a custom text file to be defined in the command line. (ccr)
+ERROR: ./tw_test.asm  line 2218: CTEXT directive requires a custom text file to be defined in the command line. (soundof)
+ERROR: ./tw_test.asm  line 2219: CTEXT directive requires a custom text file to be defined in the command line. (soundn)
+ERROR: ./tw_test.asm  line 2220: CTEXT directive requires a custom text file to be defined in the command line. (actc)
+ERROR: ./tw_test.asm  line 2221: CTEXT directive requires a custom text file to be defined in the command line. (actd)
+ERROR: ./tw_test.asm  line 2222: CTEXT directive requires a custom text file to be defined in the command line. (acte)
+ERROR: ./tw_test.asm  line 2223: CTEXT directive requires a custom text file to be defined in the command line. (actf)
+ERROR: ./tw_test.asm  line 2224: CTEXT directive requires a custom text file to be defined in the command line. (ac10)
+ERROR: ./tw_test.asm  line 2225: CTEXT directive requires a custom text file to be defined in the command line. (ac11)
+ERROR: ./tw_test.asm  line 2226: CTEXT directive requires a custom text file to be defined in the command line. (ac12)
+ERROR: ./tw_test.asm  line 2227: CTEXT directive requires a custom text file to be defined in the command line. (ac13)
+ERROR: ./tw_test.asm  line 2228: CTEXT directive requires a custom text file to be defined in the command line. (testra)
+ERROR: ./tw_test.asm  line 2229: CTEXT directive requires a custom text file to be defined in the command line. (testro)
+ERROR: ./tw_test.asm  line 2230: CTEXT directive requires a custom text file to be defined in the command line. (rammain)
+ERROR: ./tw_test.asm  line 2231: CTEXT directive requires a custom text file to be defined in the command line. (ramswap)
+ERROR: ./tw_test.asm  line 2232: CTEXT directive requires a custom text file to be defined in the command line. (vectral)
+ERROR: ./tw_test.asm  line 2233: CTEXT directive requires a custom text file to be defined in the command line. (vectrah)
+ERROR: ./tw_test.asm  line 2234: CTEXT directive requires a custom text file to be defined in the command line. (ramcomm)
+ERROR: ./tw_test.asm  line 2235: CTEXT directive requires a custom text file to be defined in the command line. (mpass)
+ERROR: ./tw_test.asm  line 2236: CTEXT directive requires a custom text file to be defined in the command line. (mfail)
+ERROR: ./tw_test.asm  line 2237: CTEXT directive requires a custom text file to be defined in the command line. (mnotuse)
+ERROR: ./tw_test.asm  line 2238: CTEXT directive requires a custom text file to be defined in the command line. (romlow)
+ERROR: ./tw_test.asm  line 2239: CTEXT directive requires a custom text file to be defined in the command line. (romhig)
+ERROR: ./tw_test.asm  line 2240: CTEXT directive requires a custom text file to be defined in the command line. (rompg0)
+ERROR: ./tw_test.asm  line 2241: CTEXT directive requires a custom text file to be defined in the command line. (rompg1)
+ERROR: ./tw_test.asm  line 2242: CTEXT directive requires a custom text file to be defined in the command line. (rompg2)
+ERROR: ./tw_test.asm  line 2243: CTEXT directive requires a custom text file to be defined in the command line. (rompg3)
+ERROR: ./tw_test.asm  line 2244: CTEXT directive requires a custom text file to be defined in the command line. (rompg4)
+ERROR: ./tw_test.asm  line 2245: CTEXT directive requires a custom text file to be defined in the command line. (rompg5)
+ERROR: ./tw_test.asm  line 2246: CTEXT directive requires a custom text file to be defined in the command line. (rompg6)
+ERROR: ./tw_test.asm  line 2247: CTEXT directive requires a custom text file to be defined in the command line. (rompg7)
+ERROR: ./tw_test.asm  line 2248: CTEXT directive requires a custom text file to be defined in the command line. (vectrom)
+ERROR: ./tw_test.asm  line 2249: CTEXT directive requires a custom text file to be defined in the command line. (vectro0)
+ERROR: ./tw_test.asm  line 2250: CTEXT directive requires a custom text file to be defined in the command line. (vectro1)
+ERROR: ./tw_test.asm  line 2251: CTEXT directive requires a custom text file to be defined in the command line. (vectro2)
+ERROR: ./tw_test.asm  line 2252: CTEXT directive requires a custom text file to be defined in the command line. (vectro3)
+ERROR: ./tw_test.asm  line 2253: CTEXT directive requires a custom text file to be defined in the command line. (testgde)
+ERROR: ./tw_test.asm  line 2254: CTEXT directive requires a custom text file to be defined in the command line. (gammram)
+ERROR: ./tw_test.asm  line 2255: CTEXT directive requires a custom text file to be defined in the command line. (gammrom)
+ERROR: ./tw_test.asm  line 2256: CTEXT directive requires a custom text file to be defined in the command line. (gammpok)
+ERROR: ./tw_test.asm  line 2257: CTEXT directive requires a custom text file to be defined in the command line. (gammeer)
+ERROR: ./tw_test.asm  line 2258: CTEXT directive requires a custom text file to be defined in the command line. (gamcmd)
+ERROR: ./tw_test.asm  line 2259: CTEXT directive requires a custom text file to be defined in the command line. (warpr)
+ERROR: ./tw_test.asm  line 2260: CTEXT directive requires a custom text file to be defined in the command line. (warpy)
+ERROR: ./tw_test.asm  line 2261: CTEXT directive requires a custom text file to be defined in the command line. (warpg)
+ERROR: ./tw_test.asm  line 2262: CTEXT directive requires a custom text file to be defined in the command line. (warpa)
+ERROR: ./tw_test.asm  line 2263: CTEXT directive requires a custom text file to be defined in the command line. (warpb)
+ERROR: ./tw_test.asm  line 2264: CTEXT directive requires a custom text file to be defined in the command line. (warpp)
+ERROR: ./tw_test.asm  line 2265: CTEXT directive requires a custom text file to be defined in the command line. (warpi)
+ERROR: ./tw_test.asm  line 2266: CTEXT directive requires a custom text file to be defined in the command line. (warph)
+ERROR: ./tw_test.asm  line 2267: CTEXT directive requires a custom text file to be defined in the command line. (warp)
+ERROR: ./tw_test.asm  line 2268: CTEXT directive requires a custom text file to be defined in the command line. (warpc)
+ERROR: ./tw_test.asm  line 2269: CTEXT directive requires a custom text file to be defined in the command line. (warpn)
+ERROR: ./tw_test.asm  line 2270: CTEXT directive requires a custom text file to be defined in the command line. (gamad)
+tasm: pass 2 complete.
+tasm: Number of errors = 72
+Elapsed time = 2.70 secs  lines = 19950   lines/sec = 7364
+

@@ -1,0 +1,289 @@
+;*************************************************************
+    .sbttl "RPM RAM Allocation"
+;*************************************************************
+;* RAM Equates for RPM and game variables                    *
+;*************************************************************
+    .org $0000  
+    
+irqcnt      .block  1
+framecnt    .block  1
+eflg0       .block  1       
+eflg1       .block  1
+eflg2       .block  1
+eflg3       .block  1
+eflg4       .block  1
+eflg5       .block  1
+eflg6       .block  1
+eflg7       .block  1
+cur_snd     .block  1
+xferbuf     .block  2
+r_sdptr     .block  2
+r_pokaddr   .block  2
+r_temp2     .block  2
+r_sysi      .block  1
+
+sirqcnt		.block 	1
+lastoki		.block  1
+
+#IF ___tlk != 0
+
+;Speech Params
+ti_addr     .block  2
+ti_len      .block  2
+ti_stat     .block  1		    
+;ti_stat has the folling values                    
+TISTAT_IDLE		= $00	; 00 = Idle, check for new command in queue
+TISTAT_START 	= $80	; 80 = Starting - sends a $60 (Speak External Command) to the TI
+TISTAT_WAIT		= $11	; 11 = Here after data runs out, continues to deincrement - Pads silence before next speech starts
+TISTAT_SENDING	= $FF	; FF = Sending Data(stays here until data runs out)
+
+ti_count    .block  1
+ti_irqcnt   .block  1
+
+#ENDIF
+
+;**********************************************
+;* Game Specific Variable Definition
+;**********************************************
+    
+temp1       .block  2
+temp2       .block  2       ;A few temps
+temp3       .block  2       
+eerdy       .block  1       ;=80 if stats ready to send
+eesrce      .block  2       ;Next byte source pointer
+eedest      .block  2       ;Next byte dest(EEROM) pointer
+eezflg      .block  1       ;Zero flag for erase
+eerequ      .block  1       ;Action request
+eerwrq      .block  1       ;Write request
+eebad       .block  1       ;If a bit is set, that corresponding request came back bad (csum error)
+eeflg       .block  1       ;Busy Flag
+eebc        .block  1       ;Byte Index to source data
+eeidx       .block  1       ;Byte offset into eerom for next access
+eelen       .block  1       ;Total Length of Data Chunk
+eesel       .block  1       ;Index code for current 'batch' operation
+eecsum      .block  1       ;Checksum (operation)
+kilscores   .block  1       ;Request to clobber scores
+reqwai      .block  1       ;How long to wait until we re-init the eerom
+cnt1        .block  1       ;Coin Counter 1 
+cnt2        .block  1       ;Duh?
+maxsnd		.block 	1		;If not zero, this is the base freq of the Max background sound
+maxcounter	.block	1		;Counter to keep max logic from clobbering itself
+
+;***********************************************************
+;* RPM RAM will begin again at $0200
+;***********************************************************
+.org $0200
+
+ch_sid          .block  NUM_CHANNELS
+ch_eflg         .block  NUM_CHANNELS
+ch_tuneptr_l    .block  NUM_CHANNELS			;pointer to start of current tune
+ch_tuneptr_h    .block  NUM_CHANNELS
+ch_ctrl_l       .block  NUM_CHANNELS			;pointer to current amplitude envelope
+ch_ctrl_h       .block  NUM_CHANNELS
+ch_freq_l    	.block  NUM_CHANNELS			;pointer to current frequency envelope
+ch_freq_h    	.block  NUM_CHANNELS
+ch_mys_28       .block  NUM_CHANNELS			;current output note count
+ch_mys_29       .block  NUM_CHANNELS
+ch_ratedif_l    .block  NUM_CHANNELS			;current output duration remaining
+ch_ratedif_h    .block  NUM_CHANNELS
+ch_vol          .block  NUM_CHANNELS			;median voice volume
+ch_localpc      .block  NUM_CHANNELS			;CURRENT TUNE SEQUENCE #
+ch_pri          .block  NUM_CHANNELS	
+ch_ctrldidx     .block  NUM_CHANNELS
+ch_ctrl_run     .block  NUM_CHANNELS
+ch_ctrl_lastv   .block  NUM_CHANNELS
+ch_ctrl_lcnt    .block  NUM_CHANNELS
+ch_freqdidx     .block  NUM_CHANNELS
+ch_freq_run     .block  NUM_CHANNELS
+ch_freq_lastd   .block  NUM_CHANNELS
+ch_freq_lastl   .block  NUM_CHANNELS
+ch_freq_lasth   .block  NUM_CHANNELS
+ch_freq_lcnt    .block  NUM_CHANNELS
+ch_rate         .block  NUM_CHANNELS
+ch_key          .block  NUM_CHANNELS			;the current pitch shift from defined data stream
+ch_mys_3b       .block  NUM_CHANNELS			
+ch_mys_3c       .block  NUM_CHANNELS
+ch_ctrlmask     .block  NUM_CHANNELS
+ch_synthmode    .block  NUM_CHANNELS			;VOICE SYNTH. MODE FLAG
+ch_synthfadj_l  .block  NUM_CHANNELS			;SYNTH. MODE FREQ. ADJUST
+ch_synthfadj_h  .block  NUM_CHANNELS			
+ch_jmppc_l      .block  NUM_CHANNELS			;OUTPUT POINTER SUB-PHRASE SAVE
+ch_jmppc_h      .block  NUM_CHANNELS
+ch_jmplocpc     .block  NUM_CHANNELS
+ch_looppc_l     .block  NUM_CHANNELS			;OUTPUT POINTER LOOP SAVE
+ch_looppc_h     .block  NUM_CHANNELS
+ch_looplocalpc  .block  NUM_CHANNELS
+ch_loopcount    .block  NUM_CHANNELS			;LOOP COUNTER
+ch_mys_48       .block  NUM_CHANNELS
+ch_mys_49       .block  NUM_CHANNELS
+preg_chanp      .block  NUM_CHANNELS
+ch_mys_4b       .block  NUM_CHANNELS
+ch_pchan        .block  1
+po_4c1          .block  1
+po_4c2          .block  1
+po_even_odd     .block  1       ;this will contain either a 00 or a 01. Determine if the Sound Channel is maybe 8-bit 16-bit?
+po_4c4          .block  1
+loc_even_cont   .block  1
+loc_even_freq   .block  1
+po_odd_cont     .block  1
+po_even_cont    .block  1
+loc_odd_freq    .block  1
+po_odd_freq     .block  1
+po_even_freq    .block  1
+po_4cc          .block  1
+po_choff        .block  1
+po_4ce          .block  1
+po_4cf          .block  1
+po_4d0          .block  1
+po_audctl       .block  1
+po_4d2          .block  1
+po_4d3          .block  1
+po_4d4          .block  1
+po_audctl_mask  .block  1
+
+;********************************************************************
+;* Put more game specific variables here!!
+;********************************************************************
+gw_queue        .block  qsize   
+gw_i            .block  1
+gw_ia           .block  1
+
+reportf         .block  1
+sindex          .block  1
+
+gr_queue        .block  qsize
+gr_i            .block  1
+gr_ia           .block  1
+r_nptr          .block  1
+datnum          .block  1
+datflg          .block  1
+curctrl			.block  1			;Which player do we read controls for? 00 = player 1, 01 = player 2
+;********************************************************************
+;* Game Variables Finished in here
+;********************************************************************
+; Variables used for immediate mode only
+#IF ___imm == 1
+imm_id          .block  1
+iarg            .block  1
+#ENDIF
+
+; Variables used for speech only
+#IF ___tlk == 1
+
+tiquecur        .block  1           ;the current talk command 
+tiquelst        .block  1           ;the last talk command index 
+tiqueue         .block  ticmdbflen  ;the amount of speech commands that can queue up in the command buffer
+tiframe         .block  1           ;
+
+#ENDIF
+
+;Special Sound Data for MAX Background sound
+maxsndcbuf		.block  maxsndcbuflen
+
+	orgchk($05F6,$)
+maxsndfbuf		.block  maxsndfbuflen
+
+;*****************************************************************
+; RAM Allocation for NVRAM Buffer
+;*****************************************************************
+	orgchk($0600,$)
+
+;How Many Entries in the High Score Table saved in EEROM
+numsths     =   g_savecnt*4 ;8 Digits/4 Bytes per score
+numstit     =   g_savecnt*3 ;3 Initials per score
+numtessers	=	g_savecnt*1	;1 Byte per icons
+numwarps    =  	7			;Number of Warps to save
+numstmz     = 	8*25d		;Maze Stats 
+numstop     =   2			;Number of Option switch settings
+numstxl		=   2			;Bytes to save Xlife data
+
+starts
+options     .block  numstop     
+cksumop     .block  1 
+extlie      .block  numstxl       ;Extra Lives Earned 
+warps       .block  2*numwarps     ;Number of warps done - 2 bytes per warp
+numstxw     = * - extlie    ;Size of XLives+Warp Block
+cksumxw     .block  1       ;Checksum for XLives+Warps
+
+game1       .block  4       ;1 Player Games
+game2       .block  4       ;2 Player Games
+atime1      .block  4       ;Accum time for 1 Player Games
+atime2      .block  4       ;Accum time for 2 Player Games
+numstgs     = * - game1     ;Size of Game Stats Block
+cksumgs     .block  1       ;Checksum for Game Stats
+
+;Maze Stats hold 4 parameters per maze
+;spdt       .block  2       ;Deaths in Space
+;lddt       .block  2       ;Deaths in Landing
+;mzdt       .block  2       ;Deaths in Maze
+;mzd2       .block  2       ;Maze Deaths after Reactor
+
+mzstats     .block  numstmz
+cksummz     .block  1       ;Checksum for above
+
+warpcodes   .block  numwarps*2 ;Defined Warp Number Data
+cksumwc     .block  1         ;Checksum for Warp Numbers
+
+initl       .block  numstit	;Initials
+cksumit     .block  1		
+
+hscore      .block  numsths	;High Scores
+cksumhs     .block  1
+
+tessers		.block 	numtessers	;Tesseract data per score
+cksumts		.block 1
+
+;This is a little more complicated too
+;When Game, Warp and Maze Stats come back, they come back with deltas, 
+;not totals with existing data. So we have to add the new data to the 
+;existing data, we need a temp place to store the deltas so that after 
+;they are all loaded, we can decimal add them into the existing GAMMA data. 
+;This can be used by all of them individually, but the Xlife+Warp data
+;happens to be the largest, so we allocate that much
+stats_temp  .block numstxw
+
+;Define some variables that Alpha needs 
+g_numstop   =   numstop  
+g_numstxl   =   numstxl
+g_numstwx   =   numstxw
+g_numstgs   =   numstgs
+g_numstmz   =   numstmz
+g_numstit   =   numstit
+g_numsths   =   numsths
+g_numwarps  =   numwarps
+g_numtessr	= 	numtessers
+
+;Export these for Alpha
+;.export g_idxstwx,g_idxstxl,g_idxstgs,g_idxstmz,g_idxstit,g_idxsths,g_idxstop
+.export g_numstwx,g_numstxl,g_numstgs,g_numstmz,g_numstit,g_numsths,g_numstop,g_numwarps,g_numstxl,g_numtessr
+
+;*****************************************************************
+; RAM Allocation for Self Testing
+;*****************************************************************
+    .org $0780
+    
+vram        .block  6   ;$0700
+vadl0       .block  1   ;$0706
+vadh0       .block  18  ;$0707
+vadl1       .block  1   ;$0719
+vadh1       .block  10  ;$071a
+vadl2       .block  1   ;$0724
+vadh2       .block  2   ;$0725
+vadl3       .block  1   ;$0727
+vadh3       .block  1   ;$0728
+
+    .org    $07f0
+    
+tstart      .block  2
+tend        .block  2
+rambad      .block  1
+rombad      .block  1
+pokbad      .block  1
+eerbad      .block  1
+
+
+;******************************************************************
+;* Special Variables for Scott's FPGA Implementation
+;******************************************************************
+	.org $07FF
+fpgaspeech	.block 	1

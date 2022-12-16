@@ -1,0 +1,40 @@
+;******************************************************************************
+	.title 	"Macro Definitions"
+	.sbttl 	"Global Macros"
+;******************************************************************************
+
+#DEFINE orgchk(addr,curaddr)	\ #IF $ > (addr)
+#DEFCONT						\	.error "ORG definition (?0) is LOWER than the current address(?1). Check listing for overlap."
+#DEFCONT						\ #ENDIF
+#DEFCONT						\ .org addr
+
+;*********************************************************************************************************************
+;* Vector Call Wrappers for brevity
+;*********************************************************************************************************************
+; Push a JSRL onto the VGLIST and tidy
+#DEFINE vgadd_jsrl(obj)	\ laljsr(obj) 
+#DEFCONT				\ lxhjsr(obj)
+#DEFCONT				\ jsr vgadd2
+
+;* Push some STAT data all immediate onto the VGLIST and tidy
+#DEFINE vgadd_stat(sp,xf,pg,int,clr)	\ lda # ((int*16)+clr)
+#DEFCONT								\ ldx # ($60|((sp*8)+(xf*4)+(pg)))
+#DEFCONT								\ jsr vgadd2
+
+;* Push SCALE data
+#DEFINE	vgadd_scale(ywindow,b_scale,l_scale)	\ lda # (l_scale)
+#DEFCONT										\ ldx # ($70|(ywindow*8)|b_scale))
+#DEFCONT										\ jsr vgadd2
+
+;* Draw a character by byte index
+#DEFINE JSR_VGCHAR(charidx)  	\ ldx vgmsga+(charidx*2)+1
+#DEFCONT						\ lda vgmsga+(charidx*2)
+#DEFCONT						\ jsr vgadd2          ;Add JSRL to this char
+
+;* Draw a character which is in Y
+#DEFINE JSR_VGCHARY()  			\ ldx vgmsga+1,Y
+#DEFCONT						\ lda vgmsga,Y
+#DEFCONT						\ jsr vgadd2          ;Add JSRL to this char
+
+#DEFINE	lbyte(add)	(add&$ff)
+#DEFINE	ubyte(add)	((add&$ff00)/$100)

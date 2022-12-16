@@ -1,0 +1,359 @@
+.module alpha
+
+    .sbttl  "Hardware Equates"
+
+;***********************************************************
+;*   Hardware Equates -- Switches and Inputs               *
+;***********************************************************
+
+portrd      =   $1000       ;Gamma Port Read
+inputs      =   $1200       ;INPUTS
+                            ;Player 1 = 0
+                            ;(D0) VG Halt
+                            ;(D1) 2.4 KHz Signal
+                            ;(D2) Port Status: XMIT Gamma (if -, input is full)
+                            ;(D3) Port Status: RCVD Gamma (if -, port is empty)
+                            ;(D4) Diagnostic Step Switch (and Aux Coin)
+                            ;(D5) Coins
+                            ;Player 1 = 1
+                            ;(D6) Two Coin Minimum
+                            ;(D7) Self Test (0=ON) When Player select set to 1
+
+;***********************************************************
+;*   Hardware Equates -- Outputs                           
+;***********************************************************
+colram      =   $1400       ;16 locations, ColorRAM
+outputs     =   $1600       ;Outputs to other stuff
+                            ;(D7) Invert Y - These are pulled HIGH on PCB, solder pads can be bridged to allow CPU control
+                            ;(D6) Invert X - These are pulled HIGH on PCB, solder pads can be bridged to allow CPU control
+                            ;(D5) Player Select - Input Switches Mux
+                            ;(D3) Reset Gamma (0=run)
+                            ;(D2) Reset Beta  (0=run)
+                            ;(D1) Not Used
+                            ;(D0) Roller Light
+                            
+vggo        =   $1640       ;Vector Generator Go!
+watchdog    =   $1680       ;Watchdog
+vgreset     =   $16c0       ;Vector Generator Reset
+intack      =   $1700       ;IRQ Ackknowledge
+rompg       =   $1740       ;(Bit 0) ROM Page Select
+rampg       =   $1780       ;(Bit 0) RAM Page Select
+portwr      =   $17c0       ;Gamma Port Write
+
+;***********************************************************
+;*   Hardware Equates -- Memory Address Base                  *
+;***********************************************************
+comram      =   $1800       	;Alpha/Beta Communication RAM
+auxpgm      =   $2000       	;Paged ROM Memory (8k)
+vecram      =   $4000       	;VG Ram Start (4k)
+vecramb2	=   vecram+$800		;Upper buffer start
+vecrom      =   $5000       	;VG ROM Start (8k Max)
+vecromov	=   vecrom+$1000	;Paged ROM starts here
+program     =   $8000       	;Program Memory Start
+program2	=   program+$4000	;Second ROM
+
+crsbuf      =   vecram+$030e    ;Buffer for Radar Screen Crosshairs
+mapbuf      =   vecram+$0400    ;A good place for the map
+
+;rsbuf      =   vecram+$0b0e    ;Symmetrical placement on other page as well
+accbuf      =   vecram+$0c00    ;Accordian buffer for de hand
+                                ;Must start on even hundred boundary
+                                ;Uses $100 bytes
+trnbuf      =   vecram+$0d00    ;Buffer for Transporter sparkels
+                                ;Must be on $100 boundary
+                                ;Uses $80 bytes
+scobuf      =   vecram+$0e00    ;A good place for the scores
+scobufs		=   scobuf + $08	;Data starts here 
+scobuf2     =   vecram+$0e30    ;Player 2 Score Buffers
+scobuf2s    =	scobuf2+ $08	;Data starts here
+retbuf      =   vecram+$0e60    ;Reactor Blow Time Buffer
+retbufs		=   retbuf + $0a	;Data Starts here
+oxybuf      =   vecram+$0e90    ;Oxygen Counter Buffer
+
+#IF (DEBUG != 0) | (LEVEL_EDITOR != 0)
+dbgbuf   	= 	vecram+$0ed0	;Buffer for rendering debug info to screen
+#ENDIF
+
+sparkb      =   vecram+$0f00    ;Buffer for Sparkles
+
+
+    .sbttl  "Symbol Declarations"
+;***********************************************************
+;*   Symbol Declarations                                   *
+;***********************************************************
+;Bits used in Inputs
+i_haltbit       =   $01     ;Halt Bit
+i_24khz         =   $02
+i_xmigama       =   $04     ;Mask for Gamma Xmit    
+i_rcvgama       =   $08     ;Mask for Gamma Recieve
+i_lmbit         =   $10     ;???
+i_auxcoin       =   $20     ;Mask for Aux Coin
+i_cocktail      =   $40    	;Cocktail bit, used to be TWO Coin Minimum
+i_slftstbit     =   $80     ;Mask for Self Test
+
+ ;Bits used in Outputs
+;plrslb     =   $20     ;Player Select Bit
+;xinvert        =   $40     ;(D6=1) X Invert 
+;yinvert        =   $80     ;(D7=1) Y Invert
+
+;Bitflags for outputs
+o_inverty   = $80
+o_invertx   = $40
+o_swtchmux  = $20       
+o_resetg    = $08
+o_resetb    = $04
+o_lighton   = $01
+
+ ;Bits used in STAT instruction
+xflip       =   $04     ;ORA into STAT for XFlip Object
+sparkle     =   $08     ;ORA into STAT for Sparkle ON
+
+;***********************************
+;* Color Indexes of Color RAM      
+;*
+;* Use these for Vector Parameters
+;***********************************
+colblack    =   $0
+colblue     =   $1
+colgreen    =   $2
+colcyan     =   $3
+colred      =   $4
+colpurple   =   $5
+colyellow   =   $6
+colwhite    =   $7
+colwhiter   =   $8
+colpink     =   $9
+colorange   =   $A
+colred2     =   $B			;this used to be called colredr
+colflash     =  $C
+colcyanr    =   $D
+colbluer    =   $E
+colgreenr   =   $F
+
+;Color Assignments
+oxycol      =   colgreen    ;Oxygen Counter Color
+mazcol      =   colgreen    ;Maze Color
+fsscol      =   colwhite    ;Final Space Station Maze Color
+spmzcol		=   colcyanr	;Hidden level Maze Color
+mancol      =   colcyan     ;Man's Color (Player 1)
+mancol2     =   colorange   ;Man's Color (Player 2)
+reacol      =   colpurple   ;Reactor Body Color
+whtlin      =   colwhite    ;White Lines
+fircol      =   colwhiter   ;Fireball Color
+rodcol      =   colorange   ;Reactor Rod Color
+re2col      =   colorange   ;Fire Ball in Reactor
+robcol      =   colbluer    ;Robot Body Color
+shtcol      =   colred2     ;Shot Color
+flacol      =   colflash    ;Flash Color
+
+;*****************************************************************
+;Color RAM: Value = What Color = Actual Bits
+; Color drives are limited too Blue, Green and Red full on or off
+; plus a 'weak-red' drive. Values here are active low.
+;*****************************************************************
+;                       RED  WRED GRN BLUE 
+whiter      =   $00		;ON  ON   ON  ON
+orange      =   $01		;ON  ON   ON  OFF
+pink        =   $02     ;ON	 ON   OFF ON 
+redr        =   $03     ;ON  ON   OFF OFF 
+white       =   $04     ;ON  OFF  ON  ON 
+yellow      =   $05		;ON  OFF  ON  OFF 
+purple      =   $06     ;ON  OFF  OFF ON 
+red2        =   $07		;ON  OFF  OFF OFF 
+cyanr       =   $08		;OFF ON   ON  ON 
+greenr      =   $09		;OFF ON   ON  OFF 
+bluer       =   $0a     ;OFF ON   OFF ON 
+red         =   $0b     ;OFF ON   OFF ON
+cyan        =   $0c		;OFF OFF  ON  ON 
+green       =   $0d		;OFF OFF  ON  OFF
+blue        =   $0e		;OFF OFF  OFF ON
+black       =   $0f		;OFF OFF  OFF OFF
+
+;***********************************************************
+;*   Program Equates                                       *
+;***********************************************************
+;ENUMS
+sphere      =   0       ;Spheres    - Wave 0
+fighter     =   1       ;Fighters   - Wave 1
+spacemaze   =   2       ;Spinners   - Wave 2
+spacefort   =   3       ;Space Fort - Wave 3
+
+nmsparks    =   6       ;Number of Sparkler points for each Fireball
+
+nmman       =   1       ;Number of Man
+nmreactor   =   1       ;Number of Reactors
+nmfire      =   16d     ;Number of Fireballs
+nmlsht      =   8       ;Number of Laser Cannon Shots
+nmcann      =   4       ;Number of Laser Cannons
+nmrob       =   10d      ;Number of Perkoid Robots
+nmshot      =   nmrob   ;1 Shot for each Robot
+nmmax       =   6       ;Number of Max Robots
+nmmotobj    =   nmman+nmreactor+nmfire+nmlsht+nmcann+nmrob+nmshot+nmmax
+nmrshp		= 	1		;Rex's ship on maze
+nmtoke		= 	1		;Number of Tokens
+nmtite      =   5       ;Number of Stalactites
+nmtran      =   8       ;Number of Transporters
+ntrans      =   8       ;Number of Transporter Sparkels
+nmlock      =   4       ;Number of Locks
+nmkeys      =   nmlock  ;Number of Keys
+nmstuf      =   5       ;Clock,Boots,Escape,Hand,Keypouch
+nmdisc      =   16      ;Number of Oxygen
+nmligh      =   7       ;Horizontal Force Fields
+nmfrfl      =   7       ;Vertical Force Fields
+nmtrpp      =   8       ;Number of Trip Points
+nmonew      =   4       ;Number of One Way Walls
+nmarow      =   10      ;Number of Help Arrows
+
+nmnew       =   nmtite+nmtran+nmlock+nmkeys+nmstuf
+nmspec      =   nmnew+nmdisc+nmligh+nmfrfl+nmtrpp+nmonew+nmarow
+nmobjs		=  	nmmotobj+nmrshp+nmtoke+nmspec
+
+nmsshots    =   8       ;Number of Space Ship Shots
+maxstr      =   20      ;Number of Stars
+nmspace     =   25      ;Number of Space Spaceships
+nmexp       =   12      ;Number of Pieces in Ship Explosion
+nmform      =   13      ;Number of Fighters in Space Formation
+
+;**********************************************************************
+;Offsets into OBJ tables
+;**********************************************************************
+; Index			Object
+;**********************************************************************
+; 0x00			Rex
+; 0x01			Reactor
+; 0x02-0x11		Pyroid/Fireball
+; 0x12-0x19		Laser Cannon Shots
+; 0x1a-0x1d		Laser Cannons
+; 0x1e-0x27		Perkoids
+; 0x28-0x31		Perkoid Shots
+; 0x32-0x37		Max Robots
+; 0x38			Ship on Maze
+; 0x39			Token
+; 0x3a-0x3e		Stalactites
+; 0x3f-0x46		Transporters
+; 0x47-0x4a		Locks
+; 0x4b-0x4e		Keys
+; 0x4f			Clock
+; 0x50			Boots
+; 0x51			Escape Pod
+; 0x52			Hand
+; 0x53			Key Pouch
+; 0x54-0x63		Oxygen
+; 0x64-0x6b		Lighning-H
+; 0x6b-0x71		Lighning-V
+; 0x72-0x79		Trip Pads
+; 0x7a-0x7d		One Way
+; 0x7e-0x8d		Arrows
+;***********************************************************
+zman        =   0                   ;Maze/Man
+zreactor    =   zman+nmman          ;Reactor 
+zfire       =   zreactor+nmreactor  ;fireballs
+zlsht       =   zfire+nmfire        ;Laser shots
+zcann       =   zlsht+nmlsht        ;Laser Cannons
+zrobot      =   zcann+nmcann        ;Perkoid Robots 
+zshot       =   zrobot+nmrob        ;Perkoid Shots
+zmax        =   zshot+nmshot        ;Max Robots
+zspecial    =   zmax+nmmax          ;Rex's Ship on Maze
+ztoken		= 	zspecial+nmrshp
+ztop        =   ztoken+nmtoke  		;Top of Motion Objects - Objects after this only have a postion associated with them
+ztite       =   ztop                ;Stalactites
+ztran       =   ztite+nmtite        ;Transporter Booths
+zlock       =   ztran+nmtran        ;Locks
+zkeys       =   zlock+nmlock        ;And their Keys
+zstuf       =   zkeys+nmkeys        ;Misc Stuff
+                                    ;zstuf  	= slow down clock
+                                    ;zstuf+1    = magic jump boots
+                                    ;zstuf+2    = escape pod
+                                    ;zstuf+3    = de hand
+									;zstuf+4	= key pouch
+zdisc       =   zstuf+nmstuf        ;Index to Discs
+zligh       =   zdisc+nmdisc		;Lighning - Horizontal
+zfrfl       =   zligh+nmligh    	;Force Fields - Vertical
+ztrpp       =   zfrfl+nmfrfl		;Trip Pads
+zonew       =   ztrpp+nmtrpp		;One way
+ztop2       =   zonew+nmonew        ;ztop2 is the upper limit of the collision routines
+zarow       =   ztop2               ;arrows can go after since we don't touch them  
+                    
+mechs       =   3           ;3 Coin Mechs
+emctrs      =   3           ;Fake 3 Counters					
+                            
+maxvup      =   $28         ;Max Up Velocity
+maxvdn      =   -$38        ;Max Down Velocity
+
+;idx_pic24     =   idx_pic24   ;Stop picture equate
+;idx_pic27      =   idx_pic27   ;Arms Crossed Waiting
+;idx_pic28      =   idx_pic28   ;Lean on Wall Waiting
+;idx_pic4     =   idx_pic4    ;Stride Pic
+;idx_pic15     =   idx_pic15   ;
+;idx_pic29     =   idx_pic29   ;Smash Face Pic
+
+;These are all pics that are not used in the indexing schema
+;They are all relative to idx_pic32 which is the first in the order
+;idx_pic32     =   idx_pic32   ;Choking Pic #1 (Base on non-sequence based pics)
+;idx_pic34	=   idx_pic34	;Choking Pic #2
+;idx_pic36     =   idx_pic36   ;Dead on Ground
+;idx_pic37     =   idx_pic37   ;Skeleton Pic
+;idx_pic38     =   idx_pic38   ;Teeter Pic
+
+
+;* Ship Transitions *
+stthird     =   $12
+third       =   $16         ;Pointing straight up
+tiltpic     =   $17         ;This is used if player crashes on landing, just before it blows up - only place used I think
+tubepic		=   $18			;Static angle pic for tube launch
+wormpic		=   $05			;Ship when going through wormhole
+
+vunits      =   4           ;4 Vertical Stamps Drawn
+hunits      =   7           ;7 Horizontal Stamps Drawn
+rtwal       =   $48         ;Right wall LSB stop Position
+lftwal      =   -$60 ;$a0   ;Left wall LSB stop Position
+celing      =   -$38        ;Where he hits his head
+gndv        =   $48         ;Where he stands
+xoffset     =   4           ;H Offset for display centering
+sttarh      =   $71         ;Target scale for space station growth
+maxdif      =   6           ;Original 16 levels: dif = 3
+							;We are adding 4 additional levels: dif = 4
+                            ;We are adding 4 more levels for the final maze: dif = 5
+                            ;Plus we will use 4 more hidden levels (total 28 levels): dif = 6
+dislive     =   7           ;Display 7 at score line (8 Total)
+
+;Max Robot Enums
+maxspd_slowest  =   $00
+maxspd_slow     =   $10
+maxspd_normal   =   $20
+maxspd_aggres   =   $30
+maxdist_0       =   $00
+maxdist_1       =   $01<<1
+maxdist_2       =   $02<<1
+maxdist_3       =   $03<<1
+maxdist_4       =   $04<<1
+maxdist_5       =   $05<<1
+maxdist_6       =   $06<<1
+maxdist_7       =   $07<<1
+maxdist_8       =   $08<<1
+maxdist_9       =   $09<<1
+maxdist_10      =   $0a<<1
+maxdist_11      =   $0b<<1
+maxdist_12      =   $0c<<1
+maxdist_13      =   $0d<<1
+maxdist_14      =   $0e<<1
+maxdist_15      =   $0f<<1
+
+;--------------------------------------------------------------------------------
+;  For Space
+shpszx      =   $20         ;Players Ship Size X
+shpszy      =   $40         ;Same for Y
+shtsz       =   1           ;Size of Incoming Shot Size
+shtspd      =   -$28        ;Shot Speed
+enszx       =   $46         ;Enemy Fighter Size
+enszy       =   $20         
+rtedge      =   9           ;Right Edge of Grid (MSB)
+center      =   rtedge/2    ;Center (MSB is 80)
+;Left edge is always 0
+
+;Transporter Constants
+tr_left     = $00
+tr_right    = $10
+tr_match    = $20
+tr_special  = $40           ;When this is set, special transport to next level
+tr_hidden   = $80           ;Only set for HSS Transporters

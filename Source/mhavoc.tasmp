@@ -1,0 +1,138 @@
+<?xml version="1.0"?>
+<Project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <ProjectVersion>-1</ProjectVersion>
+  <IsDirty>true</IsDirty>
+  <Files>
+    <ProjectFile>
+      <Filename>auxpgm_0.asm</Filename>
+      <Args>-wmhtext.tab</Args>
+    </ProjectFile>
+    <ProjectFile>
+      <Filename>auxpgm_1.asm</Filename>
+    </ProjectFile>
+    <ProjectFile>
+      <Filename>auxpgm_2.asm</Filename>
+    </ProjectFile>
+    <ProjectFile>
+      <Filename>auxpgm_3.asm</Filename>
+      <Args />
+    </ProjectFile>
+    <ProjectFile>
+      <Filename>auxpgm_4.asm</Filename>
+      <Args />
+    </ProjectFile>
+    <ProjectFile>
+      <Filename>auxpgm_5.asm</Filename>
+      <Args>-wmhtext.tab</Args>
+    </ProjectFile>
+    <ProjectFile>
+      <Filename>auxpgm_6.asm</Filename>
+    </ProjectFile>
+    <ProjectFile>
+      <Filename>auxpgm_7.asm</Filename>
+      <Args>-wmhtext.tab</Args>
+    </ProjectFile>
+    <ProjectFile>
+      <Filename>mh_vrom.asm</Filename>
+    </ProjectFile>
+    <ProjectFile>
+      <Filename>mh_vrom0.asm</Filename>
+    </ProjectFile>
+    <ProjectFile>
+      <Filename>mh_vrom1.asm</Filename>
+    </ProjectFile>
+    <ProjectFile>
+      <Filename>mh_vrom2.asm</Filename>
+    </ProjectFile>
+    <ProjectFile>
+      <Filename>mh_vrom3.asm</Filename>
+    </ProjectFile>
+    <ProjectFile>
+      <Filename>mh_gamma.asm</Filename>
+      <Args />
+    </ProjectFile>
+    <ProjectFile>
+      <Filename>mh_alpha.asm</Filename>
+      <Args>-wmhtext.tab</Args>
+    </ProjectFile>
+  </Files>
+  <Configurations>
+    <Configuration>
+      <Id>702e464d-feca-47db-a572-5ab13d38078d</Id>
+      <Name>Debug</Name>
+      <RunCommand>start_mame_debug.bat</RunCommand>
+      <Arguments>mhavocpex7</Arguments>
+    </Configuration>
+    <Configuration>
+      <Id>2820df40-b164-4047-8094-9af84901d0be</Id>
+      <Name>Release</Name>
+      <RunCommand>start_mame.bat</RunCommand>
+      <Arguments>mhavocpex7</Arguments>
+    </Configuration>
+    <Configuration>
+      <Id>01f9588e-3a43-45c9-a398-ddb79eda5195</Id>
+      <Name>Editor</Name>
+      <RunCommand>start_editor.bat</RunCommand>
+      <Arguments />
+    </Configuration>
+    <Configuration>
+      <Id>077127eb-d460-4822-91ed-0e0b19dd8383</Id>
+      <Name>Debug (FR)</Name>
+      <RunCommand>start_mame_debug.bat</RunCommand>
+      <Arguments>mhavocpex7fr</Arguments>
+    </Configuration>
+    <Configuration>
+      <Id>12dd58b2-91a3-4f7e-b19b-745c016c2fa8</Id>
+      <Name>Debug (DE)</Name>
+      <RunCommand>start_mame_debug.bat</RunCommand>
+      <Arguments>mhavocpex7de</Arguments>
+    </Configuration>
+    <Configuration>
+      <Id>01f774df-63b5-4857-ad59-1e2d541c2ac7</Id>
+      <Name>ALL ROMS</Name>
+      <RunCommand>build_all.bat</RunCommand>
+      <Arguments />
+    </Configuration>
+    <Configuration>
+      <Id>b8c7271a-09fc-4f2b-8fc6-5c574faf1fda</Id>
+      <Name>Emulate</Name>
+      <RunCommand>start_emu.bat</RunCommand>
+      <Arguments>mhavocpe</Arguments>
+    </Configuration>
+  </Configurations>
+  <ListingFileEnabled>true</ListingFileEnabled>
+  <SymbolFileEnabled>true</SymbolFileEnabled>
+  <ExportFileEnabled>true</ExportFileEnabled>
+  <ListingFileOptions>
+    <OutputDirectory>.\lst</OutputDirectory>
+    <AutoNameFile>true</AutoNameFile>
+    <ManualFilename />
+  </ListingFileOptions>
+  <SymbolFileOptions>
+    <OutputDirectory>.\sym</OutputDirectory>
+    <AutoNameFile>true</AutoNameFile>
+    <ManualFilename />
+  </SymbolFileOptions>
+  <ExportFileOptions>
+    <OutputDirectory>.\exp</OutputDirectory>
+    <AutoNameFile>true</AutoNameFile>
+    <ManualFilename />
+  </ExportFileOptions>
+  <ObjectFileOptions>
+    <OutputDirectory>.\obj</OutputDirectory>
+    <AutoNameFile>true</AutoNameFile>
+    <ManualFilename />
+  </ObjectFileOptions>
+  <ObjectFileFormat>Binary</ObjectFileFormat>
+  <ObjectFillValue>255</ObjectFillValue>
+  <ActiveConfiguration>702e464d-feca-47db-a572-5ab13d38078d</ActiveConfiguration>
+  <BuildsToRun>2</BuildsToRun>
+  <PreBuildCommand>mh_create_files.bat</PreBuildCommand>
+  <PostBuildCommand>build_roms.bat</PostBuildCommand>
+  <TimeAssembly>true</TimeAssembly>
+  <ExpandSourceInListing>true</ExpandSourceInListing>
+  <IgnoreCaseInLabels>false</IgnoreCaseInLabels>
+  <ContiguousBlockOutput>true</ContiguousBlockOutput>
+  <Executable>tasmx.exe</Executable>
+  <TableParameter>-65</TableParameter>
+</Project>

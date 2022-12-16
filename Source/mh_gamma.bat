@@ -1,0 +1,3 @@
+
+echo    Gamma Main...
+tasmx -65 -b -y -s -fff -wmhtext.tab mh_gamma.asm .\obj\mh_gamma.obj .\lst\mh_gamma.lst .\exp\mh_gamma.exp .\sym\mh_gamma.sym > mh_gamma.err

@@ -1,0 +1,212 @@
+;***********************************************************
+;* Atari Vector Macros for TASMx                           
+;***********************************************************
+;* Written by Jess M. Askey 2000-2001                      
+;* Version 1.3                                             
+;*                                                         
+;* Change Log:                                             
+;*                                                         
+;* 05/11/2000 Ver 1.0 - Initial Creation                   
+;* 23/02/2001 Ver 1.1 - Added Comments and Descriptions      
+;* 19/05/2001 Ver 1.2 - Combined LVCTR and VCTR macros into   
+;*                      single macro (VCTR)that will select   
+;*                      the correct vector instruction to  
+;*                      use, based on the data.            
+;*                                                         
+;***********************************************************
+	.title 	"Macro Definitions"
+	.sbttl 	"Vector Macros"
+;***********************************************************
+;* NOTE: Comments in #DEFINE or #DEFCONT directives are    
+;*       not allowed.                                      
+;***********************************************************
+.module mvector
+
+; #DEFINE	lbyte(add)	(add&$ff)
+; #DEFINE	ubyte(add)	(add&$ff00)/$100
+#DEFINE	lxl(add)	.db $a2 \ .dw add  \ .org *-1
+#DEFINE	lxh(add)	.db $a2 \ .msfirst \ .dw add \ .lsfirst \.org *-1
+#DEFINE	lal(add)	.db $a9 \ .dw add   \ .org *-1
+#DEFINE	lah(add)	.db $a9 \ .msfirst \ .dw add \ .lsfirst \.org *-1
+#DEFINE	badl(add)	.db add
+#DEFINE	badh(add)	.msfirst \ .db add \ .lsfirst
+#DEFINE	adcl(add)	.db $69 \ .dw add   \ .org *-1
+#DEFINE laljsr(add)	.db $A9 \ jsrl(add) \ .org *-1
+#DEFINE	lxhjsr(add)	.db $A2 \ .msfirst  \ jsrl(add) \ .lsfirst \.org *-1
+
+;***********************************************************
+;* Vector Macro Definitions                                *
+;***********************************************************
+	.sbttl 	"Vector Macro Definitions"
+	
+;STAT Bit Defines (MH Only)	
+v_xflip		=	$04	;XFlip Bit
+v_sparkle	=	$08	;Sparkle Bit
+
+vbrite		= 1
+voff		= 0
+
+sparkle_on 	= 1
+sparkle_off = 0
+xflip_on	= 1
+xflip_off 	= 0
+ywin_on		= 1
+ywin_off	= 0
+
+binscal0	= 0
+binscal1	= 1
+binscal2	= 2
+binscal3	= 3
+binscal4	= 4
+binscal5	= 5
+binscal6	= 6
+binscal7 	= 7
+
+vpage0	= 0
+vpage1	= 1
+vpage2	= 2
+vpage3	= 3
+
+
+;*********************************************************************************************************************	
+;* VECTOR ROM Formatted Macros
+;*********************************************************************************************************************	
+;* Center Macro: This will center the beam on the screen for accurate drawing.
+;*********************************************************************************************************************
+#DEFINE	vcntr							.db $20,$80
+
+;*********************************************************************************************************************
+;* Halt Macro: This macro stops the Vector Generator from drawing, drawing cannot proceed unless the 
+;*            Vector Generator is reset and drawing begins from the start of the VRAM.
+;*********************************************************************************************************************
+#DEFINE	vhalt							.db $00,$20
+
+;*********************************************************************************************************************
+;* Jump Subroutine Macro: Causes the Vector Generator to jump to a drawing subroutine give by a
+;*                       name passed in the macro. This instruction will push the current address
+;*                       location onto the vector generator stack (which is four deep only).
+;*********************************************************************************************************************
+#DEFINE	jsrl(add)						.dw ((((add)&$7fff)>>1)|$a000)
+
+;*********************************************************************************************************************
+;* Vector Stat Macro: Applies these properties all vectors forthcoming. These are usually specific to
+;*                    each vector game (this definition is for major havoc). The properties are as 
+;*                    follows:
+;*		Sparkle:   Creates a sparkle vectors by consistenly shifting the vector color data while the 
+;*                 vector is being drawn.
+;*		XFlip:     Mirrors the forthcoming vector along the X Axis. This is ;used to save Vector ROM space
+;*                 on objects that can be drawn in either right or left hand views.
+;*     	Page:      This 2-bit (4 pages) values defines which Vector ROM is enabled and viewable in the 
+;*                 address space at $6000-$7fff.
+;*     	Intensity: A 4-bit (16 levels) number to describe the brightness of the vector.
+;*     	Color:     The 4-bit value of the color of the vector. The color definitions for major havoc are
+;*                 defined below...
+;*********************************************************************************************************************
+;#DEFINE vstat2(i,c) 		\ ((i*16)+c)
+;#DEFINE vstat1(s,x,p) 		\ ($60|((s*8)+(x*4)+(p)))
+#DEFINE	vstat(sp,xf,pg,int,clr)	\ .db ((int*16)+clr), ($60|(((sp*8)&8)+((xf*4)&4)+(pg&3)))
+
+;*********************************************************************************************************************
+;* Vector Scale Macro: Defines the binary and linear scaling factors for the vector. There is also an 
+;*                    additional byte value that defines a Y-Window boundary. This boundary when non-zero
+;*                    causes an invisible horizontal line to be defined at the value passed. Any vector
+;*                    drawn while this line is defined, will be cropped at this line. This is most visible
+;*                    in the gameplay of major havoc during the maze section  as all the maze walls the 
+;*                    the player ship are cropped at this line. Note: This definition does not actually draw
+;*                    the seperating while line, the programmer must do that in addition.
+;*********************************************************************************************************************
+#DEFINE	vscal(ywindow,b_scale,l_scale)		.db (l_scale),($70|(ywindow*8)|b_scale))
+
+;*********************************************************************************************************************
+;* Return From Subroutine: Pulls the last address off the stack and returns to that address+2.			
+;*********************************************************************************************************************
+#DEFINE	rtsl			.db $00,$C0
+
+;*********************************************************************************************************************
+;* Jump Absolute: Similar to Jump Subroutine but does not push the current address location onto the stack.
+;*********************************************************************************************************************
+#DEFINE	jmpl(add)		.dw ((((add)&$7fff)>>1)|$e000)
+
+;*********************************************************************************************************************
+;* Vector Macro: Encodes the actual X,Y size of the vector. Z defines whether the vector is on or off
+;*              The vector hardware supports two vector instructions but we use this one macro to
+;*              draw any lines. The macro looks at the properties of the line to draw and decides if
+;*              it can use the short vector instruction to save space (2 bytes instead of 4). The 
+;*              limitations of using the short vector notation is that the lenghts must be divisible
+;*              by two and must be under 32 long in each direction. This limitation is because of the
+;*              way the vector data is compressed (=/2>>1) 		
+;*********************************************************************************************************************	
+
+hidden      = 0
+visible     = 1
+#DEFINE vctrsx(sxlength,svctrvis)           \ .db (((sxlength>>1)&$1f)+(svctrvis<<5))
+#DEFINE vctrsy(sylength)                    \ .db (((sylength>>1)&$1f)|$40)
+#DEFINE vctrlx(lxlength,lvctrvis)           \ .dw ((lxlength&$1fff)+(lvctrvis<<13))
+#DEFINE vctrly(lylength)                    \ .dw (lylength&$1fff)
+
+#DEFINE	vctr(xlength,ylength,vctrvis)	    \#if ((xlength&1>0)|(ylength&1>0)|(xlength>=32d)|(ylength>=32d)|(xlength<=-32)|(ylength<=-32))   
+#DEFCONT			                        \ vctrly(ylength)
+#DEFCONT                                    \ vctrlx(xlength,vctrvis)
+#DEFCONT			                        \#else
+#DEFCONT			                        \ vctrsx(xlength,vctrvis)
+#DEFCONT                                    \ vctrsy(ylength)
+#DEFCONT			                        \#endif
+
+#DEFINE	vctrl(xlength,ylength,vctrvis)		  vctrly(ylength)  
+#DEFCONT									\ vctrlx(xlength,vctrvis) 
+
+#DEFINE	vctrs(lxlength,lylength,lvctrvis)	 vctrsy(lylength) 
+#DEFCONT									\ vctrsx(lxlength,lvctrvis)
+
+;FOR SINGLE BYTE VECTORS
+#DEFINE VGADD_VCTRS(xlength,ylength,vctrvis)\#if ((xlength > 127)|(xlength < -128)|(ylength > 127)|(ylength < -128))
+#DEFCONT									\ .error "Vector length greater than byte value, use VGADD_VCTRL instead."
+#DEFCONT									\#else
+#DEFCONT										\ lda #(ylength)
+#DEFCONT										\#if (ylength)==(xlength)
+#DEFCONT										\ tax
+#DEFCONT										\#else
+#DEFCONT                                    	\ ldx #(xlength) 
+#DEFCONT										\#endif
+#DEFCONT										\#if (vctrvis>0)
+#DEFCONT										\ ldy #(vctrvis)
+#DEFCONT                                    	\ jsr vgvtr
+#DEFCONT										\#else
+#DEFCONT                                    	\ jsr vgvtr5
+#DEFCONT										\#endif
+#DEFCONT									\#endif
+
+;FOR WORD VECTORS
+#DEFINE VGADD_VCTRL(xlength,ylength,vctrvis)\ lda #(ylength&$ff) 
+#DEFCONT                                    \ ldx #($1f&(ylength>>8)) 
+#DEFCONT                                    \ jsr vgadd2
+#DEFCONT                                    \ lda #(xlength&$ff) 
+#DEFCONT                                    \ ldx #$FF&(($1f&(ubyte(xlength)))+(vctrvis<<5))
+#DEFCONT                                    \ jsr vgadd2
+
+
+#DEFINE VGADD_JSR(jsrroutine)               \ laljsr(jsrroutine)
+#DEFCONT                                    \ lxhjsr(jsrroutine)
+#DEFCONT                                    \ jsr vgadd2
+
+;********************************************************************
+; Add Stat Instruction to VGRAM Pointer Location
+; NOTE: the Vector Page can use *either* the full page code ($6X) or
+;       just the raw page number, the top bytes are discarded.
+;********************************************************************
+; sp - Sparkle Control - 1 bit
+; xf - X Flip Flag - 1 bit
+; pg - Vector Page - 2 bits
+; int- Vector Intensity - 4 bits
+; clr- Vector Color - 4 bits
+;********************************************************************
+#DEFINE VGADD_STAT(sp,xf,pg,int,clr)		\ lda #(int<<4)+(clr)
+#DEFCONT 									\ ldx #($60|((((sp&1)*8)&8)+(((xf&1)*4)&4)+(pg&3)))
+#DEFCONT									\ jsr vgadd2
+
+;********************************************************************
+; Add Scale Instruction to VGRAM Pointer Location
+;********************************************************************
+#DEFINE VGADD_SCALE(ywindow,b_scale,l_scale)	\ lda #(l_scale)
+#DEFCONT 										\ ldx #($70|(ywindow*8)|b_scale))
+#DEFCONT										\ jsr vgadd2

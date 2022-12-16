@@ -1,0 +1,35 @@
+TASM 6502 Assembler.    Version 3.1  February, 1998.
+Copyright (C) 1998 Squak Valley Software
+tasm: pass 1 complete.
+ERROR: ./tw_mazed2.asm line 0112: CTEXT directive requires a custom text file to be defined in the command line. (mzh00a)
+ERROR: ./tw_mazed2.asm line 0114: CTEXT directive requires a custom text file to be defined in the command line. (mzh00b)
+ERROR: ./tw_mazed2.asm line 0134: CTEXT directive requires a custom text file to be defined in the command line. (mzh01a)
+ERROR: ./tw_mazed2.asm line 0158: CTEXT directive requires a custom text file to be defined in the command line. (mzh02a)
+ERROR: ./tw_mazed2.asm line 0180: CTEXT directive requires a custom text file to be defined in the command line. (mzh03a)
+ERROR: ./tw_mazed2.asm line 0203: CTEXT directive requires a custom text file to be defined in the command line. (mzh10a)
+ERROR: ./tw_mazed2.asm line 0213: CTEXT directive requires a custom text file to be defined in the command line. (mzh11a)
+ERROR: ./tw_mazed2.asm line 0235: CTEXT directive requires a custom text file to be defined in the command line. (mzh12a)
+ERROR: ./tw_mazed2.asm line 0254: CTEXT directive requires a custom text file to be defined in the command line. (mzh13a)
+ERROR: ./tw_mazed2.asm line 0275: CTEXT directive requires a custom text file to be defined in the command line. (mzh20a)
+ERROR: ./tw_mazed2.asm line 0293: CTEXT directive requires a custom text file to be defined in the command line. (mzh21a)
+ERROR: ./tw_mazed2.asm line 0308: CTEXT directive requires a custom text file to be defined in the command line. (mzh22a)
+ERROR: ./tw_mazed2.asm line 0328: CTEXT directive requires a custom text file to be defined in the command line. (mzh23a)
+ERROR: ./tw_mazed2.asm line 0348: CTEXT directive requires a custom text file to be defined in the command line. (mzh30a)
+ERROR: ./tw_mazed2.asm line 0363: CTEXT directive requires a custom text file to be defined in the command line. (mzh31a)
+ERROR: ./tw_mazed2.asm line 0381: CTEXT directive requires a custom text file to be defined in the command line. (mzh32a)
+ERROR: ./tw_mazed2.asm line 0403: CTEXT directive requires a custom text file to be defined in the command line. (mzh33a)
+ERROR: ./tw_mazed2.asm line 0426: CTEXT directive requires a custom text file to be defined in the command line. (mzh40a)
+ERROR: ./tw_mazed2.asm line 0444: CTEXT directive requires a custom text file to be defined in the command line. (mzh41a)
+ERROR: ./tw_mazed2.asm line 0465: CTEXT directive requires a custom text file to be defined in the command line. (mzh42a)
+ERROR: ./tw_mazed2.asm line 0486: CTEXT directive requires a custom text file to be defined in the command line. (mzh43a)
+ERROR: ./tw_mazed2.asm line 0501: CTEXT directive requires a custom text file to be defined in the command line. (mzh50a)
+ERROR: ./tw_mazed2.asm line 0520: CTEXT directive requires a custom text file to be defined in the command line. (mzh51a)
+ERROR: ./tw_mazed2.asm line 0544: CTEXT directive requires a custom text file to be defined in the command line. (mzh52a)
+ERROR: ./tw_mazed2.asm line 0569: CTEXT directive requires a custom text file to be defined in the command line. (mzh53a)
+ERROR: ./tw_mazed2.asm line 0595: CTEXT directive requires a custom text file to be defined in the command line. (mzh60a)
+ERROR: ./tw_mazed2.asm line 0612: CTEXT directive requires a custom text file to be defined in the command line. (mzh61a)
+ERROR: ./tw_mazed2.asm line 0631: CTEXT directive requires a custom text file to be defined in the command line. (mzh62a)
+ERROR: ./tw_mazed2.asm line 0650: CTEXT directive requires a custom text file to be defined in the command line. (mzh63a)
+tasm: pass 2 complete.
+tasm: Number of errors = 29
+Elapsed time = 0.05 secs  lines = 1639   lines/sec = 29267

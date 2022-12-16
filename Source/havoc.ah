@@ -1,0 +1,152 @@
+.module globals
+;******************************************************************************
+;* Version Number for release
+;* This will tag each ROM with a version number for identification purposes
+;******************************************************************************
+MAJOR_VERSION = $1
+MINOR_VERSION = $00
+
+;******************************************************************************
+; LANGUAGE - we can build multiple languages now!
+; NOTES: These are single builds, so a ROMset is 
+;        PRE-compiled for a specific language.
+;  
+; ENGLISH = 0
+; GERMAN  = 1	Contributed by Thomas Sontowski
+; FRENCH  = 2	Contributed by Jerome Vince
+;******************************************************************************
+LANGUAGE = 0
+
+;******************************************************************************
+;* TOURNAMENT EDITION flag does alternate build for Jerky's maze changes
+;******************************************************************************
+TOURNAMENT_EDITION = 0
+
+;******************************************************************************
+;* DEBUGGING DEFINES, Take these out for final builds
+;******************************************************************************
+DEBUG = 0
+
+;******************************************************************************
+;* SPEECH - Which format should speech be compiled with
+;* 
+;*	ADPCM = 0
+;*  TILPC = 1
+;******************************************************************************
+SPEECH = 0
+
+;******************************************************************************
+;* LEVEL EDITOR BUILD
+;******************************************************************************
+;This will build ROM's targeted for the Major Havoc Level Editor
+;It takes out specific parts of the game to streamline playing 
+;a single level for play testing.
+LEVEL_EDITOR = 0
+
+;******************************************************************************
+;* Display the Atari Copyright Message during attract mode
+;******************************************************************************
+DISPLAY_COPYRIGHT = 0
+
+;******************************************************************************
+;* Override the number of Rex's to start the game.
+;******************************************************************************
+NUMLIVES = 9d
+
+;******************************************************************************
+;* Sets Beginning Level - This also affects Select-a-Level
+;******************************************************************************
+;* Normal start is 1d
+;* Star Castle is is 21d
+STARTLEVEL = 1
+
+;******************************************************************************
+;* Disable Demo mode - toggle this to keep the dips from setting this to enabled;
+;******************************************************************************
+;DISABLE_DEMO = 0
+
+;******************************************************************************
+;* Disable HCOUNT VGResets - this was part of the original code but not sure 
+;* it is needed for now. Will disable but this will make it
+;* super easy to re-enable if needed
+;* DEFAULT is 0
+;******************************************************************************
+DISABLE_HCOUNT = 0
+
+;******************************************************************************
+;* Normally the game has faster than normal transitions between major 
+;* scenes, I think this was done to make the game time shorter, so Im
+;* going to take it out but this makes it easy to turn back on.
+;* DEFAULT is 0
+;******************************************************************************
+DISABLE_FASTTRANSITIONS = 1
+
+;******************************************************************************
+;* WASTE is a step in the IRQ that will keep the VG busy if the main loop has
+;* not restarted the VG in a certain amount of time.
+;* DEFAULT is 1
+;******************************************************************************
+ENABLE_WASTE = 0
+
+
+;Flag to do the O2 animations, Owen didn't like this so it is turned off
+ANIMATE_OXYGEN = 1
+
+;Show the yellow 'levitations' under Max robot
+MAX_LEVITATIONS = 1
+
+;If this is level editor, override STARTLEVEL to be 1
+#IF LEVEL_EDITOR != 0
+STARTLEVEL .set 1d
+NUMLIVES   .set 9d
+#ENDIF
+
+;Handy flag to force an animation on each tact, never allow on 
+;Non-Debug builds tho
+FORCE_TESSERACT_ANIMATION	= 0
+
+#IF DEBUG = 0
+FORCE_TESSERACT_ANIMATION .set 0
+#ENDIF
+
+;Force hide the framecounter even if in debug mode 
+;This is handy for taking screenshots in debug if you don't want it showing
+FORCE_HIDE_FRAMECOUNT = 1
+
+;Another handly flag to force the bonus countup after each level
+;never allow on non-debug builds
+FORCE_HOMEWORLD_BONUS	= 0
+
+;Force showing the designer page
+FORCE_DESIGNERS = 0
+
+#IF DEBUG = 0
+FORCE_HOMEWORLD_BONUS .set 0
+FORCE_DESIGNERS .set 0
+#ENDIF
+
+;************************************
+;* ROM Identifiers are here so they
+;* are all in one place. These also
+;* match CSUM key values for ALPHA.
+;************************************
+IDENTIFIER_AL = 00d
+IDENTIFIER_AH = 01d
+IDENTIFIER_P0 = 02d
+IDENTIFIER_P1 = 03d
+IDENTIFIER_P2 = 04d
+IDENTIFIER_P3 = 05d
+IDENTIFIER_P4 = 06d
+IDENTIFIER_P5 = 07d
+IDENTIFIER_P6 = 08d
+IDENTIFIER_P7 = 09d
+IDENTIFIER_VR = 10d
+IDENTIFIER_V0 = 11d
+IDENTIFIER_V1 = 12d
+IDENTIFIER_V2 = 13d
+IDENTIFIER_V3 = 14d
+IDENTIFIER_GG = 15d
+IDENTIFIER_BL = 16d
+IDENTIFIER_BH = 17d
+
+IDCOUNT	.equ IDENTIFIER_BH + 1 - IDENTIFIER_AL

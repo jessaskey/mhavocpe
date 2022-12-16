@@ -1,0 +1,84 @@
+;********************************************************************
+;* Atari QUAD POKEY Device Constants
+;********************************************************************
+;* Device Declarations - This allows the macro STSND to start
+;*                       logical named channels more easily.
+NUMPOKEY    =   4
+
+POKEY_CH0     =   0   ;Channel Offsets
+POKEY_CH1     =   4
+POKEY_CH2     =   8
+POKEY_CH3     =   12
+
+;Some DEFAULT values
+DEFAULT_VOLUME  =   $07     ;This is the volume set upon start until overridden by the specific sound def
+
+;* 4 Channels per Pokey
+NUM_CHANNELS  =   4*NUMPOKEY
+
+POKEY_0  =   POKEYBASE
+POKEY_1  =   POKEYBASE + $08
+POKEY_2  =   POKEYBASE + $10
+POKEY_3  =   POKEYBASE + $18
+
+
+; Quad pokey hookup (based on schematics):
+; Address:654321
+;         |||||\- pokey A0
+;         ||||\-- pokey A1
+;         |||\--- pokey A2
+;         ||\---- pokey chip number LSB
+;         |\----- pokey chip number MSB
+;         \------ pokey A3 
+;
+;**********************************************************
+;QUAD POKEY Register Offsets, with A3 shifted up to bit 6
+;This is the common way Atari wires up the Quad Pokey
+;**********************************************************
+POKEY_FREQ1    	=   $00 ;CH1: Frequency
+POKEY_CONT1    	=   $01 ;CH1: Control
+POKEY_FREQ2    	=   $02 ;CH2: Frequency
+POKEY_CONT2    	=   $03 ;CH2: Control
+POKEY_FREQ3    	=   $04 ;CH3: Frequency
+POKEY_CONT3    	=   $05 ;CH3: Control
+POKEY_FREQ4    	=   $06 ;CH4: Frequency
+POKEY_CONT4    	=   $07 ;CH4: Control
+
+POKEY_AUDCTL    =   $20 ;WRITE Audio Control
+POKEY_ALLPOT    =   $20 ;READ 8 Line POT Port State
+POKEY_STIMER    =   $21 ;WRITE Start Timers
+POKEY_KBCODE    =   $21 ;READ Keyboard Code
+POKEY_SKRES     =   $22 ;WRITE Reset Serial Status
+POKEY_RANDOM    =   $22 ;READ Get Random Number
+POKEY_POTGO     =   $23 ;WRITE Start POT Scan Sequence
+                        ;READ No Read at Register $23
+POKEY_SEROUT    =   $25 ;WRITE Serial Port Data Output
+POKEY_SERIN     =   $25 ;READ Serial Port Data Input
+POKEY_IRQEN     =   $26 ;WRITE IRQ Enable
+POKEY_IRQST     =   $26 ;READ IRQ Status
+POKEY_SKCTL     =   $27 ;WRITE Serial Port Control
+POKEY_SKSTAT    =   $27 ;READ Serial Port Status
+
+
+;AUDCTL BITS
+AUDCTL_POLY9    =   $80
+AUDCTL_CH1_179  =   $40
+AUDCTL_CH3_179  =   $20
+AUDCTL_12_16B   =   $10
+AUDCTL_34_16B   =   $08
+AUDCTL_13HP     =   $04
+AUDCTL_34HP     =   $02
+AUDCTL_15K      =   $01
+
+;CHANNEL CONTROL BITS
+CHCTL_POLY17_5	= $00		;Noisey
+CHCTL_POLY5		= $20		;Triangle Wave, Bell Tones
+CHCTL_POLY4_5	= $40		;Fuzzy + Howly
+CHCTL_POLY5X	= $60		;Fussy + Phasery
+CHCTL_POLY17	= $80		;Noisy + Airy
+CHCTL_NOPOLY	= $A0		;Square Wave, Pure Tones
+CHCTL_POLY4		= $C0		;Sawtooth Wave - squeaky
+CHCTL_NOPOLY2	= $E0		;Same as NOPOLY
+CHCTL_FORCE		= $10
+
+

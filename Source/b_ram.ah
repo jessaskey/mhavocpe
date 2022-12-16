@@ -1,0 +1,153 @@
+ .module beta
+
+;***********************************************************
+;* BETA Memory Map
+;*
+;* 
+;*
+;* 0000-07FF -> RAM @ E1
+;* 4000-47FF -> COMRAM @ F1
+;* 8000-BFFF -> 27128 @ C1
+;* C000-FFFF -> 27128 @ D1
+ram			= 	$0000	;RAM
+comram		=	$4000	;ALPHA Communication RAM
+program     =   $8000   ;Program Memory Start
+program2	=   $C000	;Second ROM
+
+
+;***********************************************************
+; Constants
+;***********************************************************
+
+maxvertex	= 100d
+
+colblack    =   $0
+colblue     =   $1
+colgreen    =   $2
+colcyan     =   $3
+colred      =   $4
+colpurple   =   $5
+colyellow   =   $6
+colwhite    =   $7
+colwhiter   =   $8
+colpink     =   $9
+colorange   =   $A
+colred2     =   $B			;this used to be called colredr
+colflash     =  $C
+colcyanr    =   $D
+colbluer    =   $E
+colgreenr   =   $F
+
+;***********************************************************
+;*   RAM Space Allocation                                  
+;***********************************************************
+    .sbttl  "Zero Page Declarations"
+    .org ram
+;***********************************************************
+
+curcommand	.block	1
+curobjptr	.block  2
+curvtx		.block	2
+curvty		.block	2
+curvtz		.block	2
+thetax		.block  1
+thetay		.block  1
+thetaz		.block  1
+curscal		.block  1
+temp1		.block	2
+temp2		.block	2
+temp3		.block	2
+
+A11      	.block	1	;$41          ;Local rotation matrix
+B12      	.block 	1	;$42
+C13      	.block 	1	;$43
+D21      	.block 	1	;$44
+E22      	.block 	1	;$45
+F23      	.block 	1	;$46
+G31      	.block 	1	;$47
+H32      	.block 	1	;$48
+I33      	.block 	1	;$49
+
+vtxcache	.block maxvertex
+
+
+
+;*****************************************************************
+;We need at least 32 bytes for the Stack
+;*****************************************************************
+	orgchk($0200-$20,$)
+
+;*****************************************************************
+; Non Zero Page vars can be here NOTE: They are slower than ZP RAM
+;*****************************************************************
+	orgchk($0200,$)
+
+
+
+
+
+;*****************************************************************
+; RAM Allocation for Self Testing
+;*****************************************************************
+    orgchk($0700,$)
+    
+vram       =   $0700       ;Use 700 page, we know it is good
+tstart     =   $7F0
+tend       =   $7F2
+
+
+	orgchk($0800,$)			;Check for RAM overflow into undefined
+	
+;*******************************************************************************
+; COMRAM is shared between BETA and ALPHA and it is the primary 
+; means that the ALPHA askes the BETA to do things regarding 
+; object rotations;
+;
+; The COMRAM contains command structures for work. Each command
+; is defined by the following structure array.
+;
+; BYTE# PARAM	DESCRIPTION
+;------------------------------------------------------------------------
+;   1	OBJINF	
+;				$80 - Flag TO BETA signifying that this comannd is ready to process
+;     			$40 - Flag to ALPHA signifying that this command is done
+;				$20 - Not Used
+;				$1F - The object to be transformed as defined in the BETA ROM (limit 32 objects)
+;   2   XROT	The X rotation ranging from 0-255 (1.40625 degrees per step)
+;   3   YROT	The Y "           "      "    "       "       "     "    "
+;   4   ZROT	The Z "           "      "    "       "       "     "    "
+;   5   SCALE	The Zoom or scale factor to render the object with
+;	6/7 OBJOUT	The 2-byte address in COMRAM where the data begins
+;   8	LENGTH	The length of the data stream IN WORDS (ALPHA sets this to 0 to start
+;               and BETA will set it to the correct number when data is ready and BETA
+;               is FINSHED with the command (along with flag in OBJINF)
+;*******************************************************************************
+comsize = 8		;Each command as documented above is 8 bytes
+comlimt = 4		;Only 4 commands are allowed
+
+	.org comram
+
+commandtable	.block	comsize*comlimt		
+	
+	
+
+comtestbase	 .equ	$7f0
+
+	.org comram+comtestbase
+	
+tstflag     .block 1    ;TEST flags $FF = all good
+						;$80 - BETA RAM
+						;$40 - COM RAM
+						;$20 - ROM LOW 
+						;$10 - ROM HIGH
+pgcstbl     .block 2d  	;ROM checksums go here
+pgidtbl		.block 2d	;ROM Identifier Byte
+pgvetbl		.block 4d	;ROM Version Word
+
+
+				
+
+
+
+
+
