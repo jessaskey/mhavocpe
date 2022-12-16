@@ -1,5 +1,8 @@
 # mhavocpe
 The Promised End
 
-There are documents here about modifying your PCB, playing MHAVOPE in HBMAME and also patch files (old) for making ROM sets. The ROM's are currently in BETA but as presented at CAX in 2022, the game 
-is now complete with a few bugs remaining. Version 1.00 is officially released in the ROMs folder.
+There are documents here about modifying your PCB, playing MHAVOPE in HBMAME and also patch files (old) for making ROM sets. 
+
+Version 1.00 is officially released in the ROMs folder.
+
+Version 1.01 will be released in Jan 2023 with bugfixes. See the issues for more information and to submit bugs.
