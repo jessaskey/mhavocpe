@@ -391,16 +391,21 @@ mtok
 #ENDIF          
 #ENDIF
 		
-;***************************************************************
-;***************************************************************
-;  BEGIN DYNAMIC LENGTH DATA AREA
-;  All data tables after this point are of
-;  variable length and typically have their 
-;  base address referenced from the static tables
-;  above.
-;***************************************************************
-;***************************************************************
-dynamic_base = $
+
+;*****************************************************
+    .sbttl "Data Set for Laser Cannon Actions"
+;*****************************************************
+;  Each Level could have up to 4 Cannons
+;  Zero means there is no Cannon at this location
+;*****************************************************
+mcan
+#IF TOURNAMENT_EDITION != 0
+#include ./tw_mazedcan_te.asm
+#ELSE
+#include ./tw_mazedcan_pe.asm   
+#ENDIF 
+
+
 ;***************************************************************
 ;***************************************************************    
 ;**************************************
@@ -557,21 +562,16 @@ canp_bl = 6     ;Bottom Left
 ; 0x28-0x31		Perkoid Shots
 ;*******************************************************
 
-
-
-;*****************************************************
-    .sbttl "Data Set for Laser Cannon Actions"
-;*****************************************************
-;  Each Level could have up to 4 Cannons
-;  Zero means there is no Cannon at this location
-;*****************************************************
-mcan
-#IF TOURNAMENT_EDITION != 0
-#include ./tw_mazedcan_te.asm
-#ELSE
-#include ./tw_mazedcan_pe.asm   
-#ENDIF 
-
+;***************************************************************
+;***************************************************************
+;  BEGIN DYNAMIC LENGTH DATA AREA
+;  All data tables after this point are of
+;  variable length and typically have their 
+;  base address referenced from the static tables
+;  above.
+;***************************************************************
+;***************************************************************
+dynamic_base = $
 
 #IF TOURNAMENT_EDITION != 0
 #include ./tw_mazed_te.asm
