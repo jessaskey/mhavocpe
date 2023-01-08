@@ -1,5 +1,5 @@
 # mhavocpe
-The Promised End
+Major Havoc - The Promised End
 
 There are documents here about modifying your PCB, playing MHAVOPE in HBMAME and also patch files (old) for making ROM sets. 
 
