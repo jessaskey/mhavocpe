@@ -1,0 +1,1 @@
+Files related to the ADPCM Speech Daughtercard are in here
