@@ -1,0 +1,6 @@
+BuildDate: Saturday 10/15/2022 12:34 -06:00
+Version: 100
+Language: de
+Edition: promisedend
+Collection: mhpe 13720 08032022 promised end.mhc
+Speech: adpcm

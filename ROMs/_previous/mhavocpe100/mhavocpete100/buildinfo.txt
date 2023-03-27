@@ -1,0 +1,6 @@
+BuildDate: Saturday 10/15/2022 12:31 -06:00
+Version: 100
+Language: en
+Edition: tournament
+Collection: mhpe 13720 08032022 tournament edition.mhc
+Speech: adpcm

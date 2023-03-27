@@ -1,6 +1,0 @@
-BuildDate: Saturday 10/15/2022 14:25 -06:00
-Version: 100
-Language: en
-Edition: promisedend
-Collection: mhpe 13720 08032022 promised end.mhc
-Speech: lpc
