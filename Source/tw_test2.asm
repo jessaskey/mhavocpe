@@ -805,18 +805,22 @@ gsettings
 		ldx setsel
 		ifne
 			;check roller status now..
-			lda rollcnt
+			lda rollcnt     ;-1, 0, 1 valid values. (Bumps one option each time)
 			ifne
 				dex				;Zero based
 				ldy whatram,X
 				clc
-				adc 0,Y
-				sta 0,Y
+				adc 0,Y     ;Bump option up/down 1
 				cmp settop,X
-				ifcs
-					lda setlow,X
-					sta 0,Y
+				ifpl
+					lda settop,X
+                else
+				    cmp setlow,X
+				    ifmi
+					    lda setlow,X
+                    endif               
 				endif
+				sta 0,Y     ;Save new option setting
 			endif
 			lda #0				;Clear our accum counter
 			sta rollcnt		
@@ -891,7 +895,7 @@ chkchngs
 ;for each value of setsel, which RAM location should we increment?		
 whatram .db set_cmode,set_diff,set_lives,set_bonus,set_attsd,set_rollmult
 setlow	.db $00  	 ,$00  	  ,$03      ,$00      ,$00      ,$00
-settop	.db $03+1	 ,$03+1   ,$06+1    ,$03+1    ,$01+1    ,$01+1
+settop	.db $03 	 ,$03     ,$06      ,$03      ,$01      ,$01
 
 savesets
 		sta watchdog
