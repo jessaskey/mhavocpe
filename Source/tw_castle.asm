@@ -1355,7 +1355,7 @@ dropbar ldx temp9				;X is index to shot that hit the panel
 		stx temp5               ;Flag 0 = from station
 		jsr drop3               ;Drop panel
 		ifpl                    ;Started one
-			lda #$11
+			lda #$51
 			sta objst,Y             ;Set to line from here
 			dec dropcnt             ;Got one
 		endif

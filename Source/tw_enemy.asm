@@ -628,7 +628,15 @@ dfshot  ldx temp9
 				else
 					ldx	#$60
 				endif
-				lda	#($E0+colyellow)			;Constant Intensity
+				ldy	temp9			;X holds data, Y is set to 0 in vgadd2
+				lda	objst,Y		    ;Castle battle?
+				and	#$40			;Bar during castle battle
+				ifeq
+					lda	#($E0+colred2)			;Fort uses Red bar
+				else
+					lda	#($E0+colyellow)		;Castle uses Yellow bar
+				endif
+				;lda	#($E0+colyellow)			;Constant Intensity
 				jsr	vgadd2		    ;Add this flip
 				ldy	#02
 				begin
