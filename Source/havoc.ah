@@ -4,7 +4,7 @@
 ;* This will tag each ROM with a version number for identification purposes
 ;******************************************************************************
 MAJOR_VERSION = $1
-MINOR_VERSION = $00
+MINOR_VERSION = $02
 
 ;******************************************************************************
 ; LANGUAGE - we can build multiple languages now!
@@ -33,7 +33,7 @@ DEBUG = 0
 ;*	ADPCM = 0
 ;*  TILPC = 1
 ;******************************************************************************
-SPEECH = 0
+SPEECH = 1
 
 ;******************************************************************************
 ;* LEVEL EDITOR BUILD

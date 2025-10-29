@@ -1,0 +1,8 @@
+.module aux3
+
+ckshield         .EQU  $28a1
+drawshield       .EQU  $2779
+enem3            .EQU  $2008
+enem4            .EQU  $21b7
+emote            .EQU  $3263
+sc_state_fight   .EQU  $0084

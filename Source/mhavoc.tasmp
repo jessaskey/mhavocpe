@@ -125,7 +125,7 @@
   </ObjectFileOptions>
   <ObjectFileFormat>Binary</ObjectFileFormat>
   <ObjectFillValue>255</ObjectFillValue>
-  <ActiveConfiguration>702e464d-feca-47db-a572-5ab13d38078d</ActiveConfiguration>
+  <ActiveConfiguration>b8c7271a-09fc-4f2b-8fc6-5c574faf1fda</ActiveConfiguration>
   <BuildsToRun>2</BuildsToRun>
   <PreBuildCommand>mh_create_files.bat</PreBuildCommand>
   <PostBuildCommand>build_roms.bat</PostBuildCommand>

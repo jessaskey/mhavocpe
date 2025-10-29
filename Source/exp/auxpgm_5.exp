@@ -1,0 +1,11 @@
+.module aux5
+
+_strex           .EQU  $0006
+_stscroll        .EQU  $0007
+_stelevatordn    .EQU  $0010
+disptact         .EQU  $2010
+dovxbonus        .EQU  $30f1
+dohwani          .EQU  $3482
+hwstat           .EQU  $0300
+wdigits          .EQU  $2717
+warpcol          .EQU  $2725

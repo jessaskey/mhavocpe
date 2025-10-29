@@ -1,0 +1,15 @@
+.module aux1
+
+adddis           .EQU  $2012
+betat            .EQU  $2d69
+enem0            .EQU  $2188
+gsettings        .EQU  $3215
+iodisp           .EQU  $31e4
+teststat1        .EQU  $2ddf
+teststat2        .EQU  $2eb3
+testbip          .EQU  $3035
+testcr           .EQU  $306a
+testhy           .EQU  $3071
+testco           .EQU  $309e
+testcs           .EQU  $30dd
+testgr           .EQU  $315f

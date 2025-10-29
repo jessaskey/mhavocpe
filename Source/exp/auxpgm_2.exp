@@ -1,0 +1,15 @@
+.module aux2
+
+anio2            .EQU  $23fc
+drpod2           .EQU  $28b6
+gminit           .EQU  $2039
+init2            .EQU  $2032
+locate           .EQU  $33e6
+maxsound         .EQU  $2305
+movtng2          .EQU  $3546
+posmo            .EQU  $247e
+react            .EQU  $2108
+scbinit          .EQU  $2011
+sparks           .EQU  $2420
+stashkeys        .EQU  $39df
+unstashkeys      .EQU  $39fc

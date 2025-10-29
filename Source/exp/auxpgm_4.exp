@@ -1,0 +1,3 @@
+.module aux4
+
+enem2            .EQU  $2011
