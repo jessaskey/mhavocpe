@@ -16,7 +16,12 @@ _previous folder
  - these are older versions of the ROM's for HBMAME and are driver specific
 If there are bug releases after the first mail release, then they will get additional suffixes as well... mhavocpe1, mhavocpe2, etc
 
-
+mhavocpe - Major Havoc The Promised End, English
+mhavocpede - Major Havoc The Promised End, German
+mhavocpedete - Major Havoc The Promised End Tournament Edition, German
+mhavocpefr - Major Havoc The Promised End, French
+mhavocpefrte - Major Havoc The Promised End Tournament Edition, French
+mhavocpete - Major Havoc The Promised End Tournament Edition, English
 
 Inside each folder are release notes (when available) as well as many flavors of that release since there are different languages and different sound encodings
 for either LPC (TMS5220) or ADPCM (OKIM6295) speech.
