@@ -1,6 +1,6 @@
 ;********************************************************************
-;* MAZECOLLECTION: mhpe 13720 08032022 promised end.mhc
-;* Generated On 8/3/2022 9:47:02 PM
+;* MAZECOLLECTION: mhpe 13790 01272023 promised end.mhc
+;* Generated On 1/28/2023 11:48:51 PM
 ;********************************************************************
 ;  Dif 0 - Maze A - Level 1 - Level 1
 ;********************************************************************
@@ -486,7 +486,7 @@ oxyb12  = $10
 ;********************************************************************
 ;  Dif 2 - Maze D - Level 8 - Level 8
 ;********************************************************************
-mzdc13  .db $A6,$99,$89,$77,$65,$57,$48,$3B,$40,$83,$24,$25,$26,$27,$28,$29;Oxygen
+mzdc13  .db $A6,$98,$89,$77,$65,$57,$48,$3B,$40,$83,$24,$25,$26,$27,$28,$29;Oxygen
         .db $00                                             
 
 mzlg13  .db $8C                                             ;HLightningH14
@@ -882,12 +882,7 @@ oxyb23  = $10
 mzdc30  .db $72,$75,$78,$B6,$64,$65,$66,$B5                 ;Oxygen
         .db $00                                             
 
-mzlg30  .db $93                                             ;HLightningH1
-        .db $95                                             ;HLightningH2
-        .db $94                                             ;HLightningH3
-        .db $96                                             ;HLightningH4
-        .db $97                                             ;HLightningH5
-        .db $FF                                             
+mzlg30  .db $FF                                             
         .db $68                                             ;VLightningV32
         .db $00                                             
 
@@ -1181,14 +1176,13 @@ oxyb32  = $14
 ;********************************************************************
 ;  Dif 4 - Maze D - Level 16 - Level 16
 ;********************************************************************
-mzdc33  .db $25,$26,$54,$40,$A3,$55,$88,$49,$28,$94,$9C,$4C,$27;Oxygen
+mzdc33  .db $25,$26,$54,$40,$A3,$55,$88,$49,$28,$94,$53,$29 ;Oxygen
         .db $00                                             
 
 mzlg33  .db $44                                             ;HLightningH37
         .db $43                                             ;HLightningH38
         .db $45                                             ;HLightningH39
         .db $46                                             ;HLightningH40
-        .db $97                                             ;HLightningH12
         .db $FF                                             
         .db $5C                                             ;VLightningV44
         .db $A2                                             ;VLightningV45
@@ -1199,11 +1193,12 @@ mzlg33  .db $44                                             ;HLightningH37
         .db $74                                             ;VLightningV50
         .db $00                                             
 
-mzar33  .db $B6,$08                                         ;Arrow93
-        .db $A5,$08                                         ;Arrow23
-        .db $A7,$08                                         ;Arrow24
+mzar33  .db $B5,$08                                         ;Arrow93
+        .db $A4,$08                                         ;Arrow23
+        .db $A6,$08                                         ;Arrow24
         .db $44,$06                                         ;Arrow1
         .db $45,$06                                         ;Arrow2
+        .db $95,$08                                         ;Arrow1
         .db $00                                             
 
 mzor33  .db $00                                             
@@ -1269,11 +1264,12 @@ mcp33a  .dw $0530,$F380                                     ;Position
         cann_end                                            ;Loop It
 
 tite33  .db $5A                                             ;Spikes17
+        .db $37                                             ;Spikes3
         .db $00                                             
 
-lock33  .db $01,$43,$29                                     ;Blue
-        .db $06,$47,$36                                     ;Yellow
-        .db $02,$58,$6B                                     ;Green
+lock33  .db $01,$43,$69                                     ;Blue
+        .db $06,$47,$6B                                     ;Yellow
+        .db $02,$58,$6A                                     ;Green
         .db $00                                             
 
 tran33  .db (colred2+tr_left),$76                           ;Red2
@@ -1296,7 +1292,7 @@ boot33  = $74
 keyp33  = $00
 outi33  = $19
 reaz33  = $00
-oxyb33  = $1A
+oxyb33  = $16
 ;********************************************************************
 ;  Dif 4 - Maze A - Level 17 - Level 17
 ;********************************************************************
@@ -1418,7 +1414,9 @@ mone41  .db $FF
 
 mcp41a  .dw $0B00,$F680                                     ;Position
         cann_pos(canp_bl,2,1,13)                            ;GunPos - BotLeft Speed: 2 Shot: Yes ShotVel: $0D
+        cann_pau(4)                                         ;Pause = 4 frames
         cann_pos(canp_tl,2,1,13)                            ;GunPos - TopLeft Speed: 2 Shot: Yes ShotVel: $0D
+        cann_pau(4)                                         ;Pause = 4 frames
         cann_pos(canp_bl,2,1,13)                            ;GunPos - BotLeft Speed: 2 Shot: Yes ShotVel: $0D
         cann_pos(canp_tl,2,0,0)                             ;GunPos - TopLeft Speed: 2 Shot: No
         cann_pau(17)                                        ;Pause = 17 frames
@@ -1589,7 +1587,7 @@ oxyb42  = $10
 ;********************************************************************
 ;  Dif 5 - Maze D - Level 20 - Level 20
 ;********************************************************************
-mzdc43  .db $76,$7A,$57,$48,$41,$24,$25,$26,$27,$28,$4A     ;Oxygen
+mzdc43  .db $76,$7A,$57,$48,$41,$24,$25,$26,$27,$28,$4A,$59 ;Oxygen
         .db $00                                             
 
 mzlg43  .db $8C                                             ;HLightningH52
@@ -1867,7 +1865,7 @@ mztd51  .db $00
 
 mone51  .db $00                                             
 
-mcp51a  .dw $0984,$FB80                                     ;Position
+mcp51a  .dw $0980,$FB80                                     ;Position
         cann_pos(canp_br,2,1,15)                            ;GunPos - BotRight Speed: 2 Shot: Yes ShotVel: $0F
         cann_pau(3)                                         ;Pause = 3 frames
         cann_pos(canp_tr,2,1,15)                            ;GunPos - TopRight Speed: 2 Shot: Yes ShotVel: $0F
@@ -1891,6 +1889,13 @@ mcp51a  .dw $0984,$FB80                                     ;Position
         cann_end                                            ;Loop It
 
 mcp51b  .dw $0784,$F680                                     ;Position
+        cann_pos(canp_br,2,0,0)                             ;GunPos - BotRight Speed: 2 Shot: No
+        cann_pau(1)                                         ;Pause = 1 frames
+        cann_pos(canp_tr,0,0,0)                             ;GunPos - TopRight Speed: 0 Shot: No
+        cann_pau(4)                                         ;Pause = 4 frames
+        cann_end                                            ;Loop It
+
+mcp51c  .dw $0C80,$FB80                                     ;Position
         cann_pos(canp_br,2,0,0)                             ;GunPos - BotRight Speed: 2 Shot: No
         cann_pau(1)                                         ;Pause = 1 frames
         cann_pos(canp_tr,0,0,0)                             ;GunPos - TopRight Speed: 0 Shot: No
@@ -2371,7 +2376,7 @@ mone60  .db $38                                             ;OneWay2(right)
 
 tite60  .db $00                                             
 
-lock60  .db $06,$69,$24                                     ;Yellow
+lock60  .db $06,$69,$29                                     ;Yellow
         .db $00                                             
 
 tran60  .db $00                                             
@@ -2519,7 +2524,7 @@ oxyb61  = $18
 ;********************************************************************
 ;  Dif 6 - Maze C - Level 27 - Level 27
 ;********************************************************************
-mzdc62  .db $27,$26,$54,$69,$58,$63,$4C,$40,$93,$95,$A4,$A9,$98,$9A,$28,$25;Oxygen
+mzdc62  .db $27,$26,$54,$69,$58,$63,$47,$45,$93,$95,$A4,$A9,$98,$9A,$28,$25;Oxygen
         .db $00                                             
 
 mzlg62  .db $6C                                             ;HLightningH85
@@ -2622,8 +2627,8 @@ mone62  .db $8A                                             ;OneWay2(right)
 
 tite62  .db $00                                             
 
-lock62  .db $04,$6A,$B7                                     ;Red2
-        .db $06,$64,$B7                                     ;Yellow
+lock62  .db $04,$6A,$29                                     ;Red2
+        .db $06,$64,$29                                     ;Yellow
         .db $00                                             
 
 tran62  .db (colyellow+tr_right),$24                        ;Yellow
@@ -2643,15 +2648,10 @@ oxyb62  = $20
 ;********************************************************************
 ;  Dif 7 - Maze D - Level 28 - Level 28
 ;********************************************************************
-mzdc63  .db $26,$27,$39,$92,$34,$48,$43,$83,$45,$4A,$8A,$9B,$59,$54,$28,$25;Oxygen
+mzdc63  .db $26,$27,$39,$82,$34,$4C,$43,$63,$40,$4A,$6A,$8B,$59,$54,$28,$25;Oxygen
         .db $00                                             
 
-mzlg63  .db $64                                             ;HLightningH73
-        .db $6A                                             ;HLightningH76
-        .db $38                                             ;HLightningH3
-        .db $37                                             ;HLightningH4
-        .db $36                                             ;HLightningH1
-        .db $FF                                             
+mzlg63  .db $FF                                             
         .db $58                                             ;VLightningV1
         .db $55                                             ;VLightningV3
         .db $8C                                             ;VLightningV4
@@ -2671,10 +2671,10 @@ mztr63  .db $37                                             ;TripPad1
         .db $33                                             ;TripPad4
         .db $00                                             
 
-trpa63  .db $82,$F3,$06                                     ;TripPad1(pyroid)
-        .db $82,$F3,$06                                     ;TripPad2(pyroid)
-        .db $88,$F3,$02                                     ;TripPad3(pyroid)
-        .db $87,$F3,$82                                     ;TripPad4(pyroid)
+trpa63  .db $8D,$F3,$85                                     ;TripPad1(pyroid)
+        .db $82,$F3,$05                                     ;TripPad2(pyroid)
+        .db $8D,$F3,$83                                     ;TripPad3(pyroid)
+        .db $82,$F3,$03                                     ;TripPad4(pyroid)
         .db $00,$00,$00                                     
 
 mzta63  .db $3F,$01                                         ;MazeWall542
@@ -2701,12 +2701,9 @@ mzta63  .db $3F,$01                                         ;MazeWall542
         .db $6D,$05                                         ;MazeWall34
         .db $93,$04                                         ;MazeWall35
         .db $66,$06                                         ;MazeWall37
-        .db $65,$07                                         ;MazeWall41
         .db $6B,$06                                         ;MazeWall44
         .db $5B,$01                                         ;MazeWall58
-        .db $5A,$05                                         ;MazeWall59
         .db $50,$01                                         ;MazeWall60
-        .db $51,$02                                         ;MazeWall61
         .db $9D,$05                                         ;MazeWall4
         .db $A0,$01                                         ;MazeWall10
         .db $B6,$07                                         ;MazeWall14
@@ -2716,7 +2713,6 @@ mzta63  .db $3F,$01                                         ;MazeWall542
         .db $7B,$02                                         ;MazeWall9
         .db $7C,$05                                         ;MazeWall10
         .db $46,$01                                         ;MazeWall11
-        .db $7F,$02                                         ;MazeWall14
         .db $91,$04                                         ;MazeWall4
         .db $8C,$03                                         ;MazeWall5
         .db $8B,$05                                         ;MazeWall6
@@ -2728,6 +2724,10 @@ mzta63  .db $3F,$01                                         ;MazeWall542
         .db $30,$07                                         ;MazeWall11
         .db $B5,$07                                         ;MazeWall1
         .db $B4,$07                                         ;MazeWall2
+        .db $65,$07                                         ;MazeWall4
+        .db $78,$07                                         ;MazeWall5
+        .db $7F,$07                                         ;MazeWall6
+        .db $5A,$07                                         ;MazeWall1
         .db $00                                             
 
 mztd63  .db $80,$00,$10,$06,$07                             ;MazeWall574
@@ -2740,25 +2740,25 @@ mztd63  .db $80,$00,$10,$06,$07                             ;MazeWall574
         .db $77,$00,$10,$06,$07                             ;MazeWall7
         .db $00                                             
 
-mone63  .db $96                                             ;OneWay2(right)
-        .db $35                                             ;OneWay1(right)
-        .db $38                                             ;OneWay2(right)
+mone63  .db $35                                             ;OneWay1(right)
+        .db $FF                                             
+        .db $38                                             ;OneWay2(left)
         .db $00                                             
 
-tite63  .db $3A                                             ;Spikes6
-        .db $33                                             ;Spikes7
+tite63  .db $95                                             ;Spikes1
+        .db $98                                             ;Spikes2
         .db $00                                             
 
-lock63  .db $06,$78,$26                                     ;Yellow
-        .db $0B,$43,$97                                     ;Red
-        .db $0A,$76,$27                                     ;Orange
-        .db $04,$4B,$32                                     ;Red2
+lock63  .db $06,$4B,$32                                     ;Yellow
+        .db $0B,$76,$28                                     ;Red
+        .db $0A,$43,$3B                                     ;Orange
+        .db $04,$78,$25                                     ;Red2
         .db $00                                             
 
-tran63  .db (colred+tr_right),$91                           ;Red
-        .db (colred+tr_left),$AA                            ;Red
-        .db (colyellow+tr_right),$24                        ;Yellow
-        .db (colyellow+tr_left),$9C                         ;Yellow
+tran63  .db (colyellow+tr_right),$91                        ;Yellow
+        .db (colyellow+tr_left),$AA                         ;Yellow
+        .db (colred2+tr_right),$24                          ;Red2
+        .db (colred2+tr_left),$9C                           ;Red2
         .db $00                                             
         .db $EE                                             ;Transportability Flags
 

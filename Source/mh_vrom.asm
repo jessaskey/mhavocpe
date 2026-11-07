@@ -328,21 +328,21 @@ char_7      vctr(0d,24d,hidden)
 			vstat(sparkle_off,xflip_off,vpage0,$E,colgreen)
             rtsl
 			
-char_percent	
-            vctr(0d,18d,hidden)
-            vctr(0d,6d,visible)
-            vctr(6d,0d,visible)
-            vctr(0d,-6d,visible)
-            vctr(-6d,0d,visible)
-            vctr(24d,6d,hidden)
-            vctr(-24d,-24d,visible)
-            vctr(18d,0d,hidden)
-            vctr(6d,0d,visible)
-            vctr(0d,6d,visible)
-            vctr(-6d,0d,visible)
-            vctr(0d,-6d,visible)
-            vctr(14d,0d,hidden)
-            rtsl
+; char_percent	
+            ; vctr(0d,18d,hidden)
+            ; vctr(0d,6d,visible)
+            ; vctr(6d,0d,visible)
+            ; vctr(0d,-6d,visible)
+            ; vctr(-6d,0d,visible)
+            ; vctr(24d,6d,hidden)
+            ; vctr(-24d,-24d,visible)
+            ; vctr(18d,0d,hidden)
+            ; vctr(6d,0d,visible)
+            ; vctr(0d,6d,visible)
+            ; vctr(-6d,0d,visible)
+            ; vctr(0d,-6d,visible)
+            ; vctr(14d,0d,hidden)
+            ; rtsl
             ;.db $00,$49,$20,$43,$23,$40,$20,$5D,$3D,$40,$0C,$43,$34,$54,$09,$40,$23,$40,$20,$43,$3D,$40,$20,$5D,$07,$40,$00,$C0
             
 char_colon	vctr(12d,0d,hidden)
@@ -545,9 +545,9 @@ acc_circ	vctr(8d,28d,hidden)
 
 ;Umlaut accent - example Ï	
 acc_umlaut	vctr(8d,30d,hidden)
-			vctr(2d,0d,visible)
-			vctr(4d,0d,hidden)
-			vctr(2d,0d,visible)
+			vctr(1d,0d,visible)
+			vctr(6d,0d,hidden)
+			vctr(1d,0d,visible)
 			vctr(-16d,-30d,hidden)
 			rtsl
 
@@ -699,7 +699,9 @@ vgjchpe		regchar(char_period)	\.export idxchar_period
 vgjchex		regchar(char_excla)		\.export idxchar_excla
 vgjchda		regchar(char_dash)		\.export idxchar_dash
 vgjchco		regchar(char_comma)		\.export idxchar_comma
-vgjchpc		regchar(char_percent)	\.export idxchar_percent
+; Removed percent symbol because I don't believe it is being used anymore
+;vgjchpc		regchar(char_percent)	\.export idxchar_percent
+vgjcho3		regchar(char_o3)		\.export idxchar_o3         ;Ö
 vgjchcl		regchar(char_colon)		\.export idxchar_colon
 vgjchhf		regchar(char_half)		\.export idxchar_half
 vgjchop		regchar(char_oparen)	\.export idxchar_oparen
@@ -712,18 +714,19 @@ vgjchlt		regchar(char_ltri)		\.export idxchar_ltri
 vgjchqu		regchar(char_quest)		\.export idxchar_quest
 vgjchcy		regchar(char_copy)		\.export idxchar_copy
 vgjchqo		regchar(char_quot)		\.export idxchar_quot
-vgjche1		regchar(char_e1)		\.export idxchar_e1
-vgjche2		regchar(char_e2)		\.export idxchar_e2
-vgjche3		regchar(char_e3)		\.export idxchar_e3
-vgjcha1		regchar(char_a1)		\.export idxchar_a1
-vgjcha2		regchar(char_a2)		\.export idxchar_a2
-vgjchu1		regchar(char_u1)		\.export idxchar_u1
-vgjchu2		regchar(char_u2)		\.export idxchar_u2
-vgjchi1		regchar(char_i1)		\.export idxchar_i1
-vgjcho1		regchar(char_o2)		\.export idxchar_o2
-vgjchu3		regchar(char_u3)		\.export idxchar_u3
-vgjcha3		regchar(char_a3)		\.export idxchar_a3
-vgjcho3		regchar(char_o3)		\.export idxchar_o3
+vgjche1		regchar(char_e1)		\.export idxchar_e1         ;È
+vgjche2		regchar(char_e2)		\.export idxchar_e2         ;É
+vgjche3		regchar(char_e3)		\.export idxchar_e3         ;Ê
+vgjcha1		regchar(char_a1)		\.export idxchar_a1         ;À
+vgjcha2		regchar(char_a2)		\.export idxchar_a2         ;Â
+vgjchu1		regchar(char_u1)		\.export idxchar_u1         ;Ù
+vgjchu2		regchar(char_u2)		\.export idxchar_u2         ;Û
+vgjchi1		regchar(char_i1)		\.export idxchar_i1         ;Ï
+vgjchu3		regchar(char_u3)		\.export idxchar_u3         ;Ü
+vgjcho2		regchar(char_o2)		\.export idxchar_o2         ;Ô
+vgjcha3		regchar(char_a3)		\.export idxchar_a3         ;Ä
+;vgjcho3		regchar(char_o3)		\.export idxchar_o3         ;Ö
+
 
 alphanum
 		jsrl(char_space)		\.export idxchar_space
@@ -1582,16 +1585,16 @@ havoc3		vctr(-228d,-36d,hidden)
             vctr(32d,56d,visible)
             vctr(8d,0d,visible)
             vctr(-8d,-48d,visible)
-            vctr(8d,0d,visible)
+            vctr(10d,0d,visible)
             vctr(32d,48d,visible)
-            vctr(8d,0d,visible)
-            vctr(-16d,-48d,visible)
-            vctr(200d,0d,visible)
-            vctr(24d,56d,visible)
-            vctr(-14d,-30d,hidden)
+            vctr(9d,0d,visible)
+            vctr(-18d,-48d,visible)
+            vctr(199d,0d,visible)
+            vctr(23d,56d,visible)
+            vctr(-12d,-31d,hidden)
             vctr(32d,0d,visible)
-            vctr(14d,30d,hidden)
-            vctr(-24d,-56d,visible)
+            vctr(13d,31d,hidden)
+            vctr(-23d,-56d,visible)
             vctr(168d,0d,visible)
             vctr(-236d,28d,hidden)
             rtsl
@@ -1906,7 +1909,7 @@ waste		;vstat(sparkle_off,xflip_off,vpage0,$0,colblack)
 ;* Main VROM exports	
 .export char_a,char_space,char_b,char_c,char_d,char_e,char_f,char_g,char_h,char_i,char_j,char_k,char_l
 .export char_m,char_n,char_q,char_o,char_r,char_p,char_s,char_t,char_u,char_v,char_w,char_x,char_y,char_z
-.export char_1,char_2,char_8,char_3,char_9,char_4,char_6,char_5,char_0,char_7,char_percent,char_colon,char_dash,char_ltri
+.export char_1,char_2,char_8,char_3,char_9,char_4,char_6,char_5,char_0,char_7,char_colon,char_dash,char_ltri
 .export char_comma,char_period,char_dash,char_excla,char_half,lifech,qmark,vgmsga,onearw,onesigt,onesigr,onesigl,crosshatch
 .export mazet,mapet,mansrc,rods,bigrods,heads,tails,guns,eyes,cann,planes,beapic,movet,bases,fbase,enemys
 .export shtexp,fexps,bxp0s,bxp1s,sexps,sxp0s,sxp1s,sxp2s,sxp3s,sxps,smtb,mazarw,mazoutwrd,lightning,cerpup,cerwng,onesign
@@ -1914,6 +1917,7 @@ waste		;vstat(sparkle_off,xflip_off,vpage0,$0,colblack)
 .export newshot,cerstf,cerbng,gclock,gkey,keypbox,gboot,gtite,glock,gkeyp,gpod,gtran,gtransp,ghand,booth3,booth4,booth5
 .export epod1,epod2,epod3,epod4,epod5,epod6
 .export havoc1,havoc2,havoc3
+;.export char_percent
 ;.export glint0,glint1,glint2,glint3,glint4,glint5,glint6,glint7,glint8,glint9,glinta,glintb,glintc,glintd,glinte,glintf
 .export crman,crreac,crfire,crlsht,crcann,crrob,crmax,longline
 .export spot,clpat,clpt2,cl73,frcfl,frbox,frbx2,vline,hline,hystr,waste,shtexpnc,flare

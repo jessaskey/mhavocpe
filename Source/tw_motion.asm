@@ -132,15 +132,39 @@ manpic  lda objst
 				lda #00         			;Display the "hold button for higher jumps" message
 				ldx #$70
 				jsr vgadd2
+#IF LANGUAGE = 2
+				VGADD_VCTRS(4,-30,hidden)
+#ELSE
+#IF LANGUAGE = 1
+				VGADD_VCTRS(-2,-22,hidden)
+#ELSE
 				VGADD_VCTRS(-2,-16,hidden)
+#ENDIF
+#ENDIF
 				ldx #mpub0
 				stx temp4
 				jsr msgnop
+#IF LANGUAGE = 2
+				VGADD_VCTRS(-24,-118,hidden)
+#ELSE
+#IF LANGUAGE = 1
+				VGADD_VCTRS(-10,-88,hidden)
+#ELSE
 				VGADD_VCTRS(-10,-80,hidden)
+#ENDIF
+#ENDIF
 				ldx #mpub1
 				stx temp4
 				jsr msgnop
-				VGADD_VCTRS(32,-81,hidden)
+#IF LANGUAGE = 2
+                VGADD_VCTRS(28,-89,hidden)
+#ELSE
+#IF LANGUAGE = 1
+                VGADD_VCTRS(30,-70,hidden)
+#ELSE
+                VGADD_VCTRS(30,-82,hidden)
+#ENDIF
+#ENDIF
 			endif
         endif
         ldy #$68            ;Set Linear Size
@@ -1045,12 +1069,10 @@ posit   lda tspark          ;When transporting, maze does not scroll for a bit
                     sta jbstat
                     sta jumpst          ;No more jump
 					;***********************************************************************
-					lda #-1
-					sta maxsnd			;Stop any max sounds happening
-					;***********************************************************************
-					;BUG #215: Max sound still playing after sucessful maze exit
+					;TODO, put this back in
+                    ;BUG #215: Max sound still playing after sucessful maze exit
                     lda #snd_kilmax                    
-                    jsr dosound         ;Hero Theme
+                    jsr dosound         ;Kill Max
                     jsr do3del
                     ;***********************************************************************
                     lda #snd_hro
@@ -2027,9 +2049,9 @@ dotran  lda tspark          ;Not currently transporting
 								tay
 								;*******************************************************
 								lda	objst,Y
-								bit ?bit40			;Hack for $40 since there is no BIT,imm on the 6502
+								bit bit40			;Hack for $40 since there is no BIT,imm on the 6502
 								ifne
-									ora #(tr_special+tr_hidden)
+									ora #($40+tr_hidden)
 									sta tmatch			;tmatch contains the special objst that we want to match 
 													;(in next level transports, same level doesn't use it)
 								endif
@@ -2061,9 +2083,6 @@ dotran  lda tspark          ;Not currently transporting
             endif
         endif
         jmp nxto
-
-?bit40	.db tr_special
-
 
 ;*******************************************
     .sbttl "Idiot Message Routines"

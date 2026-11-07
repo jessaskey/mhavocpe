@@ -39,9 +39,11 @@ seqcon  bit gamest          ;Playing??
         ;Lost a life if here!!
         lda #$80
         sta diedyet     ;Indicate he died
-; #IF ENABLE_ADAPTIVE_DIFFICULTY != 0
-        ; inc incded
-; #ENDIF
+        
+		;stop any max sounds
+        lda #snd_kilmax
+        jsr dosound
+        
         ldx player
         lda lives,X     ;Don't go past 0 (Failsafe)
         ifne           
@@ -52,7 +54,9 @@ seqcon  bit gamest          ;Playing??
         ifeq                ;End of Game
             ;Both players are over, send some stats
             jsr sendgstat
+            jsr do3del
             jsr sendwstat
+            jsr do3del
             ;Game Just over... check warp level
 			sta	rampg			;Make sure RAM set
 			ldx	wrplvl			;Get Player 1's level
@@ -80,23 +84,9 @@ seqcon  bit gamest          ;Playing??
 			else 
 				lda dif4mz       ;So Back up one level
 			endif
-            ; sec
-            ; sbc #01
-            ; and #03
-            ; sta addmn
-            ; ifcc            ;Dropped a Difficulty Level
-                ; dec adddif      ;Down 1, better not go -
-                ; ifmi                ;Oooops!
-                    ; lda #00         ;Back to the start sucker!
-                    ; sta adddif      ;Stick at 0
-                    ; sta addmn
-                ; endif
-            ; endif
-            ;sta add4mz      ;If this is 2 or more, stick at 2,00
             cmp #20d         ;Max add-a-coin level is 20(dif=1, maz=3)
             ifcs
                 lda #20d
-				;sta add4mz
             endif
             sta add4mz
             ;ora adddif      ;Skip Message??
@@ -114,8 +104,8 @@ seqcon  bit gamest          ;Playing??
         jsr dostop      ;Stop all sounds
         lda #00
         sta bonsnd      ;Clear Bonus Sound Flag
-		lda #-1
-		sta maxsnd		;Stop any max sounds happening
+		;lda #-1
+		;sta maxsnd		;Stop any max sounds happening
         lda twopl       ;2 Player Game??
         ifne            ;Yes
 			;--------------------------------Change Players------------------------------------
@@ -444,13 +434,6 @@ plrsel	lda	cabsel			;Need to worry about cabinet?? 1=upright 0=cocktail
 ;* Transisition a player
 ;****************************************
 ?playertr
-		;stop any max sounds
-		lda maxsnd
-		ifpl
-			lda #-1
-			sta maxsnd			;set it
-			jsr setmaxv			;send it
-		endif
 		lda #-1
 		sta castsnd			;Flag Star Castle to play background sound again (restart after dying)
 		lda #0
@@ -487,7 +470,7 @@ plrsel	lda	cabsel			;Need to worry about cabinet?? 1=upright 0=cocktail
         dec lives,X     	;1 Less Life
         ifeq                ;Game Over this player
             ;save maze stats
-            jsr sendmstat
+            ;jsr sendmstat
             lda twopl           
             ifne                ;2 Player Game
                 lda #$7F
@@ -578,18 +561,15 @@ plrsel	lda	cabsel			;Need to worry about cabinet?? 1=upright 0=cocktail
 distlibo   
 		ldx #melife         ;Extra Life Message
         jsr mesg
-
 #IF LANGUAGE = 2
 		VGADD_VCTRL(-576,0,hidden)		;French
 #ELSE
 #IF LANGUAGE = 1
-		VGADD_VCTRL(-256,0,hidden)		;German
+		VGADD_VCTRL(-640,0,hidden)		;German
 #ELSE
 		VGADD_VCTRL(-608,0,hidden)		;English
 #ENDIF
 #ENDIF
-		
-		;VGADD_VCTRS(0,-84,hidden)
         lda slives          ;Number of Lives per game
         sta temp1
         sec 
@@ -716,6 +696,8 @@ jumpr   bit gamest      ;Leaving Maze??
 ?jmpr2      lda mzgame      ;Landing or Just Landed??
             and #02
             bne ?clrjump
+            lda oxygen      ;out of oxygen?
+            beq ?clrjump
             bit tumble      ;Hit Head??
             bmi ?clrjump
             lda objst+zstuf+1   ;Are the Magic Boots on?

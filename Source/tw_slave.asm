@@ -289,8 +289,8 @@ setoptn1
 		jmp ?sendone		;send X and then A
 		
 ;Send Max sound variable
-setmaxv	ldx #g_sendmaxsnd
-		jmp ?sendone		;send X and then A
+; setmaxv	ldx #g_sendmaxsnd
+		; jmp ?sendone		;send X and then A
 		
 
 ;************************************************
@@ -477,13 +477,13 @@ sendgstat
             endif
             inx 
             cpx #08         ;4 bytes per player = 8
-        csend           ;All data sent, should get 'done' back from Gamma
+        csend               ;All data sent, should get 'done' back from Gamma
         begin
             lda #i_xmigama
             bit inputs
         neend
         lda portrd
-        cmp #03         ;Okay??
+        cmp #03             ;Okay??
         ifne
             brk             ;Not okay
         endif
@@ -542,61 +542,61 @@ sendwstat
 ;************************************************************
 ;* Send Maze Stats to Gamma
 ;************************************************************
-sendmstat
-		jsr dodelay				;just in case
-        ;first copy the current maze level into the buffer
-        lda dif4mz
-        sta st_plrmzl
-        lda st_plrmzs           ;Make sure there is non-zero data to send first
-        ora st_plrmzs+1
-        ora st_plrmzs+2
-        ora st_plrmzs+3
-        ifne
-            sei             ;Hold IRQ's 
-            lda #$80
-            sta nogamma     ;Stop IRQ's from sending
-            cli 
-            ;now send the block to Gamma because there *was* data
-            begin
-                lda #g_gstamz   ;Send request "Gamma Get Maze Stats"
-                jsr xmitr       ;Returns gamma xmit in (A)
-                cmp #01
-            eqend
-            ;
-            ;  Ready for xfer to Gamma
-            ;
-            lda #00
-            sta olddata     ;In case something comes back unexpected
-            ldx #00
-            begin
-                lda st_plrmzl,X
-                jsr xmit        ;Send this byte
-                sta watchdog
-                jsr dodelay     ;Wait before next send
-                lda olddata     ;Not expecting anything back
-                ifne                ;Got something
-                    cmp #02         ;Did Gamma Time Out??
-                    beq sendmstat   ;Yep, Try again!
-                    brk             ;Nope, ERROR! Stay here??
-                endif
-                inx 
-                cpx #05         ;5 Bytes = 1 Byte for Level Number + 4 Bytes for the data
-            csend           ;All data sent, should get 'done' back from Gamma
-            begin
-                lda #i_xmigama
-                bit inputs
-            neend
-            lda portrd
-            cmp #03         ;Okay??
-            ifne
-                brk             ;Not okay
-            endif
-            sta watchdog
-            lda #00
-            sta nogamma
-            cli 
-        endif
-        rts 
+; sendmstat
+		; jsr dodelay				;just in case
+        ; ;first copy the current maze level into the buffer
+        ; lda dif4mz
+        ; sta st_plrmzl
+        ; lda st_plrmzs           ;Make sure there is non-zero data to send first
+        ; ora st_plrmzs+1
+        ; ora st_plrmzs+2
+        ; ora st_plrmzs+3
+        ; ifne
+            ; sei             ;Hold IRQ's 
+            ; lda #$80
+            ; sta nogamma     ;Stop IRQ's from sending
+            ; cli 
+            ; ;now send the block to Gamma because there *was* data
+            ; begin
+                ; lda #g_gstamz   ;Send request "Gamma Get Maze Stats"
+                ; jsr xmitr       ;Returns gamma xmit in (A)
+                ; cmp #01
+            ; eqend
+            ; ;
+            ; ;  Ready for xfer to Gamma
+            ; ;
+            ; lda #00
+            ; sta olddata     ;In case something comes back unexpected
+            ; ldx #00
+            ; begin
+                ; lda st_plrmzl,X
+                ; jsr xmit        ;Send this byte
+                ; sta watchdog
+                ; jsr dodelay     ;Wait before next send
+                ; lda olddata     ;Not expecting anything back
+                ; ifne                ;Got something
+                    ; cmp #02         ;Did Gamma Time Out??
+                    ; beq sendmstat   ;Yep, Try again!
+                    ; brk             ;Nope, ERROR! Stay here??
+                ; endif
+                ; inx 
+                ; cpx #05         ;5 Bytes = 1 Byte for Level Number + 4 Bytes for the data
+            ; csend           ;All data sent, should get 'done' back from Gamma
+            ; begin
+                ; lda #i_xmigama
+                ; bit inputs
+            ; neend
+            ; lda portrd
+            ; cmp #03         ;Okay??
+            ; ifne
+                ; brk             ;Not okay
+            ; endif
+            ; sta watchdog
+            ; lda #00
+            ; sta nogamma
+            ; cli 
+        ; endif
+        ; rts 
 
 
 ;*************************************************************
@@ -608,6 +608,9 @@ sendmstat
 ;* Calling routine must call cli after this!
 ;*************************************************************      
 xmitr   pha             ;Save Request in case we loop back here
+        ifeq
+            lda #0
+        endif
 		jsr xmit        ;Will always return with tries=$00, stack neutral
 		begin
 			inc tries

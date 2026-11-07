@@ -23,6 +23,7 @@ temp8       .block  2
 temp9       .block  2
 tempa       .block  2
 vdata       .block  4           ;Used by Vector Utilities for positioning
+testmode    .block  1           ;Global variable for SELF TEST Mode... 0 = NO, any other value = YES
 ;vdatax       .block  4          ;Alt used by Vector Utilities for positioning
 ltcolm
 ltcol       .block  nmmotobj       ;Collision Flag for Man/Maze
@@ -562,8 +563,8 @@ cntrs       .block  mechs       ;Coin Counter Pulses to Gamma Regs
 nogamma     .block  1           ;If 80, No Gamma Sending Please
 atsnd       .block  1           ;Do a Sound every X loops in Attract
 bonsnd      .block  1           ;Bonus Sound
-maxsnd		.block 	1			;$FF means no max sound, other numbers are the distance from Rex
-;maxsndl		.block	1			;The last value sent to gamma for lastsnd
+;maxsnd		.block 	1			;$FF means no max sound, other numbers are the distance from Rex
+lastmax		.block	1			;The last value for Max's background sound
 warpcodes   .block  g_numwarps*2
 rmazenum	.block  1			;The Random Maze message we will use (-1) if not yet assigned
 d6502       .block  1           ;Flags for 6502 Detection

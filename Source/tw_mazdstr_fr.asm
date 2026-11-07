@@ -40,8 +40,9 @@ mzh02a  .ctext "UTILISEZ LES BOUCLIERS POUR DfTRUIRE"
 mzh02b  .ctext "LES ROBOTS PERKOiDES OU LES PYROiDES"			
 mzh03a  .ctext "TROUVEZ LES CLfS POUR OUVRIR LES PORTES"  			
 mzh03b  .ctext "L'OXYGeNE JAUNE EST PLUS PRfCIEUX    "   			
-mzh10a  .ctext "LES PATINS ROUGES PEUVENT VOUS TUER"	 			
-mzh11a  .ctext "CE CHEMIN EST-IL LE SEUL POSSIBLE ?"	 		
+mzh10a  .ctext "LES PATINS ROUGES PEUVENT VOUS TUER"	 		
+mzh11a  .ctext "LES OBJETS CACHfS APPARAISSENT LORSQUE"
+mzh11b  .ctext "LE JOUEUR SE TROUVE a PROXIMITf"
 mzh12a  .ctext "C'EST INCROYABLE D'gTRE ALLf AUSSI LOIN"  		
 mzh13a  .ctext "SI VOUS gTES DOUf, VOUS TROUVEREZ !"	 			
 mzh20a  .ctext "ATTENTION AUX MURS ET AUX SOLS"	 				
@@ -83,6 +84,7 @@ mzh63a  .ctext "LA VOLONTf PERMET DE TOUT ACCOMPLIR"
         czmess(mzh03b,$48,mzh03b_)
         czmess(mzh10a,$50,mzh10a_)
         czmess(mzh11a,$50,mzh11a_)
+        czmess(mzh11b,$48,mzh11b_)
         czmess(mzh12a,$50,mzh12a_)
         czmess(mzh13a,$50,mzh13a_)
         czmess(mzh20a,$50,mzh20a_)

@@ -19,7 +19,7 @@ mcan41  .word mcp41a,mcp41b,0,0
 mcan42  .word mcp42a,mcp42b,0,0
 mcan43  .word mcp43a,mcp43b,mcp43c,0
 mcan50  .word mcp50a,mcp50b,0,0
-mcan51  .word mcp51a,mcp51b,0,0
+mcan51  .word mcp51a,mcp51b,mcp51c,0
 mcan52  .word mcp52a,mcp52b,0,0
 mcan53  .word mcp53a,mcp53b,mcp53c,0
 mcan60  .word 0,0,0,0

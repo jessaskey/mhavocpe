@@ -622,3 +622,16 @@ resframe
     sta frame
     sta frame+1
     rts
+    
+    
+;******************************************************
+; Bitflags for everyone!
+;******************************************************
+bit01   .db $01
+bit02   .db $02
+bit04   .db $04
+bit08   .db $08
+bit10   .db $10
+bit20   .db $20
+bit40   .db $40
+bit80   .db $80

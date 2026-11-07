@@ -26,10 +26,10 @@ A		16
 B		18
 C		1a
 D		1c
-E 	1e
-F 	20 
+E       1e
+F       20 
 G		22
-H 	24
+H       24
 I		26
 J		28
 K		2a
@@ -41,7 +41,7 @@ P		34
 Q		36
 R		38
 S		3a
-T 	3c
+T       3c
 U		3e
 V		40
 W		42
@@ -52,45 +52,46 @@ Z		48
 !		4c
 -		4e
 ,		50
-%		52
+/* removed percent symbol for German umlat */
+/* %        52
+/* Ö umlat is now in position for percent symbol which was removed */
+p       52
 :		54
 /* this next one is the 1/2 symbol, we can't use unicode in this file, so use the little 'o' 
 h		56
-(   58
-)   5A
+(       58
+)       5A
 /* forward slash */
-s   5C
-@   5E
+s       5C
+@       5E
 /* right pointing arrow */
->  60
+>       60
 /* left pointing triangle */
-<  62
-?	 64
+<       62
+?       64
 /* finally, the copyright symbol, which we will use the c symbol for
-c	 66
-'	 68
+c       66
+'       68
 /* Now we are defining special characters for our non-english language text strings */
-/*È	*/	
-e  6A
-/*É */
-f	 6C
-/*Ê */		
-g  6E
-/*À */
-a	 70
-/*Â */
-b  72
-/*Ù */
-u	 74
-/*Û */
-w  76
-/*Ï */
-i  78
-/*Ô */
-o  7A
-/*Ü */
-v	 7C
-/*Ä */
-w  7E
-/* Ö */
-p  80
+/* È */	
+e       6A
+/* É */
+f       6C
+/* Ê */		
+g       6E
+/* À */
+a       70
+/* Â */
+b       72
+/* Ù */
+u       74
+/* Û */
+w       76
+/* Ï */
+i       78
+/* Ü */
+v       7A
+/* Ô */
+o       7C
+/* Ä */
+x       7E

@@ -1,15 +1,15 @@
 .module aux2
 
-anio2            .EQU  $23fc
-drpod2           .EQU  $28b6
+anio2            .EQU  $240d
+drpod2           .EQU  $28c4
 gminit           .EQU  $2039
 init2            .EQU  $2032
-locate           .EQU  $33e6
+locate           .EQU  $342b
 maxsound         .EQU  $2305
-movtng2          .EQU  $3546
-posmo            .EQU  $247e
+movtng2          .EQU  $358b
+posmo            .EQU  $248f
 react            .EQU  $2108
 scbinit          .EQU  $2011
-sparks           .EQU  $2420
-stashkeys        .EQU  $39df
-unstashkeys      .EQU  $39fc
+sparks           .EQU  $2431
+stashkeys        .EQU  $3a24
+unstashkeys      .EQU  $3a3f

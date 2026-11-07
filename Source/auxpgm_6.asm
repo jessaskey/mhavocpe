@@ -5,7 +5,6 @@
 #include "havoc.ah"
 #include "./exp/mh_vrom.exp"
 #include "./exp/mh_alpha.exp"
-;#include "./exp/auxpgm_0.exp"       ;For maze message indexes
 #include "./exp/auxpgm_7.exp"       ;For extended maze data 
 
 
@@ -24,7 +23,6 @@ ___ROMPAGE	= 6
 ;*****************************************************************
 
 #include ./tw_mazed.asm
-;#include ./tw_sphere.asm       ;Moved to Page 1
 
 	#if $ > $3FFF \ .error "ROM Page 6 has extended outside of design size." \ #endif
 	
@@ -42,7 +40,7 @@ ___ROMPAGE	= 6
 
  
  ;Exports
-.export ispeed,trtbll,trpa00,mazdsiz
+.export ispeed,trtbll,trpa00,mazdsiz,levelst
 
 ;Export for tw_motion
 .export oxybonus

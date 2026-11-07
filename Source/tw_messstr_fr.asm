@@ -12,7 +12,7 @@
 gamov       .ctext "FIN"
 press       .ctext "PRESSEZ START"
 addm2       .ctext "POUR DfMARRER AU NIVEAU "					;insertion: a space after "NIVEAU"
-addm1       .ctext " PRESSEZ START DANS LES    SECONDES"		;1R: so a space before "PRESSEZ" (added here) allows to center the sentence
+addm1       .ctext "PRESSEZ START DANS LES    SECONDES"
 playr       .ctext "JOUEUR " 
 tmes0       .ctext "DfTRUISEZ LES ROBOTS PISCIFORMES"			;6.5L todo (calculated considering the extra char./english and divided/2)
 tmes1       .ctext "DfTRUISEZ LES NAVIRES ENNEMIS"				;5L todo(see above to calculate the position of the french text) 
@@ -24,7 +24,7 @@ hint0       .ctext "AMARREZ-VOUS AU PONT BLANC"					;2L todo and "POSEZ-VOUS SUR
 oxyg        .ctext "OXYGeNE"									;1L todo
 reac        .ctext "RfACTEUR"									;1L todo
 bonus       .ctext "BONUS "										;insertion: a space after "BONUS" (done)
-mlevel      .ctext "NIV."										;"NIVEAU" replaced by "NIV." (done) ("NIVEAU" is too big unfortunately)
+mlevel      .ctext "NIV. "										;"NIVEAU" replaced by "NIV." (done) ("NIVEAU" is too big unfortunately)
 insert      .ctext "INSfREZ DES PIeCES"
 atari       .ctext "cMCMLXXXIII ATARI"        					;little c is Copyright symbol     erased: a space before "c.text" (done)
 
@@ -35,7 +35,7 @@ credi       .ctext "CRfDITS"
 #ENDIF
 
 bolif       .ctext "BONUS TOUS LES "							;insertion: a space after "LES" (done)
-elife       .ctext " VIE(S)sJOUEUR"    
+elife       .ctext " VIES PAR JOUEUR"    
 cont        .ctext "CONDITION "
 ccrit       .ctext "CRITIQUE"     
 cred        .ctext "ROUGE"
@@ -58,39 +58,45 @@ fort        .ctext "FORTERESSE"
 spin        .ctext "'SPINNERS'"									;""SPINNERS" replaced by "'SPINNERS'" (done)        
 mainf       .ctext "V. AMIRAL"									;VAISSEAU AMIRAL" replaced by "V. AMIRAL" (done)
 warpi       .ctext "---MESSAGE INTERCEPTf---"
-warp0       .ctext "UTL    -> RACCOURCI ROUGE -> NIV. 4"
-warp1       .ctext "UTL    -> RACCOURCI JAUNE -> NIV. 9"
-warp2       .ctext "UTL    -> RACCOURCI VERT  -> NIV. 10"
-warp3       .ctext "UTL    -> RACCOURCI 'EAU' -> NIV. 13"          
-warp4       .ctext "UTL    -> RACCOURCI BLEU -> NIV. 17"           
-warp5       .ctext "UTL    -> RACCOURCI VIOLET -> NIV. 19"
-warp6       .ctext "UTL    -> RACCOURCI ROSE -> NIV. 21"                           
-his         .ctext "   CLASSEMENT"								;1R (1 space before "CLASSEMENT") (done)				
+warp0       .ctext "UTL     RACCOURCI ROUGE -> NIV. 4"
+warp1       .ctext "UTL     RACCOURCI JAUNE -> NIV. 9"
+warp2       .ctext "UTL     RACCOURCI VERT -> NIV. 10"
+warp3       .ctext "UTL     RACCOURCI 'EAU' -> NIV. 13"          
+warp4       .ctext "UTL     RACCOURCI BLEU -> NIV. 17"           
+warp5       .ctext "UTL     RACCOURCI VIOLET -> NIV. 19"
+warp6       .ctext "UTL     RACCOURCI ROSE -> NIV. 21"                           
+his         .ctext "CLASSEMENT"								;1R (1 space before "CLASSEMENT") (done)				
 enin        .ctext "ENTREZ VOS INITIALES"
-getout      .ctext "SORTEZ"
+getout      .ctext "SORTEZ!"
 pub0        .ctext "MAINTENEZ LE BOUTON"
 pub1        .ctext "POUR SAUTER PLUS HAUT"						;"+" (unsupported) replaced by "PLUS" (done)
-gtsc        .ctext "  RECORDS" 									;2R (added) "TOP SCORE" replaced by "RECORDS" (I know it is strange in French ;-)
+gtsc        .ctext "RECORDS" 									;2R (added) "TOP SCORE" replaced by "RECORDS" (I know it is strange in French ;-)
 ledit       .ctext "EDITEUR DE NIVEAUX"
 cmodd        .ctext "MODE DfMO"
 cmode       .ctext "PARTIES GRATUITES"
 cmod1       .ctext "1 PIeCE 2 PARTIES"
 cmod2       .ctext "1 PIeCE 1 PARTIE"
 cmod3       .ctext "2 PIeCES 1 PARTIE"
-mwred       .ctext "-> RACCOURCI ROUGE----- "
-mwyel       .ctext "-> RACCOURCI JAUNE----- "
-mwgrn       .ctext "-> RACCOURCI VERT----- "
-mwaqu       .ctext "-> RACCOURCI 'EAU'----- "           
-mwblue      .ctext "-> RACCOURCI BLEU----- "      
-mwpurp      .ctext "-> RACCOURCI VIOLET----- "          
-mwpink      .ctext "-> RACCOURCI ROSE----- "           
+mwred       .ctext "RACCOURCI ROUGE---- "
+mwyel       .ctext "RACCOURCI JAUNE---- "
+mwgrn       .ctext "RACCOURCI VERT----- "
+mwaqu       .ctext "RACCOURCI 'EAU'---- "           
+mwblue      .ctext "RACCOURCI BLEU----- "      
+mwpurp      .ctext "RACCOURCI VIOLET--- "          
+mwpink      .ctext "RACCOURCI ROSE----- "  
+
+#IF TOURNAMENT_EDITION != 0
+promise     .ctext "fDITION DU TOURNOI"     ;édition du tournoi
+#ELSE
 promise     .ctext "LA FIN PROMISE"
+#ENDIF         
+
 
 ;MESS2
 text0       .ctext "   VOUS gTES LE MAJOR HAVOC, a LA TgTE D'UNE"
-text1       .ctext "INTRfPIDE HORDE DE VOS PROPRES CLONES:"
-text2       .ctext "UN POUR TOUS, TOUS POUR UN, DANS VOTRE"
-text3       .ctext "COMBAT POUR L'HUMANITf....."
+text1       .ctext "INTRfPIDE HORDE DE VOS PROPRES CLONES."
+text2       .ctext "VOUS gTES EUX, ILS SONT VOUS, TOUS D'UN, UN DE"
+text3       .ctext "TOUS, COMBAT POUR L'HUMANITf....."
 text4       .ctext " IL Y A UNE fTERNITf, LE MALfFIQUE EMPIRE VAXXIEN A"      	;1L (1 space erased: before "IL") (done)
 text5       .ctext "ENVAHI LA GALAXIE. BEAUCOUP DE VOS ANCgTRES"                ;1L (1 space erased before "ENVAHI")(done)"LA PLUPART" replaced by "BEAUCOUP"
 text6       .ctext "ONT fTf ASSERVIS ET EMMENfS a LA BASE VAXXIENNE"			;sentence modified
@@ -149,25 +155,25 @@ texteot     .ctext "           -----FIN DU TEXTE-----"
 sco0        .ctext "LISTE DES ENNEMIS"
 scoln1      .ctext "  ............................................."
 sco2a       .ctext "ESPACE"														;erased "ENNEMIS/" (done)
-sco3        .ctext "  FISHOiDES         1000           "        
+sco3        .ctext "  FISHOiDES         1000          "        
 scospc1    	.ctext "                                  "
-sco4        .ctext "  FLYBOiDES          500           "
+sco4        .ctext "  FLYBOiDES          500          "
 scospc2    	.ctext "                                  " 
-sco5        .ctext "   MAZOiDES          500           "
+sco5        .ctext "   MAZOiDES          500          "
 scoln2      .ctext "  ............................................."
 sco6        .ctext "LABYRINTHE"													;erased "ENNEMIS/" (done)
-sco7        .ctext "   PYROiDES         1000           "
+sco7        .ctext "   PYROiDES         1000          "
 scospc3    	.ctext "                                  "        
-sco8        .ctext "  PERKOiDES         1000           "
+sco8        .ctext "  PERKOiDES         1000          "
 scospc4    	.ctext "                                  "        
-sco8m       .ctext "   MAXOiDES         9000           "
+sco8m       .ctext "   MAXOiDES         9000          "
 scoln3      .ctext "  ............................................."
 sco10       .ctext "AUTRES"
-sco11       .ctext "  RfACTOiDE         5000           "
+sco11       .ctext "  RfACTOiDE         5000          "
 scospc5    	.ctext "                                  "        
-sco12       .ctext "     OXOiDE          100           "						;"OXOiDE" 1R and "100" 1L (done)
+sco12       .ctext "     OXOiDE          100          "						;"OXOiDE" 1R and "100" 1L (done)
 scospc6    	.ctext "                                  "        
-sco13       .ctext "     OXOiDE     VARIABLE           "						;"OXOiDE" 1R and VARIABLE" 3L (done)
+sco13       .ctext "     OXOiDE     VARIABLE          "						;"OXOiDE" 1R and VARIABLE" 3L (done)
 scoln4      .ctext "  ............................................."
 sco14       .ctext "AUTRES SCORES"
 sco15       .ctext "LE BONUS D'OXYGeNE 'O2' EN SORTIE DU LABYRINTHE EST"		;sentence totally modified		
@@ -223,11 +229,11 @@ endtxxx     .ctext " "
         cmess(addm2,colcyan,1,-6,addm2_,2)        ;Rest of Message
         cmess(addm1,colcyan,1,4,addm1_,0)         ;Add Time Message
         cmess(playr,colyellow,1,$24,playr_,1)     ;Player
-		mess(tmes0,colcyan,1,$48,$C7)       	;Destroy fish robotos
-        mess(tmes1,colcyan,1,$48,$C7)       	;Shoot all fighters
-        mess(tmes2,colcyan,1,$48,$C1)       ;Hit...    
-        mess(tmes3,colcyan,1,$48,$A3)       ;Maneuver through maze
-        mess(tmes4,colflash,1,$48,$C3)      ;Destroy enemy shields   
+		mess(tmes0,colcyan,1,$48,$98)       	;Destroy fish robotos
+        mess(tmes1,colcyan,1,$48,$A3)       	;Shoot all fighters
+        mess(tmes2,colcyan,1,$48,$A0)       ;Hit...    
+        mess(tmes3,colcyan,1,$48,$A0)       ;Maneuver through maze
+        mess(tmes4,colflash,1,$48,$9B)      ;Destroy enemy shields   
         cmess(hint0,colred,1,$46,hint0_,0)        ;Dock...		
         mess(oxyg,colgreen,1,10d,$EB)       ;Oxygen
         mess(reac,colred,1,-30d,$AA)        ;Reactor
@@ -243,8 +249,8 @@ endtxxx     .ctext " "
 		cmess(credi,colcyan,1,$18,credi_,4)       ;Credits
 #ENDIF
 
-        mess(bolif,colcyan,1,$a0,$C8)       ;Bonus Every
-        mess(elife,colpurple,1,$a8,$CD)     ;Lives
+        mess(bolif,colcyan,1,$a0,$BF)       ;Bonus Every
+        mess(elife,colpurple,1,$a8,$D0)     ;Lives
         mess(cont,colwhite,1,$60,$D0)       ;Condition   
         mess(ccrit,colred,1,$60,$10)        ;Critical
         mess(cred,colred,1,$60,$10)         ;Red
@@ -274,7 +280,7 @@ endtxxx     .ctext " "
         mess(warp4,colgreenr,1,$48,$96)     ;Enter XXX for Blue warp...
         mess(warp5,colgreenr,1,$48,$96)     ;Enter XXX for Purple warp...
         cmess(his,colred,0,$48,his_*2,0)          ;High Scores
-        cmess(enin,colyellow,1,$34,enin_,0)      ;Enter your initials
+        cmess(enin,colyellow,1,$24,enin_,1)      ;Enter your initials
         mess(getout,colred2,0,0,$EB)        ;Get Out!!
         mess(pub0,colwhite,0,0,$DC)         ;Push Button
         mess(pub1,colwhite,1,0,$D0)         ;For Higher Jumps
@@ -285,36 +291,36 @@ endtxxx     .ctext " "
         cmess(cmod1,colgreen,1,$2e,cmod1_,0)      ;1 coin 2 plays
         cmess(cmod2,colgreen,1,$2e,cmod2_,0)      ;1 coin 1 play
         cmess(cmod3,colgreen,1,$2e,cmod3_,0)      ;2 coins 1 play
-        mess(mwred,colred2,1,$a2,$C4)       ;Red (For Warp Description)
-        mess(mwyel,colyellow,1,$a2,$C4)     ;Yellow 
-        mess(mwgrn,colgreen,1,$a2,$C4)      ;Green 
-        mess(mwaqu,colcyan,1,$a2,$C7)       ;Aqua 
-        mess(mwblue,colblue,1,$a2,$C7)      ;Blue     
-        mess(mwpurp,colpurple,1,$a2,$C4)    ;Purple
-        mess(mwpink,colpink,1,$a2,$C7)      ;Pink
+        mess(mwred,colred2,1,$a3,$C4)       ;Red (For Warp Description)
+        mess(mwyel,colyellow,1,$a3,$C4)     ;Yellow 
+        mess(mwgrn,colgreen,1,$a3,$C4)      ;Green 
+        mess(mwaqu,colcyan,1,$a3,$C7)       ;Aqua 
+        mess(mwblue,colblue,1,$a3,$C7)      ;Blue     
+        mess(mwpurp,colpurple,1,$a3,$C4)    ;Purple
+        mess(mwpink,colpink,1,$a3,$C7)      ;Pink
 		mess(promise,colwhite,1,$00,$00)	;The Promised End
 
-		mess(text0,colwhite,1,$10,$90)     
-		mess(text1,colwhite,1,$10,$90)
-		mess(text2,colwhite,1,$10,$90)
-		mess(text3,colwhite,1,$10,$90)
-		mess(text4,colcyan,1,$10,$90)
-		mess(text5,colcyan,1,$10,$90)
-		mess(text6,colcyan,1,$10,$90)
-		mess(text7,colcyan,1,$10,$90)
-		mess(text8,colgreen,1,$10,$90)
-		mess(text9,colgreen,1,$10,$90)
-		mess(text10,colgreen,1,$10,$90)
-		mess(text11,colgreen,1,$10,$90)
-		mess(text12,colyellow,1,$10,$90)
-		mess(text13,colyellow,1,$10,$90)
-		mess(text14,colyellow,1,$10,$90)
-		mess(text15,colyellow,1,$10,$90)
-		mess(text16,colyellow,1,$10,$90)
-		mess(text17,colyellow,1,$10,$90)
-		mess(text18,colpurple,1,$10,$90)
-		mess(text19,colpurple,1,$10,$90)
-		mess(textend,colblue,1,$10,$90)
+		mess(text0,colwhite,1,$10,$80)     
+		mess(text1,colwhite,1,$10,$80)
+		mess(text2,colwhite,1,$10,$80)
+		mess(text3,colwhite,1,$10,$80)
+		mess(text4,colcyan,1,$10,$80)
+		mess(text5,colcyan,1,$10,$80)
+		mess(text6,colcyan,1,$10,$80)
+		mess(text7,colcyan,1,$10,$80)
+		mess(text8,colgreen,1,$10,$80)
+		mess(text9,colgreen,1,$10,$80)
+		mess(text10,colgreen,1,$10,$80)
+		mess(text11,colgreen,1,$10,$80)
+		mess(text12,colyellow,1,$10,$80)
+		mess(text13,colyellow,1,$10,$80)
+		mess(text14,colyellow,1,$10,$80)
+		mess(text15,colyellow,1,$10,$80)
+		mess(text16,colyellow,1,$10,$80)
+		mess(text17,colyellow,1,$10,$80)
+		mess(text18,colpurple,1,$10,$80)
+		mess(text19,colpurple,1,$10,$80)
+		mess(textend,colblue,1,$10,$80)
 
 		mess(cretx00,colwhite,1,$10,$90)
 		mess(cretx01,colwhite,1,$10,$90)
@@ -371,17 +377,17 @@ endtxxx     .ctext " "
 		mess(sco13,colyellow,1,9,$9A)
 		mess(scoln4,colwhite,1,0,$80)
 		mess(sco14,colred,1,0,$DC)
-		mess(sco15,colyellow,1,0,$90)
-		mess(sco16,colyellow,1,0,$90)
-		mess(sco17,colyellow,1,0,$90)
-		mess(sco18,colyellow,1,0,$90)
+		mess(sco15,colyellow,1,0,$80)
+		mess(sco16,colyellow,1,0,$80)
+		mess(sco17,colyellow,1,0,$80)
+		mess(sco18,colyellow,1,0,$80)
 		mess(scoln5,colwhite,1,0,$80)
 		mess(sco20,colblue,1,0,$DC)
-		mess(sco21,colblue,1,0,$90)
-		mess(sco22,colblue,1,0,$90)
-		mess(sco23,colblue,1,0,$90)
-		mess(sco24,colblue,1,0,$90)
-		mess(sco25,colblue,1,0,$90)
+		mess(sco21,colblue,1,0,$80)
+		mess(sco22,colblue,1,0,$80)
+		mess(sco23,colblue,1,0,$80)
+		mess(sco24,colblue,1,0,$80)
+		mess(sco25,colblue,1,0,$80)
 		mess(sco26,colred,1,0,$FA)
 		mess(sco27,colred,1,0,$90) 
 		mess(endtx00,colcyan,1,$10,$90)

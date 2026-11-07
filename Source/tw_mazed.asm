@@ -1,5 +1,16 @@
 ;**************** ***********************************
     .TEXT ".TWMAZED."
+;****************************************************
+; Special Pointer to Start Level
+; Normal Builds will set this to 0
+levelst 
+
+#IF (((DEBUG != 0) & (STARTLEVEL != 1)) | (LEVEL_EDITOR != 0))
+    .db STARTLEVEL-1     ;Make Zero based
+#ELSE
+    .db -1
+#ENDIF
+
 ;***************************************************
     .title "TWMAZED - Maze Data"
 ;***************************************************
@@ -180,7 +191,7 @@ mkeyp	.db keyp00,keyp01,keyp02,keyp03
 ;* 1 Means shows up but player doesn't have to use it 
 ;* 2 Means show up and doors don't open               
 ;******************************************************
-mpod    .db 0,1,2,mpod31,mpod41,mpod51,mpod61
+mpod    .db mpod01,mpod11,mpod21,mpod31,mpod41,mpod51,mpod61
 
 ;******************************************************
     .sbttl "Reactor Time Table"

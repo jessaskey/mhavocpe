@@ -1,6 +1,6 @@
 ;********************************************************************
-;* MAZECOLLECTION: mhpe 13720 08032022 promised end.mhc
-;* Generated On 8/3/2022 9:47:02 PM
+;* MAZECOLLECTION: mhpe 13790 01272023 promised end.mhc
+;* Generated On 1/28/2023 11:48:51 PM
 ;********************************************************************
 ;  Dif 0 - Maze A - Level 1 - Level 1
 ;********************************************************************
@@ -23,7 +23,7 @@ mzsc00  .db $34,$0B,$48,$F8                                 ;Reactoid1
 ;  Dif 0 - Maze B - Level 2 - Level 2
 ;********************************************************************
 
-mzsc01  .db $1C,$0E,$4C,$F8                                 ;Reactoid2
+mzsc01  .db $1C,$0E,$48,$F8                                 ;Reactoid2
         .db $30,$08,$48,$F8,$00,$84,$0C                     ;Pyroid12
         .db $30,$08,$48,$F9,$00,$84,$0C                     ;Pyroid13
         .db $18,$09,$48,$F9,$82,$0E,$00                     ;Pyroid14
@@ -233,9 +233,9 @@ mzsc32  .db $18,$0B,$4C,$F8                                 ;Reactoid15
         .db $00,$0C,$00,$F7,$05,$00                         ;Pyroid86
         .db $00,$06,$48,$FA,$12,$00                         ;Pyroid87
         .db $40,$09,$00,$F9,$00,$20                         ;Pyroid89
+        .db $04,$0D,$D8,$F9,$F4,$00                         ;Pyroid2
         .db $FE                                             
         .db $30,$10,$00,$F7,$FF,$08                         ;Perkoid49
-        .db $3C,$06,$3C,$F6,$FF,$00                         ;Perkoid51
         .db $3C,$05,$38,$F9,$FF,$00                         ;Perkoid1
         .db $FF                                             
 
@@ -246,13 +246,12 @@ mzsc32  .db $18,$0B,$4C,$F8                                 ;Reactoid15
 mzsc33  .db $30,$0B,$4C,$F2                                 ;Reactoid16
         .db $54,$03,$A8,$F7,$FB,$00                         ;Pyroid94
         .db $AC,$02,$F0,$F5,$05,$00                         ;Pyroid95
-        .db $08,$09,$30,$F2,$00,$F6                         ;Pyroid97
+        .db $80,$08,$80,$F2,$00,$F6                         ;Pyroid97
         .db $68,$0C,$28,$F5,$00,$06                         ;Pyroid99
-        .db $38,$0B,$38,$F9,$FA,$00                         ;Pyroid2
-        .db $9C,$07,$78,$F5,$00,$FB                         ;Pyroid2
+        .db $5C,$0B,$38,$F9,$FA,$00                         ;Pyroid2
         .db $FE                                             
         .db $A8,$02,$B4,$F3,$00,$00                         ;Perkoid54
-        .db $28,$04,$74,$F4,$00,$F4                         ;Perkoid1
+        .db $28,$04,$50,$F6,$00,$F4                         ;Perkoid1
         .db $FF                                             
 
 ;********************************************************************
@@ -338,6 +337,8 @@ mzsc51  .db $00,$00,$3C,$F5                                 ;Reactoid22
         .db $FE                                             
         .db $30,$04,$30,$F9,$FF,$00                         ;Perkoid3
         .db $30,$04,$A8,$F9,$FF,$00                         ;Perkoid4
+        .db $28,$0C,$4C,$F7,$FF,$00                         ;Perkoid1
+        .db $28,$0C,$48,$F8,$FF,$00                         ;Perkoid2
         .db $FF                                             
 
 ;********************************************************************
@@ -366,13 +367,14 @@ mzsc52  .db $00,$00,$30,$F4                                 ;Reactoid23
 mzsc53  .db $80,$0D,$74,$F3                                 ;Reactoid24
         .db $C8,$0B,$38,$F9,$08,$00                         ;Pyroid159
         .db $B8,$05,$C0,$F6,$00,$18                         ;Pyroid161
-        .db $84,$07,$4C,$F6,$00,$1E                         ;Pyroid163
+        .db $2C,$07,$CC,$F6,$00,$E4                         ;Pyroid163
         .db $4C,$09,$C0,$F6,$00,$18                         ;Pyroid164
         .db $50,$0B,$80,$F6,$00,$1E                         ;Pyroid168
         .db $88,$06,$C0,$F9,$20,$00                         ;Pyroid171
         .db $84,$07,$30,$F3,$EC,$00                         ;Pyroid3
+        .db $D4,$07,$B4,$F5,$00,$1C                         ;Pyroid1
         .db $FE                                             
-        .db $3C,$08,$84,$F3,$0C,$00                         ;Perkoid72
+        .db $84,$07,$84,$F3,$0C,$00                         ;Perkoid72
         .db $6C,$02,$34,$F4,$00,$00                         ;Perkoid74
         .db $FF                                             
 
@@ -380,7 +382,7 @@ mzsc53  .db $80,$0D,$74,$F3                                 ;Reactoid24
 ;  Dif 6 - Maze A - Level 25 - Level 25
 ;********************************************************************
 
-mzsc60  .db $10,$0B,$48,$F2                                 ;Reactoid26
+mzsc60  .db $10,$0B,$4C,$F2                                 ;Reactoid26
         .db $FC,$05,$2C,$F5,$06,$00                         ;Pyroid2
         .db $0C,$0A,$2C,$F5,$FA,$00                         ;Pyroid4
         .db $00,$07,$2C,$F8,$FA,$00                         ;Pyroid5
@@ -401,8 +403,8 @@ mzsc61  .db $10,$0B,$4C,$F2                                 ;Reactoid25
         .db $0C,$0A,$A0,$F5,$06,$00                         ;Pyroid8
         .db $FE                                             ;No Robots
         .db $FE                                             ;End Robots
-        .db $40,$0D,$80,$F4,$61                             ;Maxoid1
-        .db $C8,$02,$80,$F4,$61                             ;Maxoid2
+        .db $04,$0C,$80,$F4,$61                             ;Maxoid1
+        .db $04,$04,$80,$F4,$61                             ;Maxoid2
         .db $FF                                             
 
 ;********************************************************************
@@ -418,8 +420,8 @@ mzsc62  .db $10,$0B,$4C,$F2                                 ;Reactoid28
         .db $0C,$0A,$38,$F4,$06,$00                         ;Pyroid2
         .db $FE                                             ;No Robots
         .db $FE                                             ;End Robots
-        .db $A0,$05,$04,$F6,$61                             ;Maxoid8
-        .db $5C,$0A,$04,$F6,$61                             ;Maxoid9
+        .db $A0,$05,$04,$F6,$21                             ;Maxoid8
+        .db $5C,$0A,$04,$F6,$21                             ;Maxoid9
         .db $FF                                             
 
 ;********************************************************************
@@ -428,16 +430,14 @@ mzsc62  .db $10,$0B,$4C,$F2                                 ;Reactoid28
 
 mzsc63  .db $10,$0B,$4C,$F2                                 ;Reactoid27
         .db $04,$08,$84,$F8,$00,$00                         ;Pyroid6
-        .db $48,$05,$F8,$F6,$00,$00                         ;Pyroid1
-        .db $C0,$0A,$F8,$F6,$00,$00                         ;Pyroid2
         .db $80,$09,$D8,$FB,$F0,$00                         ;Pyroid1
         .db $20,$0A,$D8,$FB,$04,$00                         ;Pyroid2
         .db $E0,$08,$D8,$FB,$08,$00                         ;Pyroid3
         .db $40,$08,$D8,$FB,$FE,$00                         ;Pyroid1
         .db $FE                                             ;No Robots
         .db $FE                                             ;End Robots
-        .db $00,$0A,$40,$F6,$61                             ;Maxoid5
-        .db $00,$06,$40,$F6,$61                             ;Maxoid6
-        .db $04,$08,$8C,$F5,$61                             ;Maxoid1
+        .db $00,$0A,$40,$F6,$21                             ;Maxoid5
+        .db $00,$06,$40,$F6,$21                             ;Maxoid6
+        .db $04,$08,$8C,$F5,$21                             ;Maxoid1
         .db $FF                                             
 
