@@ -18,8 +18,8 @@
     EXCEPT(g_swtc,switch)					;Get the GAMMA input Switch values
 	EXCEPT(g_getdip0,getdip0)				;Get direct Option Switch 0 @ 13/14S
     EXCEPT(g_getdip1,getdip1)				;Get direct Option Switch 1 @ 8S
-    EXCEPT(g_getset0,getset0)				;Get current settings originally stored in Option Switch 0 @ 13/14S
-    EXCEPT(g_getset1,getset1)				;Get current settings originally stored in Option Switch 1 @ 8S
+    EXCEPT(g_getopt0,getopt0)				;Get current settings originally stored in Option Switch 0 @ 13/14S
+    EXCEPT(g_getopt1,getopt1)				;Get current settings originally stored in Option Switch 1 @ 8S
     EXCEPT(g_eeflgs,geteeflgs)				;Get EEROM Bad Flags
 	EXCEPT(g_eedone,geteedone)				;Get EEROM Requests 
 	EXCEPT(g_cnr,coinr)                     ;Pulse Coin 1

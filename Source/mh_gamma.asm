@@ -499,7 +499,7 @@ teadel  .dw hscore-starts+eerom     ;Scores
 ;teasrh  = teasrl+1
 
 ;Clear All bookeeping         
-eezbook lda #(eflg_xwarp+eflg_game+eflg_maze)       
+eezbook lda #(eflg_xwarp+eflg_game)       
         bne ezero
 
 ;Write Scores Only
@@ -527,7 +527,7 @@ wrxwarp lda #eflg_xwarp
         bne ewrit
 
 ;Re-write All Stats 
-wrbook  lda #(eflg_xwarp+eflg_game+eflg_maze)               
+wrbook  lda #(eflg_xwarp+eflg_game)               
         bne ewrit       
         
 wrmzst  lda #(eflg_maze)
@@ -538,7 +538,11 @@ wrwarpc lda #eflg_warpco
         bne ewrit
 
 ;Re-write Option switches        
-wropt   lda #eflg_option       
+wropt   lda options+1           ;Manage unused option SWs at 8S.
+        ora #~dip8s_assigned    ;Ignore unused option switches (set to 1s). This
+                                ;ensures sure they are stored in the OFF/default state
+        sta options+1
+        lda #eflg_option        ;Request write of both Option bytes.
 		bne ewrit
         
 ezero   pha
@@ -860,13 +864,7 @@ setctrlp2
 		lda #1
 		sta curctrl
 		jmp exitnr
-;****************************************************
-; Option Switches are loaded from DIP and then stored
-; in EEROM, since they can be modified from Self Test
-; we will always return the RAM/Settings value.
-;
-; The only way to apply the settings on DIP is to 
-; do a reset in the Self Test.
+
 ;****************************************************        
 ;*
 ;*    MAJOR HAVOC DIP SWITCH SETTINGS -  $=Default
@@ -892,9 +890,9 @@ setctrlp2
 ;*    ATTRACT MODE SOUND              |    |    |    |    |    |    |    |    |
 ;*     Silence                        |    |    |    |    |    |    | On |    |
 ;*     Sound                         $|    |    |    |    |    |    |Off |    |
-;*    ROLLER MULTIPLIER               |    |    |    |    |    |    |    |    |
-;*     2X                             |    |    |    |    |    |    |    | On |
-;*     1X                            $|    |    |    |    |    |    |    |Off |
+;*    ADAPTIVE DIFFICULTY             |    |    |    |    |    |    |    |    |
+;*     No                             |    |    |    |    |    |    |    | On |
+;*     Yes                           $|    |    |    |    |    |    |    |Off |
 ;*                                    -----------------------------------------
 ;*
 ;*    DIP Switch at position 8S
@@ -921,19 +919,96 @@ setctrlp2
 ;*                                    -----------------------------------------
 ;*
 ;*****************************************************
-getdip0 sta	potgo			;Read DIPS @ 13/14S
-		nop	
-		lda	allpot			;Get input
-		eor #$FF			;Pokey sends back DIPS inverted... revert
+;*****************************************************
+;*
+;*    MAJOR HAVOC The Promised End DIP SWITCH SETTINGS -  $=Default
+;*
+;*      Option Switches are loaded from DIP and then stored
+;*      in EEROM, since they can be modified from Self Test
+;*      we will always return the RAM/Settings value.
+;*
+;*      The only way to apply the settings on DIP is to 
+;*      do a reset in the Self Test.
+;*
+;*    DIP Switch at position 13/14S
+;*                                      MSB                                LSB
+;*                                      1    2    3    4    5    6    7    8
+;*    STARTING LIVES                  _________________________________________
+;*        3                          $|Off |Off |    |    |    |    |    |    |
+;*        4                           | On | On |    |    |    |    |    |    |
+;*        5                           | On |Off |    |    |    |    |    |    |
+;*        6                           |Off | On |    |    |    |    |    |    |
+;*    GAME DIFFICULTY                 |    |    |    |    |    |    |    |    |
+;*     Hard                           |    |    | On | On |    |    |    |    |
+;*     Medium                        $|    |    |Off |Off |    |    |    |    |
+;*     Easy                           |    |    |Off | On |    |    |    |    |
+;*     Demo                           |    |    | On |Off |    |    |    |    |
+;*    BONUS LIFE                      |    |    |    |    |    |    |    |    |
+;*     50,000                         |    |    |    |    | On | On |    |    |
+;*     100,000                       $|    |    |    |    |Off |Off |    |    |
+;*     200,000                        |    |    |    |    |Off | On |    |    |
+;*     No Bonus Life                  |    |    |    |    | On |Off |    |    |
+;*    ATTRACT MODE SOUND              |    |    |    |    |    |    |    |    |
+;*     Silence                        |    |    |    |    |    |    | On |    |
+;*     Sound                         $|    |    |    |    |    |    |Off |    |
+;*    ROLLER MULTIPLIER               |    |    |    |    |    |    |    |    |
+;*     2x                             |    |    |    |    |    |    |    | On |
+;*     1x                            $|    |    |    |    |    |    |    |Off |
+;*                                    -----------------------------------------
+;*
+;*    DIP Switch at position 8S
+;*                                      MSB                                LSB
+;*                                      1    2    3    4    5    6    7    8
+;*                                    _________________________________________
+;*    Free Play                       |    |    |    |    |    |    | On |Off |
+;*     1 Coin for 1 Game             $|    |    |    |    |    |    |Off |Off |
+;*     1 Coin for 2 Games             |    |    |    |    |    |    | On | On |
+;*     2 Coins for 1 Game             |    |    |    |    |    |    |Off | On |
+;*    UNUSED                          |    |    |    |    |    |    |    |    |
+;*                                    |    |    |    |    |    | xx |    |    |
+;*                                    |    |    |    |    | xx |    |    |    |
+;*                                    |    |    |    | xx |    |    |    |    |
+;*                                    |    |    | xx |    |    |    |    |    |
+;*                                    |    | xx |    |    |    |    |    |    |
+;*    FREEZE MODE                     |    |    |    |    |    |    |    |    |
+;*     Freeze (step with Aux SW)      | On |    |    |    |    |    |    |    |
+;*     Normal (Default)              $|Off |    |    |    |    |    |    |    |
+;*                                    -----------------------------------------
+;*
+;*****************************************************
+
+;* Freeze mode isn't really an option. It's a Debugging/Test function
+;* No need to store that bit in EEPROM
+dip8s_assigned  = $03
+
+
+;*****************************************************
+;*  Masks to filp a few bits (eor) to make options
+;*  code less complicated
+dip13_14s_emask0 = $E5
+dip8s_emask1     = $01
+
+readdip0    sta	potgo			    ;Read DIPS @ 13/14S
+            nop	
+            lda	allpot			    ;Get input
+            eor #$FF			    ;Pokey sends back DIPS inverted... revert
+            eor #dip13_14s_emask0   ;Convert to Options format
+            rts
+
+readdip1    lda	intack			;Get DIPS @ 8S
+            eor #dip8s_emask1   ;Convert to Options format
+            rts
+
+getdip0 jsr readdip0
 		jmp exitr
     
-getdip1 lda	intack			;Get DIPS @ 8S
+getdip1 jsr readdip1
 		jmp exitr
 
-getset0 lda options			;Play Settings (originally from 13/14S)
+getopt0 lda options			;Play Settings (originally from 13/14S)
 		jmp exitr
     
-getset1 lda options+1		;Price Settings (originally from 8S)
+getopt1 lda options+1		;Price Settings (originally from 8S)
 		jmp exitr
 		
 ;Sets the Options0 value in EEROM		
@@ -948,10 +1023,10 @@ setopt0 ldx #(options/256d) ;MSB of Buffer
 ;Sets the Options1 value in EEROM		
 setopt1 ldx #((options+1)/256d) ;MSB of Buffer
         ldy #((options+1)&$ff)  ;LSB of Buffer
-		lda #1				;1 byte to receive
+		lda #1				    ;1 byte to receive
 		jsr xfer
-		jsr wropt			;update csum 
-		lda #1				;Send back 1 for Success!
+		jsr wropt			    ;update csum 
+		lda #1				    ;Send back 1 for Success!
 		jmp exitr
         
 ;Returns the EEBAD Flags
@@ -1181,7 +1256,6 @@ eego    lda #00
                 begin
                     sta mzstats,X
                     dex
-                    cpx #-1             ;Have to do comparison because X starts negative
                 eqend
                 jsr wrmzst
             endif 
@@ -1337,19 +1411,11 @@ ldhsin  ldx #numsths-1      ;Xfer scores
 ;***********************************************************
 ;* Load Option Switches from DIPS and flag write to EEROM
 ;***********************************************************  
-dip_emask0	= $E5 	;$E4
-dip_emask1	= $01
-      
-loadop  ;Option Defaults pull from DIP Switches
-        sta potgo       ;Read switches
-        nop 
-        lda allpot      ;Get input, NOTE these are inverse from straight DIP switches
-		eor #$FF		;Invert back for sanity, we will keep these values in EEROM too
-		eor #dip_emask0
-        sta options     ;Save Options0	@ 13/14S PLAY OPTIONS
-        lda intack
-		eor #dip_emask1
-        sta options+1   ;Save Options1 @ 8S PRICE OPTIONS
+loadop
+        jsr readdip0    ;Read DIPS @ 13/14S
+        sta options     ;Save Options 0
+        jsr readdip1    ;Read DIPS @ 8S
+        sta options+1   ;Save Options 1
         jsr wropt    
         rts
         
@@ -1471,10 +1537,10 @@ getstap ldx #(stats_temp/256d)
                 lda temp3
             miend
             cld                 ;END DECIMAL MODE  
-            lda #g_done
-            sta outdata         ;Tell Alpha we are good
             ;then book it to EEROM
             jsr wrstg           ;Flag Start Write of Stats
+            lda #g_done
+            sta outdata         ;Tell Alpha we are good
         endif
         jmp exitnr
 
@@ -1496,13 +1562,13 @@ getstawx
             lda stats_temp    
             adc extlie
             sta extlie
-            lda #00
+            lda stats_temp+1
             adc extlie+1
             ifcc
                 sta extlie+1
             endif
             ;now do warps
-            lda #numwarps
+            lda #numwarps-1
             sta temp3
             begin
                 asl A
@@ -1521,9 +1587,9 @@ getstawx
                 lda temp3
             miend
             cld                 ;CLEAR DECIMAL MODE
+            jsr wrxwarp         ;Flag Start Write of Stats
             lda #g_done
             sta outdata         ;Tell Alpha we are good
-            jsr wrxwarp
         endif
         jmp exitnr
         

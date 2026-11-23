@@ -4,7 +4,7 @@
 ;* This will tag each ROM with a version number for identification purposes
 ;******************************************************************************
 MAJOR_VERSION = $1
-MINOR_VERSION = $02
+MINOR_VERSION = $03
 
 ;******************************************************************************
 ; LANGUAGE - we can build multiple languages now!
@@ -15,12 +15,12 @@ MINOR_VERSION = $02
 ; GERMAN  = 1	Contributed by Thomas Sontowski
 ; FRENCH  = 2	Contributed by Jerome Vince
 ;******************************************************************************
-LANGUAGE = 0
+LANGUAGE = 1
 
 ;******************************************************************************
 ;* TOURNAMENT EDITION flag does alternate build for Jerky's maze changes
 ;******************************************************************************
-TOURNAMENT_EDITION = 0
+TOURNAMENT_EDITION = 1
 
 ;******************************************************************************
 ;* DEBUGGING DEFINES, Take these out for final builds

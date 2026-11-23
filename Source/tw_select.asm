@@ -65,6 +65,7 @@ adddis  ldx #maddm2
                     lda #01
                     sta rampg
                     lda #00
+                    sta sellvl
                     sta wrplvl      ;Clear both players
                     lda player      ;Restore page to correct one
                     sta rampg
@@ -181,6 +182,7 @@ adddis  ldx #maddm2
         ;Now Read in the Roller
         ldy #00
         jsr rgdr            ;Get and move data
+        tax
         asl a
         asl a
         ifmi
@@ -200,7 +202,7 @@ adddis  ldx #maddm2
         endif
         sta sellvl
 		;Special Case Checks
-		lda rgdd
+		txa
 		ifne
 			ifmi
 				lda sellvl

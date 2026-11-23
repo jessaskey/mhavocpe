@@ -142,7 +142,7 @@ hcount      .block  1           ;Vector Generator running to Long Counter
 #ENDIF
 
 rawgamedif	.block 	1			;Original blended demo+difficult value
-demo        .block  1           ;Demo Mode Flag: $80 = DEMO
+demo        .block  1           ;Demo Mode if non-zero. Freeze Flag: $80, 0 On/1 Off
 gamedif		.block	1			;Base game difficulty from dips/setting	(00=easy,01=med,02=hard)
 newmzr      .block  1           ;New Maze Requested
 upflg       .block  1           ;He's getting up, dont move
@@ -168,7 +168,7 @@ updwho      .block  1       ;Who to Update
 updcur      .block  1       ;Number of Last Entered High Score
 
 ;Global Statistics here - More in Paged RAM for P1/P2 Specific ones
-starts                      		;Start of Stats Block RAM
+;Start of Stats Block RAM
 st_extlie   .block  1*g_numstxl     ;Extra Lives Earned
 st_warps    .block  2*g_numwarps    ;Number of Warps Done - 2 bytes per warp
 
@@ -242,6 +242,7 @@ initcz      .block  1       ;Flag=80 if init for web play needed - Sphere and We
 jblast      .block  1       ;For Debounce
 wrplvl      .block  1       ;What warp level this time
 ;colcnt      .block  1       ;Paddle Hits
+wrplvs      .block  1       ;Warp extra lives available
 
 ;Star Castle Stuff
 scflags     .block  1		;Star Castle Mode - Details in tw_castle.asm

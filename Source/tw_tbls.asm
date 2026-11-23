@@ -8,7 +8,7 @@
 
 ;* Entry only if updflg is minus!
 geths   lda updcur			;Are we doing top 3... if so, then show some fireworks too!
-		cmp #03
+		cmp #(3*3)
 		ifcc
 			lda frame+1
 			cmp #$EE

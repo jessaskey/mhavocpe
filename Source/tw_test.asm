@@ -73,7 +73,39 @@ stb_mzstats  .block g_numstmz       ;Maze Stats
 ;* Return to original ROM address here
 ;*****************************************************************
  .org _stptr
- 
+  
+;********************************************************
+;* Freeze Entry from Main Program
+;* Enable dip switch #1 @ 8S to freeze the game/screen
+;* Use the Aux Coin switch to step a frame at a time.
+;********************************************************
+freezemode
+        lda #$80
+        sta vgrestart       ; Hold this picture
+        lda #g_sndstop      ; Turn off all sounds
+        jsr dosnd2
+
+?stillcold
+        lda #g_getdip1  ;COIN Options @ 8S - Straight DIPS
+        jsr xmitr       ;Do retry xmit and recieve
+        cli
+        and #$80        ; SW1 off
+        ifne
+            jmp ?thaw
+        endif
+
+        ;Use Aux button as fire/shield are messed with in game mode
+        lda #1
+        jsr chkbut
+        ifcs
+            jmp ?thaw
+        endif
+
+        sta watchdog      ;Wake up Doggie!!!
+        jmp ?stillcold
+
+?thaw   rts
+
 ;********************************************************
 ;* Self Test Entry from Main Program
 ;* Y contains CPU ID value
@@ -1249,7 +1281,26 @@ doconfirm
             endif
         endif
 		rts
-        
+
+dofrzsw        
+        lda set_diff
+        cmp #03
+        ifeq				;demo mode
+            lda #g_getdip1  ;COIN Options @ 8S - Straight DIPS
+            jsr xmitr       ;Do retry xmit and recieve
+            cli
+            and #$80
+            ifeq            ; SW1 on
+                lda frame
+                and #$04
+                ifeq
+                    ldx #stmfrzswon  
+                    jsr stmesg          ;Freeze Mode DIP is on!
+                endif
+            endif
+        endif
+        rts
+
 dofinish
         ;wraps up a time based gamma command that started beeps
         ;CC when gamma still busy, CS when done
@@ -1396,7 +1447,7 @@ warpcolrtp1
             lda #02
             jsr vgscalz          ;Difference Scale for positioning
             jsr vgcntr
-            lda #$E0
+            lda #$00
             ldx temp6
             jsr vgvtr5          ;Position for digits
             lda #02
@@ -1702,16 +1753,18 @@ msgtblvy = __stvy
         stmess(prshld,colyellow,1,$84,-$58)
         stmess(pfire,colred,1,$84,-$60)  
         stmess(pshield,colorange,1,$A4,-$28)          
+        stmess(frzswon,colorange,1,$A4,-$30)          
         stmess(gtest,colorange,1,$C6,$60)    
         stmess(atest,colorange,1,$C6,$60)     
 		stmess(btest,colorange,1,$CA,$60)    
-        stmess(gmstat,colorange,1,$B6,$60)
-        stmess(warpt,colorange,1,$D0,$60)
-        stmess(inpout,colorange,1,$B6,$60)
-        stmess(act1pg,colgreen,1,$88,$50)
-        stmess(act2pg,colgreen,1,$88,$48)
-        stmess(actwrps,colgreen,1,$9B,$38)
-        stmess(actxliv,colgreen,1,$95,$20)
+        stmess(gmstat,colorange,1,$B0,$60)
+        stmess(warpt,colorange,1,$B0,$60)
+        stmess(inpout,colorange,1,$B0,$60)
+		stmess(gsetts,colorange,1,$B0,$60)
+        stmess(act1pg,colgreen,1,$84,$50)
+        stmess(act2pg,colgreen,1,$84,$48)
+        stmess(actwrps,colgreen,1,$83,$38)
+        stmess(actxliv,colgreen,1,$84,$20)
         stmess(avggtim,colwhite,1,$C0,$28)
         
         stmess(rstaths,colwhite,1,$E6,0)
@@ -1755,19 +1808,18 @@ msgtblvy = __stvy
         stmess(gammpok,colwhite,1,$94,$38)     
         stmess(gammeer,colwhite,1,$94,$32)   
         stmess(gamcmd,colblue,1,$84,$10)
-        stmess(warpr,colred2,1,$A7,$40)
-        stmess(warpy,colyellow,1,$94,$38)
-        stmess(warpg,colgreen,1,$98,$30)
-        stmess(warpa,colcyan,1,$A1,$28)
-        stmess(warpb,colblue,1,$A1,$20)
-        stmess(warpp,colpurple,1,$94,$18)
-        stmess(warpk,colpink,1,$A1,$10)
+        stmess(warpr,colred2,1,$B0,$40)
+        stmess(warpy,colyellow,1,$B0,$38)
+        stmess(warpg,colgreen,1,$B0,$30)
+        stmess(warpa,colcyan,1,$B0,$28)
+        stmess(warpb,colblue,1,$B0,$20)
+        stmess(warpp,colpurple,1,$B0,$18)
+        stmess(warpk,colpink,1,$B0,$10)
 
         stmess(warp,colwhite,1,$98,$50)
-        stmess(warpc,colwhite,1,$E0,$50)
-        stmess(warpn,colwhite,1,$E0,$40)
+        stmess(warpc,colwhite,1,$00,$50)
+        stmess(warpn,colwhite,1,$00,$40)
 		stmess(gamad,colred2,1,$E0,$0)
-		stmess(gsetts,colorange,1,$C8,$60)
 		
 		;stmess(pricin,colwhite,1,$94,$40) 
 		;stmess(strlif,colwhite,1,$94,$38)   

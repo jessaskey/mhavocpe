@@ -1894,10 +1894,6 @@ dotok  	jsr dunder          ;Check to see if on same level
 				;put in pocket
 				and #03
 				sta lasttok			;Save this for the upcoming tact animation
-				tay
-				lda bitflags,Y
-				ora tokpock
-				sta tokpock
 				;Now make these minus, which means they are active
 				lda toktarg
 				ora #$80

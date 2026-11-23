@@ -148,7 +148,7 @@ teststat1
             ifeq
                 ;move back and down some
                 jsr vgcntr
-				VGADD_VCTRS(57,-36,hidden)
+				VGADD_VCTRS(59,-33,hidden)
             endif
             ;change color
 			pla
@@ -801,16 +801,6 @@ gsettings
 		lda #$04			;Color Flag
 		jsr getcol
 		jsr stmesgc
-		
-		;Roller Multiplier
-        ldx #stmrollx1      ;Guess x 1
-        lda set_rollmult               
-        ifne
-            ldx #stmrollx2
-        endif
-		lda #$06			;Color Flag
-		jsr getcol
-        jsr stmesgc
 
 		;Attract Mode Sounds
         ldx #stmsndon       ;Guess sounds in attract
@@ -819,6 +809,16 @@ gsettings
             ldx #stmsndoff
         endif
 		lda #$05			;Color Flag
+		jsr getcol
+        jsr stmesgc
+		
+		;Roller Multiplier
+        ldx #stmrollx1      ;Guess x 1
+        lda set_rollmult               
+        ifne
+            ldx #stmrollx2
+        endif
+		lda #$06			;Color Flag
 		jsr getcol
         jsr stmesgc
 
@@ -849,6 +849,7 @@ gsettings
         sta watchdog
         
         jsr doconfirm
+        jsr dofrzsw
         jsr dofinish        ;CC when gamma still busy, CS when done
         ifcc
             rts                 ;return if waiting on Gamma still, won't check fire or shield either (below)
@@ -978,26 +979,30 @@ savesets
 		lda #snd_b1d
 		jsr xmit
 		jsr do3del
+
 		;Build up a single byte (in temp1)
-		lda #0
+
+		;Roller Multiplier: Bit 0
+		lda set_rollmult
+		and #01
 		sta temp1
+
+		;Attract mode sounds: Bit 1
 		lda set_attsd
 		asl A 
 		and #02
 		ora temp1
 		sta temp1
-		;Roller Multiplier
-		lda set_rollmult
-		and #01
-		ora temp1
-		sta temp1
 
+		;Bounus life at x: Bits 2-3
 		lda set_bonus
 		asl A 
 		asl A
 		and #$0C
 		ora temp1
 		sta temp1
+
+		;Difficulty: Bits 4-5
 		lda set_diff
 		asl A 
 		asl A
@@ -1006,19 +1011,26 @@ savesets
 		and #$30
 		ora temp1
 		sta temp1
-		lda set_lives
-		tax 
-		lda gamlvsx,X
+
+		;Difficulty: Bits 6-7
+		lda set_lives       ;decimal # of lives
+		tax                 ;Use as index into gamlvsx table
+		lda gamlvsx,X       ;Load option switch value based on Lives
+        clc                 ;clear carry
+		ror A               ;Roll value to upper nibble via carry bit.
 		ror A
 		ror A
-		ror A
-		and #$C0
+		and #$C0            ;mask off unused bits
 		ora temp1			;Now we have the final value to send
 		jsr setoptn0		;Save Play options
 		sta watchdog
 		jsr do3del			;3 delay loops
+
+		;Credits per game
 		lda set_cmode
 		jsr setoptn1		;Pricing options
+		jsr do3del			;3 delay loops
+
 		lda #-1
 		sta gammawait
 		rts
