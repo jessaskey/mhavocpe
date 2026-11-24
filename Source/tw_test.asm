@@ -18,11 +18,11 @@ _stptr  = *
  
 btn_a_time  .block 1		;debouncing Aux Coin switch
 btn_f_time  .block 1		;debouncing Fire switch
-btn_s_time  .block 1		;debouncing Sheild switch
+btn_s_time  .block 1		;debouncing Shield switch
 litrast     .block 2    	;Text Message Pointer for Self Test (2 Bytes)
 bconfirm    .block 1    	;Set to $80 when confirm message is shown
 eebad       .block 1
-goteebad    .block 1    	;Flag to know if we have already requested EEBAD from GAMMA
+;goteebad    .block 1    	;Flag to know if we have already requested EEBAD from GAMMA
 stexti      .block 1    	;Index Variable for looping through static text tables
 stextp      .block 2    	;(2 BYTES) Pointer location for static text
 testnm      .block 1    	;Need a byte here
@@ -37,14 +37,14 @@ erplc       .block 5    	;RAM and such error regs
 							;$F2 - Vector RAM?
 							;$F3 - Vector RAM?
 							;$F4 - COMM RAM (BETA)
-gammaerr    .block 1    	;Gamma Errors
+gammaerr    .block 1    	;Gamma Errors -1 when good
 stgdead   	.block 1 		;0=normal, otherwise, Gamma has failed
 
 nxtcmd      .block 1    	;Next command number
 thisleta    .block 1    	;The value of the roller this time
 lastleta    .block 1    	;Last value of LETA for roller scrolling
 lastdir     .block 1    	;List direction the spinner was going
-gotdata    	.block 1
+dataflag    .block 1        ;Flag to determine if screen already has data from Gamma (each screen uses this seperately)                        
 setsel		.block 1		;Setting selector for game settings screen
 set_cmode	.block 1
 set_diff	.block 1
@@ -458,10 +458,9 @@ selftest
 ;*****************************************
         lda #i_xmigama      ;Gamma Xmtd Flag for later  
         ldx #00         
-        sta watchdog
+        stx watchdog
         stx stgdead
         stx gammaerr        ;Guess Gamma bad (0 is bad)
-        stx gotdata
         begin
 			nop
             dex                 ;Try 255 times to get gamma response
@@ -477,7 +476,7 @@ selftest
 		jsr pulselig
 ?gdone	lda portrd          ;Get the Data
         ;* First response ofter a reset is -1 
-		sta gammaerr        ;Gamma should return 0xff
+		sta gammaerr        ;Gamma should return 0xff if all okay
 		
 ;*******************************************
 ;* Transfer BETA test results from COMRAM
@@ -526,11 +525,12 @@ selftest
         ;init for first screen
         lda #g_sndstop       ;Start with 'Sounds OFF'
         sta nxtcmd
-        jsr getleta         ;Display direct
-        sta thisleta
-        sta lastleta        ;make these equal
+        ;jsr getleta         ;Display direct
+        ;sta thisleta
+        ;sta lastleta        ;make these equal
 		lda #-1
 		sta laststnm
+        sta testmode        ;Signals to IRQ not to run coin routine
         jmp ?diagm          ;Fall through into Diagnostic mainline
         
 ;*****************************************************
@@ -583,8 +583,8 @@ selftest
 				lda #g_sndstop
 				sta nxtcmd          ;Start again at 'Sounds Off'
 				;clear the dataload flag so the screen can re-get info if needed
-				lda #$00
-				sta gotdata			;Reset data fetched flag
+				;lda #$00
+				;sta gotdata			;Reset data fetched flag
 				inc testnm          ;Next test
 				lda testnm
 				cmp #01				;BETA test?
@@ -702,6 +702,7 @@ dostate lda testnm
 			;stuff needs reset on test changing
 			lda #0
 			sta bconfirm
+            sta dataflag            ;Clear data flags
 			ldx testnm
 			stx laststnm
 		endif
@@ -1005,6 +1006,9 @@ updroller
         cmp lastleta
         ;was there any change at all?
         ifne
+            ;always clear any pending operation
+            lda #0
+            sta bconfirm
             lda thisleta
             ifpl
                 lda lastleta
@@ -1061,35 +1065,44 @@ updroller
 ;           below.
 ;*******************************************
 ?gammat lda gammaerr            ;See if Gamma was bad 0=bad, should at least be negative
-        ifpl                    ;Bad Gamma
+        ifeq                    ;Bad Gamma
             jsr ?shgdead			;Show 'GAMMA BAD'
             rts         			;RETURN HERE
         endif
         
-        lda goteebad
-        ifeq
-            lda gammaerr
-            bit ?bit08
+        lda dataflag
+        ifeq 
+            lda gammaerr        
+            bit bit08          ;Is EEROM bad, this bit
             ifeq
-                ;Set EEBAD Flags
-                sei             ;Hold IRQ's 
-                lda #g_eeflgs   ;Get EE Flags
-                jsr xmitr
-                cli
-                sta eebad
+                ;sei             ;Hold IRQ's 
+                begin
+                    ;See if EEROM is stable first..
+                    lda #g_eedone
+                    jsr xmitr
+                    ifeq
+                        jsr do3del
+                        ;get EEROM csum flags
+                        lda #g_eeflgs   ;Get EE Flags
+                        jsr xmitr
+                        sta eebad
+                        jmp ?edone
+                    endif
+                    jsr do3del
+                doloop
             endif
-            lda #$80
-            sta goteebad
+            lda #-1
+            sta dataflag
         endif
         
         ;static text
-        lda #(?stgamma&$ff)
+?edone  lda #(?stgamma&$ff)
         sta stextp
         lda #(?stgamma/256d)
         sta stextp+1
         jsr statict
         
-        ;Errors:  Bottom Bits represent errors if 0   
+        ;Errors:  Bottom Bits represent errors if 0 - $FF is ALL GOOD
         ;   D0 = Gamma RAM Error
         ;   D1 = Gamma ROM Error
         ;   D2 = Gamma POKEY Error
@@ -1122,90 +1135,11 @@ updroller
         jsr vgadd2
         lda #07
         sta temp2       ;Shows all 8 bits for the EEROM bad bytse 
-						;eflg_scores     = 10000000
-						;eflg_initials   = 01000000 
-						;eflg_xwarp      = 00100000
-						;eflg_game       = 00010000
-						;eflg_maze       = 00001000
-						;eflg_option     = 00000100
-						;eflg_warpco     = 00000010
-						;eflg_tesser     = 00000001
         lda eebad
         ifne
             jsr dis01
-        endif
+        endif    
 
-		jsr doconfirm
-      
-        ;Check Fire switch
-        lda #2
-		jsr chkbut
-		ifcs
-			lda nxtcmd
-			cmp #g_clrh           ;Clear high scores??
-			ifeq
-?toconf         lda #$80
-				sta bconfirm
-			else
-				cmp #g_clrs			;Clear Game Stats
-				beq ?toconf
-				cmp #g_clro			;Clear Options to DIP Settings
-				beq ?toconf
-				lda nxtcmd
-				jsr dosnd2      	;send this one, it doesn't require a confirmation
-			endif
-		endif
- 
-        ;Check Shield Switch, only if waiting for confirm
-        lda bconfirm
-        ifne
-            lda #3
-			jsr chkbut
-			ifcs
-				lda nxtcmd
-				cmp #g_clrh		;Clear high scores??
-				ifeq
-?clrdat             pha
-					jsr	xmit     ;Make some beeps
-					jsr dodelay     ;Wait a bit
-					sei             ;Hold IRQ's 
-					pla
-					jsr xmit        ;Send it away
-					cli
-					lda	#snd_c4
-				else
-					cmp #g_clrs		;Clear Game Stats
-					beq ?clrdat
-					cmp #g_clro		;Clear Options to DIP Settings
-					beq ?clrdat
-				endif
-				lda #00
-				sta bconfirm
-			endif
-        endif       
-        sta watchdog        ;kick the doggie
-        ;update with spinner       
-		jsr updroller
-		
-		lda rollcnt
-		ifne
-			ifpl
-				jsr ?incnxtsnd
-				dec rollcnt			
-			else
-				jsr ?decnxtsnd
-				inc rollcnt
-			endif
-			;stop anything playing already
-			lda #g_sndstop
-			jsr xmit
-			;clear some stuff
-			lda #00
-			sta btn_s_time         ;Don't step right away again
-			sta bconfirm           ;If we were confirming, clear this too
-			;sta rollcnt
-		endif
-        
         ;message display section
         lda nxtcmd
         pha 
@@ -1222,7 +1156,7 @@ updroller
         pla                 ;See if a sound
         cmp #g_sndstop+1
         ifge
-            pha
+            ;pha
             clc
             sbc #g_sndstop    ;This makes the base sound = Sound #01
             sta temp2           ;Sound numbers here
@@ -1230,19 +1164,77 @@ updroller
             ldy #01
             clc 
             jsr digits          ;Display this song
-            lda vgjchop          ;Open Paren
-            ldx vgjchop+1
-            jsr vgadd2
-            pla                 ;Get raw value
-            sta temp2           ;Sound numbers here
-            lda #temp2
-            ldy #01
-            sec 
-            jsr digits          ;Display this song
-            lda vgjchcp          ;Close Paren
-            ldx vgjchcp+1
-            jsr vgadd2  
         endif
+        
+        jsr doconfirm		;Show confirm if needed
+		jsr dofinish        ;CC when gamma still busy, CS when done
+        ifcc
+            rts                 ;return if waiting on Gamma still, won't check fire or shield either (below)
+        endif
+        
+        ;Check Fire switch
+        lda #2
+		jsr chkbut
+		ifcs
+			lda nxtcmd
+			cmp #g_clrh           ;Clear high scores??
+			ifeq
+?toconf         lda #$80
+				sta bconfirm
+			else
+				cmp #g_clrs			;Clear Game Stats
+				beq ?toconf
+				lda nxtcmd
+				jsr dosnd2      	;send this one, it doesn't require a confirmation
+                
+			endif
+		endif
+ 
+        ;Check Shield Switch, only if waiting for confirm
+        lda bconfirm
+        ifne
+            lda #3
+			jsr chkbut
+			ifcs
+				lda nxtcmd
+				cmp #g_clrh		;Clear high scores??
+				ifeq
+?snddat             lda #snd_c7        ;Start beeps
+                    jsr xmit
+                    jsr do3del
+                    lda nxtcmd         ;send actual command
+                    jsr xmit
+                    jsr do3del
+                    lda #-1
+                    sta gammawait
+				else
+					cmp #g_clrs		;Clear Game Stats
+					beq ?snddat
+				endif
+				lda #00
+				sta bconfirm    ;Clear confirm
+			endif
+        endif       
+        sta watchdog        ;kick the doggie
+        ;update with spinner       
+		jsr updroller		
+		lda rollcnt
+		ifne
+			ifpl
+				jsr ?incnxtsnd
+				dec rollcnt			
+			else
+				jsr ?decnxtsnd
+				inc rollcnt
+			endif
+			;stop anything playing already
+			lda #g_sndstop
+			jsr xmit
+			;clear some stuff
+			lda #00
+			sta btn_s_time         ;Don't step right away again
+			sta bconfirm           ;If we were confirming, clear this too
+		endif
         rts
 
 doconfirm
@@ -1257,6 +1249,32 @@ doconfirm
             endif
         endif
 		rts
+        
+dofinish
+        ;wraps up a time based gamma command that started beeps
+        ;CC when gamma still busy, CS when done
+        sec
+        lda gammawait
+		ifne
+			;Waiting for Gamma to return clear
+			jsr getgdon
+			ifeq
+				;yes, it is done
+				lda #snd_c6         ;Kill beeps
+				jsr dosnd2
+				lda #0				;Clear the data flag so it is fetched again
+				sta dataflag
+				sta gammawait
+				sta bconfirm
+				sta nobut			;Normalize operation again
+                sec
+			else
+				;Waste some time
+				jsr do3del
+                clc
+			endif
+		endif
+        rts
 		
 ;Show temp2 bits(0 based) as 1 or 0   
      
@@ -1288,7 +1306,7 @@ dis01  	begin
         
 ?decnxtsnd   
         lda nxtcmd
-        clc
+        sec
         sbc #01
         cmp #g_clrh 
         iflt
@@ -1338,33 +1356,13 @@ warpcolrtp1
     .sbttl "Warp Codes Setup"
 ;**********************************************
 ?testwarp
-		jsr doconfirm		;Show confirm if needed
-		lda gammawait
-		ifne
-			;Waiting for Gamma to return clear
-			jsr getgdon
-			ifeq
-				;yes, it is done
-				lda #g_sndstop
-				jsr dosnd2
-				lda #0				;Clear the data flag so it is fetched again
-				sta gotdata
-				sta gammawait
-				sta bconfirm
-				sta nobut			;Normalize operation again
-			else
-				;Waste some time
-				jsr do3del
-			endif
-			rts
-		endif
         ;This page will use data in TWTACT
         jsr stpg5
-        lda gotdata
+        lda dataflag
         ifeq
             jsr wrpin        ;Get the Warp Stats only once per self test
-            lda #$80
-            sta gotdata
+            lda #-1
+            sta dataflag
 			lda #0
 			sta setsel		;Setsel starts at zero
         endif
@@ -1439,6 +1437,13 @@ warpcolrtp1
 			tax
 			jsr stmesg    
 		endif
+        
+        jsr doconfirm		    ;Show confirm if needed
+		jsr dofinish
+        ifcc
+            rts                 ;return if waiting on Gamma still, won't check fire or shield either (below)
+        endif
+        
 		;Fire Buton
 		lda #2
 		jsr chkbut
@@ -1452,6 +1457,7 @@ warpcolrtp1
 				sta setsel
 			endif
 		endif
+        
 		;Shield Button
 		lda #3
 		jsr chkbut
@@ -1463,15 +1469,14 @@ warpcolrtp1
 					lda #-1
 					sta bconfirm
 				else
-					;reactor hum
-					lda #snd_b1d
-					jsr xmit
-					jsr do3del
 					;send the command
-					sei             ;Hold IRQ's please
+					sei                 ;Hold IRQ's please
 					ldx setsel
 					lda ?wrpcmd-1,X
-					jsr xmit       ;Do retry xmit (no recieve)
+					jsr xmit            ;Do retry xmit (no recieve)
+                    jsr do3del
+                    lda #snd_c7         ;beeps
+					jsr xmit
 					cli
 					lda #0
 					sta setsel
@@ -1485,7 +1490,7 @@ warpcolrtp1
         rts
         
 
-?stwarp .db stmwarpt,stmwarpr,stmwarpy,stmwarpg,stmwarpa,stmwarpb,stmwarpp,stmwarpk,stmwarp,stmwarpc,stmpaux,stmfiresel,-1, ;stmwshlds,-1
+?stwarp .db stmwarpt,stmwarpr,stmwarpy,stmwarpg,stmwarpa,stmwarpb,stmwarpp,stmwarpk,stmwarp,stmwarpc,stmpaux,stmfiresel,stmpshelds,-1
 ?wrpmsg .db stmwmsg1,stmwmsg2;,stmwmsg3
 ?wrpcmd	.db g_classwarp,g_genwarp;,g_clrwarp
 
@@ -1500,8 +1505,7 @@ warpcolrtp1
 ;* Routine will loop until it hits a byte in
 ;* text table with a negative value
 ;***********************************************
-statict 
-		lda #00
+statict lda #00
         sta stexti
         begin
             ldy stexti
@@ -1523,7 +1527,6 @@ statict
 ?tstart     =   $9F0
 ?tend       =   $9F2
 
-?bit08		.db 08
 ;**********************************************************
 ;* Entry: (A)  = MSB of starting address                  
 ;*                                                        
@@ -1629,19 +1632,19 @@ ramerr  tsx
         jmp ?zpgtst
 		
 ;*****************************************
-;* Pulse Light 
+;* Pulse Light - Toggles and waits
 ;*****************************************
 pulselig
 		;rts
 		lda out1s             ;Lamp On, never reset processors
-		ora #(o_lighton)
+		eor #(o_lighton)
 		sta outputs
 		ldx #0
 		begin
 			dex
 		eqend
-		and #~(o_lighton)
-		sta outputs
+		;and #~(o_lighton)
+		;sta outputs
 		rts
 		
 ;*********************************************
@@ -1710,12 +1713,11 @@ msgtblvy = __stvy
         stmess(actwrps,colgreen,1,$9B,$38)
         stmess(actxliv,colgreen,1,$95,$20)
         stmess(avggtim,colwhite,1,$C0,$28)
-        stmess(rstaths,colwhite,1,$CA,0)
-        stmess(rstatgs,colwhite,1,$DC,0)
-        stmess(rstatop,colwhite,1,$DC,0)
-        ;stmess(ccl,colwhite,1,$D2,0) 
-        ;stmess(ccr,colwhite,1,$D2,0)
-        stmess(soundof,colwhite,1,$DC,0)
+        
+        stmess(rstaths,colwhite,1,$E6,0)
+        stmess(rstatgs,colwhite,1,$E6,0)
+       ; stmess(rstatop,colwhite,1,$E6,0)
+        stmess(soundof,colwhite,1,$E6,0)
         stmess(soundn,colwhite,1,$E6,0)             
         stmess(testra,colblue,1,$84,$50)      
         stmess(testro,colblue,1,$84,$20)

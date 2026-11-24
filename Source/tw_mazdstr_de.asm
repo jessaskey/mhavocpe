@@ -83,27 +83,31 @@ mzh10a  .ctext "ROTE SCHALTER FEUERN FEUERBwLLE AB"
 ;********************************************************************
 ;  Dif 1 - Maze B - Level 6 - Level 6
 ;********************************************************************
-mzh11a  .ctext "IST DER EINBAHNWEG DER EINZIGE WEG?"
-	;.ctext "IS THAT ONE WAY THE ONLY WAY?"
+mzh11a  .ctext "VERSTECKTE GEGENSTxNDE ERSCHEINT,"
+	;.ctext "HIDDEN ITEMS APPEAR"
         czmess(mzh11a,$50,mzh11a_)
+mzh11b  .ctext "WENN SICH DER SPIELER IN DER NxHE BEFINDET"
+	;.ctext "WHEN PLAYER IS NEARBY"
+        czmess(mzh11b,$48,mzh11b_)
 
-;********************************************************************
-;  Dif 1 - Maze D - Level 8 - Level 8
-;********************************************************************
-mzh13a  .ctext "SI VOUS ÊTES DOUf, VOUS TROUVEREZ!"
-        czmess(mzh13a,$50,mzh13a_)	;,$8E)	
-		
 ;********************************************************************
 ;  Dif 1 - Maze C - Level 7 - Level 7
 ;********************************************************************
 mzh12a  .ctext "KAUM ZU GLAUBEN - SO WEIT GEKOMMEN!"
 	;.ctext "I CANT BELIEVE YOU MADE IT THIS FAR"
         czmess(mzh12a,$50,mzh12a_)
+
+;********************************************************************
+;  Dif 1 - Maze D - Level 8 - Level 8
+;********************************************************************
+mzh13a  .ctext "WENN DU SO GUT BIST, FINDEST DU DEN WEG!"
+	;.ctext "IF YOU ARE SO GOOD, YOU FIND THE PATH!"
+        czmess(mzh13a,$50,mzh13a_)	;,$8E)	
 		
 ;********************************************************************
 ;  Dif 2 - Maze A - Level 9 - Level 9
 ;********************************************************************
-mzh20a  .ctext "ACHTUNG: WECHSELNDE WwNDE UND BpDEN"
+mzh20a  .ctext "ACHTUNG: WECHSELNDE WxNDE UND BpDEN"
 	;.ctext "WATCH OUT FOR CHANGING WALLS AND FLOORS"
         czmess(mzh20a,$50,mzh20a_)
 		
@@ -111,7 +115,8 @@ mzh20a  .ctext "ACHTUNG: WECHSELNDE WwNDE UND BpDEN"
 ;  Dif 2 - Maze B - Level 10 - Level 10
 ;********************************************************************		
 mzh21a  .ctext "DER WEG IN IST NICHT DER WEG HERAUS"
-        czmess(mzh21a,$50,mzh21a_)	;,$A3)
+   ;.ctext "THE PATH IN IS NOT THE PATH OUT"
+     czmess(mzh21a,$50,mzh21a_)	;,$A3)
 		
 ;********************************************************************
 ;  Dif 2 - Maze C - Level 11 - Level 11
@@ -140,7 +145,8 @@ mzh30a  .ctext "NUTZEN SIE IHRE ZEIT WEISE"
 ;********************************************************************
 ;  Dif 3 - Maze B - Level 14 - Level 14
 ;********************************************************************
-mzh31a  .ctext "IONENKANONENHILFE IST NICHT TpDLICH"	;.ctext "ION CANNON SUPPORT IS NOT DEADLY"
+mzh31a  .ctext "IONENKANONENHILFE IST NICHT TpDLICH"
+	;.ctext "ION CANNON SUPPORT IS NOT DEADLY"
         czmess(mzh31a,$50,mzh31a_)
 		
 ;********************************************************************

@@ -27,7 +27,11 @@ adddis  ldx #maddm2
         jsr digits      ;Which level
         ldx #maddm1     ;Press start within...
         jsr mesg_rtp1
+#IF LANGUAGE = 0
 		VGADD_VCTRS(0,-80,hidden)	;Back up to time space
+#ELSE
+		VGADD_VCTRS(0,-88,hidden)	;Back up to time space
+#ENDIF        
         pla 
         sta temp3           ;Save for select routine
         ldx #$60            ;Get back Flash color

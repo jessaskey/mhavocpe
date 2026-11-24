@@ -32,15 +32,15 @@ enem4	;never init if ship is dead or dying
 					jsr setshdstat		;Reset status of each panel
 					;position station
 					lda #$80
-					sta statxl      ;Place Base Ship
+					sta statxl          ;Place Base Ship
 					lda #$08
 					sta statyl
 					lda #$01
 					sta statyh
-					lda #$F9        ;Station Status
+					lda #$F9            ;Station Status
 					sta statst
 					lda #$80
-					sta stbflg		;Station will move downwards to start
+					sta stbflg		    ;Station will move downwards to start
 					lda #$15
 					sta hitpts          ;1500 Per Object
 				endif
@@ -110,9 +110,7 @@ cruntrt .word rundown-1		;moving down
 		.word runrgen-1		;shield animation
 		.word runup-1		;moving up
 		.word runfight-1	;fighting now
-		;.word runshields-1	;Star castle!!
 		.word rundone-1		;wrap up
-
 
 ;Execution loops for each status
 rundown
@@ -123,7 +121,6 @@ rundown
 			;its where it needs to be, stop station drop motion
 			lda #00				
 			sta stbflg
-			;sta shiroth			;Position reference is zero to start
 			sta frame			;reset the frame counter for animation
 			;move to next state
 			lda #sc_state_talk
@@ -136,9 +133,6 @@ rundown
 				lda #sp_maxwillnot
 			endif
 			jsr dosound			;Shield engergize 
-			;jsr dodelay
-			;lda #snd_j6			;Escape pod sound
-			;jsr dosound
 		endif
 		rts
 
@@ -310,16 +304,6 @@ rundone
 		lda #$31
 		sta	objst,X			;Activate fireball in slot X
 		jsr shotdelta		;Sets fireball start to station start and sets velocities towards player
-		
-		;now set velocity based upon shotdelta calcs above
-		; lda temp1+1
-		; ifmi
-			; clc
-			; adc #01
-		; endif
-		; sta velxh+zshot
-		; lda temp2+1
-		; sta velyh+zshot
 		rts
 						
 ;*************************************************
@@ -1355,7 +1339,7 @@ dropbar ldx temp9				;X is index to shot that hit the panel
 		stx temp5               ;Flag 0 = from station
 		jsr drop3               ;Drop panel
 		ifpl                    ;Started one
-			lda #$11
+			lda #$51
 			sta objst,Y             ;Set to line from here
 			dec dropcnt             ;Got one
 		endif

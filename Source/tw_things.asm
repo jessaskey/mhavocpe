@@ -1290,9 +1290,6 @@ outtesser
 		; 04 - Token C 
 		; 08 - Token D
 outtes2	ifne
-			;pha
-			;vgadd_scale(ywin_off,binscal2,80)	;slightly smaller for the tokens			
-			;pla
 			;Do 4 tokens + Final Station Badge
 			ldy #0
 			sty temp2
@@ -1312,15 +1309,12 @@ outtes2	ifne
 				ldy temp2
 				cpy #4
 			eqend
-			;pha
-			;vgadd_scale(ywin_off,binscal2,0)		;set scale back to normal
-			;pla
 		endif
 		rts
 		
 outbadge
-		;lda #$D0
-		;sta temp1
+		lda #$C0
+		sta temp1
 		ldx temp4+1
 		lda gtesser,X
 		and #$10
@@ -1338,7 +1332,7 @@ outbadge
 		
 		
 ;******************************************
-; Draw the token on the screen
+; Draw the tesser token on the screen
 ; temp2 contains the Token index 0-4
 ; temp1 contains the brightness
 ; 
@@ -1360,7 +1354,7 @@ drawtok ldy temp2
 		cpy #4
 		ifne
 			lda temp1			;MSB brite value
-			ora #colred2
+			ora #colred
 			ldx #tok_vpg
 			jsr vgadd2
 			VGADD_JSR(tokhex)	

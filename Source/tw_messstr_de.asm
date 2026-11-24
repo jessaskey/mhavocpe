@@ -17,23 +17,23 @@ press       .ctext "DRvCKE START"
 addm2       .ctext "REST DER NACHRICHT "
         cmess(addm2,colcyan,1,-6,addm2_,2)        ;Rest of Message
 		
-addm1       .ctext "DRvCKE START WwHREND    SEKUNDEN"
+addm1       .ctext "DRvCKE START WxHREND    SEKUNDEN"
         cmess(addm1,colcyan,1,4,addm1_,0)         ;Add Time Message
 		
 playr       .ctext "SPIELER " 
         cmess(playr,colyellow,1,$24,playr_,1)     ;Player (Big)
 		
 tmes0       .ctext "ZERSTpRE FISCHROBOTER"
-		mess(tmes0,colcyan,1,$48,$C7)       ;Destroy fish robotos
+		mess(tmes0,colcyan,1,$48,$BC)       ;Destroy fish robotos
 
-tmes1       .ctext "TREFFE ALLE SCHIFFE"
-        mess(tmes1,colcyan,1,$48,$C7)       ;Shoot all fighters
+tmes1       .ctext "ZERSTpRE FEINDLICHE SCHIFFE"
+        mess(tmes1,colcyan,1,$48,$B0)       ;Shoot all fighters
 
-tmes2       .ctext "TREFFER"  
-        mess(tmes2,colcyan,1,$48,$C1)       ;Hit...
+tmes2       .ctext "MANpVER DURCH DAS LABYRINTH"  
+        mess(tmes2,colcyan,1,$48,$A8)       ;Hit...
        
-tmes3       .ctext "NAVIGIERE DURCH DAS LABYRINTH"     
-        mess(tmes3,colcyan,1,$48,$A3)       ;Maneuver through maze
+tmes3       .ctext "KxMPFER SCHIESSEN, BAR VERMEIDEN"     
+        mess(tmes3,colcyan,1,$48,$9A)       ;Maneuver through maze
      
 tmes4       .ctext "ZERSTpRE GEGNERSCHILDE"
         mess(tmes4,colflash,1,$48,$C3)      ;Destroy enemy shields   
@@ -42,15 +42,15 @@ hint0       .ctext "ANDOCKEN"
         cmess(hint0,colred,1,$46,hint0_,0)        ;Dock...		
 
 oxyg        .ctext "SAUERSTOFF"
-        mess(oxyg,colgreen,1,10d,$EB)       ;Oxygen
+        mess(oxyg,colgreen,1,10d,$E8)       ;Oxygen
 
 reac        .ctext "REAKTOR"
         mess(reac,colred,1,-30d,$AA)        ;Reactor
 
-bonus       .ctext "BONUS"
+bonus       .ctext "BONUS "
         mess(bonus,colgreen,1,$54,$2F)      ;Bonus
 
-mlevel      .ctext "LEVEL"
+mlevel      .ctext "LEVEL "
         mess(mlevel,colyellow,1,-$50,$9E)   ;Level
 
 insert      .ctext "MvNZE EINWERFEN"
@@ -70,8 +70,8 @@ credi       .ctext "CREDITS"
 bolif       .ctext "BONUS ALLE "
         mess(bolif,colcyan,1,$a0,$C8)       ;Bonus Every
 
-elife       .ctext " LEBEN"
-        mess(elife,colpurple,1,$a8,$ed)     ;Lives per game
+elife       .ctext " LEBEN PRO SPIELER"
+        mess(elife,colpurple,1,$a8,$C7)     ;Lives per game
 
 cont        .ctext "STATUS "
         mess(cont,colwhite,1,$60,$D0)       ;Condition
@@ -92,21 +92,21 @@ garbage     .ctext "MvLL VERKLAPPT"
         mess(garbage,colred,1,$54,$98)      ;Garbage Ejected
 
 tesser0     .ctext "ALPHA TESSERAKT AKTIV!"
-		cmess(tesser0,colflash,1,$4C,_tesser0,0)	;Alpha Tesseract engaged!
+		cmess(tesser0,colflash,1,$4C,tesser0_,0)	;Alpha Tesseract engaged!
 
 tesser1     .ctext "BETA TESSERAKT AKTIV!"
-		cmess(tesser1,colflash,1,$4C,_tesser1,0)	;Beta Tesseract engaged!
+		cmess(tesser1,colflash,1,$4C,tesser1_,0)	;Beta Tesseract engaged!
 
 tesser2     .ctext "GAMMA TESSERAKT AKTIV!"
-		cmess(tesser2,colflash,1,$4C,_tesser2,0)	;Gamma Tesseract engaged!
+		cmess(tesser2,colflash,1,$4C,tesser2_,0)	;Gamma Tesseract engaged!
 
 tesser3     .ctext "ZETA TESSERAKT AKTIV!" 
-		cmess(tesser3,colflash,1,$4C,_tesser3,0)	;Zeta Tesseract engaged!
+		cmess(tesser3,colflash,1,$4C,tesser3_,0)	;Zeta Tesseract engaged!
 		
-ahome       .ctext "ANNwHERUNG AN HEIMATWELT!"
+ahome       .ctext "ANNxHERUNG AN HEIMATWELT!"
         mess(ahome,colflash,1,$54,$A0)      ;Approaching Homeworld!
 
-conf        .ctext "BESTwTIGT"
+conf        .ctext "BESTxTIGT"
         mess(conf,colwhite,2,$38,$42)       ;Confirmed
 
 mdist       .ctext "DISTANZ"
@@ -115,10 +115,10 @@ mdist       .ctext "DISTANZ"
 etyp        .ctext "GEGNERART"
         mess(etyp,colcyan,2,-$3e,$D4)       ;Enemy Type
 
-cols        .ctext "ANNwHERND"
+cols        .ctext "BEVORSTEHEND"
         mess(cols,colcyan,2,-$38,$04)       ;Closing
 
-hold        .ctext "ABWARTEND"
+hold        .ctext "STATIONxR"
         mess(hold,colcyan,2,-$38,$04)       ;Holding
 
 figh        .ctext "SCHIFFE"
@@ -127,10 +127,10 @@ figh        .ctext "SCHIFFE"
 sphr        .ctext "SPHEROIDE"
         mess(sphr,colcyan,2,-$3e,$04)       ;Spheroids
 
-fort        .ctext "RAUMFESTUNG" 
+fort        .ctext "WELTRAUMFESTUNG" 
         mess(fort,colcyan,2,-$3e,$04)       ;Space Fort
      
-spin        .ctext ""SPINNER"  
+spin        .ctext "SPINNER"  
         mess(spin,colcyan,2,-$3e,$04)       ;Spinners
    
 mainf       .ctext "MAINFRAME"
@@ -139,37 +139,37 @@ mainf       .ctext "MAINFRAME"
 warpi       .ctext "---NACHRICHT AUFGEFANGEN---"
         mess(warpi,colgreenr,1,$54,$B5)     ;Intercepted Message
 
-warp0       .ctext "CODE   FvR ROTEN SPRUNG ZU LEVEL 4"
-        mess(warp0,colgreenr,1,$48,$96)     ;Enter XX for Red warp...
+warp0       .ctext "    FvR ROTEN SPRUNG ZU LEVEL 4"
+        mess(warp0,colgreenr,1,$48,$92)     ;Enter XX for Red warp...
 
-warp1       .ctext "CODE   FvR GELBEN SPRUNG ZU LEVEL 9"
-        mess(warp1,colgreenr,1,$48,$96)     ;Enter XX for Yellow warp...
+warp1       .ctext "    FvR GELBEN SPRUNG ZU LEVEL 9"
+        mess(warp1,colgreenr,1,$48,$92)     ;Enter XX for Yellow warp...
 
-warp2       .ctext "CODE   FvR GRvNEN SPRUNG ZU LEVEL 10"
-        mess(warp2,colgreenr,1,$48,$96)     ;Enter XXX for Green warp...
+warp2       .ctext "     FvR GRvNEN SPRUNG ZU LEVEL 10"
+        mess(warp2,colgreenr,1,$48,$92)     ;Enter XXX for Green warp...
 
-warp3       .ctext "CODE   FvR AQUA SPRUNG ZU LEVEL 13"
-        mess(warp3,colgreenr,1,$48,$96)     ;Enter XXX for Aqua warp...
+warp3       .ctext "     FvR AQUA SPRUNG ZU LEVEL 13"
+        mess(warp3,colgreenr,1,$48,$92)     ;Enter XXX for Aqua warp...
      
-warp4       .ctext "CODE   FvR BLAUEN SPRUNG ZU LEVEL 17"  
-        mess(warp4,colgreenr,1,$48,$96)     ;Enter XXX for Blue warp...
+warp4       .ctext "     FvR BLAUEN SPRUNG ZU LEVEL 17"  
+        mess(warp4,colgreenr,1,$48,$92)     ;Enter XXX for Blue warp...
           
-warp5       .ctext "CODE   FvR PURPURSPRUNG ZU LEVEL 19"
-        mess(warp5,colgreenr,1,$48,$96)     ;Enter XXX for Purple warp...
+warp5       .ctext "     FvR PURPURSPRUNG ZU LEVEL 19"
+        mess(warp5,colgreenr,1,$48,$92)     ;Enter XXX for Purple warp...
 		
-;warp6       .ctext "CODE   FvR PINKEN SPRUNG ZU LEVEL 21"   
-        ;mess(warp6,colgreenr,1,$48,$96)     ;Enter XXX for Pink warp... 
+;warp6       .ctext "     FvR PINKEN SPRUNG ZU LEVEL 21"   
+        ;mess(warp6,colgreenr,1,$48,$92)     ;Enter XXX for Pink warp... 
 		
 his         .ctext "HOHE ERGEBNISSE"
-		cmess(his,colred,0,$48,his_*2,0)          ;High Scores
+		cmess(his,colred,0,$48,his_*2,2)          ;High Scores
 
 enin        .ctext "INITIALE EINGEBEN"
         cmess(enin,colyellow,1,$34,enin_,0)      ;Enter your initials
 
-getout      .ctext "RAUS!!"
+getout      .ctext "RAUS!"
         mess(getout,colred2,0,0,$EB)        ;Get Out!!
 
-pub0        .ctext "DRvCKE KNOPF"
+pub0        .ctext "DRvCKE  KNOPF"
         mess(pub0,colwhite,0,0,$DC)         ;Push Button
 
 pub1        .ctext "FvR HpHERE SPRvNGE"
@@ -181,7 +181,7 @@ gtsc        .ctext "KLASSE SCORE"
 ledit       .ctext "MAJOR HAVOC LEVEL EDITOR"
 		cmess(ledit,colwhite,1,0,ledit_,0)		;Major Havoc Level Editor
 
-cmodd        .ctext "DEMOMODUS"
+cmodd        .ctext "DEMO MODUS"
 		cmess(cmodd,colorange,1,$2e,cmodd_,0)     ;Demo Mode
 
 cmode       .ctext "FREISPIEL"
@@ -197,90 +197,96 @@ cmod3       .ctext "2 MvNZEN 1 SPIEL"
         cmess(cmod3,colgreen,1,$2e,cmod3_,0)      ;2 coins 1 play
 
 
-mwred       .ctext "ROT "                   ; .ctext "-> RACCOURCI ROUGE----- "
-        mess(mwred,colred2,1,$a2,$C4)       ;Red (For Warp Description)
+mwred       .ctext "GEBEN SIE ROTEN WARP-- "  
+        mess(mwred,colred2,1,$a3,$B4)       ;Red (For Warp Description)
 
-mwyel       .ctext "GELB "
-        mess(mwyel,colyellow,1,$a2,$C4)     ;Yellow 
+mwyel       .ctext "GEBEN SIE GELB WARP-- "
+        mess(mwyel,colyellow,1,$a3,$B6)     ;Yellow 
 
-mwgrn       .ctext "GRvN "
-        mess(mwgrn,colgreen,1,$a2,$C4)      ;Green
+mwgrn       .ctext "GEBEN SIE GRvN WARP-- "
+        mess(mwgrn,colgreen,1,$a3,$B6)      ;Green
 
-mwaqu       .ctext "AQUA "   
-        mess(mwaqu,colcyan,1,$a2,$C7)       ;Aqua
+mwaqu       .ctext "GEBEN SIE AQUA WARP-- "   
+        mess(mwaqu,colcyan,1,$a3,$B6)       ;Aqua
       
-mwblue      .ctext "BLAU "  
-        mess(mwblue,colblue,1,$a2,$C7)      ;Blue
+mwblue      .ctext "GEBEN SIE BLAU WARP-- "  
+        mess(mwblue,colblue,1,$a3,$B6)      ;Blue
      
-mwpurp      .ctext "PURPUR "      
-        mess(mwpurp,colpurple,1,$a2,$C4)    ;Purple
+mwpurp      .ctext "GEBEN SIE PURPUR WARP-- "      
+        mess(mwpurp,colpurple,1,$a3,$B2)    ;Purple
    
-mwpink      .ctext "PINK " 
-        mess(mwpink,colpink,1,$a2,$C7)      ;Pink
-           
+mwpink      .ctext "GEBEN SIE PINK WARP-- " 
+        mess(mwpink,colpink,1,$a3,$B6)      ;Pink
+
+
+#IF TOURNAMENT_EDITION != 0
+promise     .ctext "TURNIERAUSGABE"     
+#ELSE
 promise     .ctext "DAS VERSPROCHENE ENDE"
+#ENDIF  
+           
 		mess(promise,colwhite,1,$00,$00)	;The Promised End
 
 ;MESS2
-text0       .ctext "   DU BIST MAJOR HAVOC, DER ANFvHRER"
-		mess(text0,colwhite,1,$10,$90)     
+text0       .ctext "   DU BIST MAJOR HAVOC, DER ANFvHRER EINES"
+		mess(text0,colwhite,1,$10,$80)     
 
-text1       .ctext "EINES MUTIGEN WURFES VON KLONEN."
-		mess(text1,colwhite,1,$10,$90)
+text1       .ctext "MUTIGEN WURFES VON KLONEN. DU BIST SIE, SIE SIND"
+		mess(text1,colwhite,1,$10,$80)
 
-text2       .ctext "DU BIST SIE, SIE SIND DU, ALLE VON EINEM"
-		mess(text2,colwhite,1,$10,$90)
+text2       .ctext "DU, ALLE VON EINEM EINER, FvR ALLE KxMPFEN FvR"
+		mess(text2,colwhite,1,$10,$80)
 
-text3       .ctext "EINER FvR ALLE KwMPFEN FvR DIE MENSCHHEIT..."
-		mess(text3,colwhite,1,$10,$90)
+text3       .ctext "DIE MENSCHHEIT..."
+		mess(text3,colwhite,1,$10,$80)
 
-text4       .ctext "  VOR URZEITEN vBERRANTE DAS BpSE VAXXIANISCHE"
-		mess(text4,colcyan,1,$10,$90)
+text4       .ctext "   VOR URZEITEN vBERRANTE DAS BpSE VAXXIANISCHE"
+		mess(text4,colcyan,1,$10,$80)
 
-text5       .ctext " IMPERIUM DIE GALAXIE, DIE MEISTEN DEINER VORFAHREN" 
-		mess(text5,colcyan,1,$10,$90)
+text5       .ctext "IMPERIUM DIE GALAXIE, DIE MEISTEN DEINER VORFAHREN" 
+		mess(text5,colcyan,1,$10,$80)
 
 text6       .ctext "WURDEN VERSKLAVT UND ZUR VAXXIANISCHEN HEIMATWELT"
-		mess(text6,colcyan,1,$10,$90)
+		mess(text6,colcyan,1,$10,$80)
 
 text7       .ctext "MAYNARD GEBRACHT. WENIGE WISSENSCHAFTLER ENTKAMEN."
-		mess(text7,colcyan,1,$10,$90)
+		mess(text7,colcyan,1,$10,$80)
 
-text8       .ctext "  HEUTE IST DAS IMPERIUM PRAKTISCH VERSCHWUNDEN."
-		mess(text8,colgreen,1,$10,$90)
+text8       .ctext "   HEUTE IST DAS IMPERIUM PRAKTISCH VERSCHWUNDEN."
+		mess(text8,colgreen,1,$10,$80)
 
 text9       .ctext "ABER VAXXIANISCHE RAUMSTATIONEN, KONTROLLIERT UND"
-		mess(text9,colgreen,1,$10,$90)
+		mess(text9,colgreen,1,$10,$80)
 
 text10      .ctext "VERTEIDIGT VON ROBOTERN, PATROLLIEREN WEITERHIN"
-		mess(text10,colgreen,1,$10,$90)
+		mess(text10,colgreen,1,$10,$80)
 
-text11      .ctext "DIE GALAXIE UND GEFwHRDEN ALLE."
-		mess(text11,colgreen,1,$10,$90)
+text11      .ctext "DIE GALAXIE UND GEFxHRDEN ALLE."
+		mess(text11,colgreen,1,$10,$80)
 
 text12      .ctext "   DIE KLEINE GRUPPE WISSENSCHAFTLER KLONTE DICH,"
-		mess(text12,colyellow,1,$10,$90)
+		mess(text12,colyellow,1,$10,$80)
 
 text13      .ctext "MAJOR HAVOC, UM MIT DEM KATASTROFLIEGER DURCH EIN"
-		mess(text13,colyellow,1,$10,$90)
+		mess(text13,colyellow,1,$10,$80)
 
 text14      .ctext "WURMLOCH ZU FLIEGEN UND DIE KLONARMEE ANZUFvHREN"
-		mess(text14,colyellow,1,$10,$90)
+		mess(text14,colyellow,1,$10,$80)
 
 text15      .ctext "GEGEN DIESE GEFvRCHTETE ROBOTERARMADA."
-		mess(text15,colyellow,1,$10,$90)
+		mess(text15,colyellow,1,$10,$80)
 
 text16      .ctext "ZERSTpRE DIE FEINDLICHEN RAUMSTATIONEN UND LANDE"
-		mess(text16,colyellow,1,$10,$90)
+		mess(text16,colyellow,1,$10,$80)
 
 text17      .ctext "AUF DEM PLANETEN DER VAXX, UM DEINE LEUTE ZU BEFREIEN."
-		mess(text17,colyellow,1,$10,$90)
+		mess(text17,colyellow,1,$10,$80)
 
-text18      .ctext "KLONE SIND UMSONST, WIR VERSCHENKEN SIE."
-		mess(text18,colpurple,1,$10,$90)
+text18      .ctext "ZAHLEN SIE MvNZEN EIN, UM IHRE KLONARMEE ZU FINANZIEREN." 
+		mess(text18,colpurple,1,$10,$79)
 
-text19      .ctext "HIN UND WIEDER KANNST DU SOGAR EINEN BONUSKLON BEKOMMEN."
-		mess(text19,colpurple,1,$10,$90)
+text19      .ctext "GELEGENTLICH KANN MAN SOGAR EINEN BONUS-KLON ERHALTEN."  // changed to fit line
+		mess(text19,colpurple,1,$10,$80)
 
 textend     .ctext "----TEXTENDE----"
 		mess(textend,colblue,1,$10,$90)
@@ -371,9 +377,7 @@ cretx26     .ctext " "
 cretxend    .ctext " "
 		mess(cretxend,colwhite,1,$10,$90)
 
-
-
-txtcmfr     .ctext "   KLONE SIND UMSONST, WIR VERSCHENKEN SIE."
+txtcmfr     .ctext "   KLONS SIND KOSTENLOS, WIR GEBEN SIE WEG."
 		mess(txtcmfr,colpurple,1,$10,$90)       ;Story Cost - Free
 
 texteot     .ctext "           -----TEXTENDE-----" 
@@ -389,19 +393,19 @@ scoln1      .ctext "  ............................................."
 sco2a       .ctext "WELTRAUMGEGNER"
 		mess(sco2a,colred,1,0,$D9)
 
-sco3        .ctext "  FISCHOIDEN        1000           "   
+sco3        .ctext "  FISCHOIDEN        1000          "   
 		mess(sco3,colyellow,1,1,$9A)
    
 scospc1    	.ctext "                                  "
 		mess(scospc1,colblack,1,0,$9A)
 
-sco4        .ctext "  FLIEGOIDEN         500           "
+sco4        .ctext "  FLIEGOIDEN         500          "
 		mess(sco4,colyellow,1,2,$9A)
 
 scospc2    	.ctext "                                  " 
 		mess(scospc2,colblack,1,0,$9A)
 
-sco5        .ctext "   DREHOIDEN         500           "
+sco5        .ctext "   DREHOIDEN         500          "
 		mess(sco5,colyellow,1,3,$9A)
 
 scoln2      .ctext "  ............................................."
@@ -410,19 +414,19 @@ scoln2      .ctext "  ............................................."
 sco6        .ctext "LABYRINTHGEGNER"
 		mess(sco6,colred,1,0,$DC)
 
-sco7        .ctext "   PYROIDEN         1000           "
+sco7        .ctext "   PYROIDEN         1000          "
 		mess(sco7,colyellow,1,4,$9A)
 
 scospc3    	.ctext "                                  "        
 		mess(scospc3,colblack,1,0,$9A)
 
-sco8        .ctext "  PERKOIDEN         1000           "
+sco8        .ctext "  PERKOIDEN         1000          "
 		mess(sco8,colyellow,1,5,$9A)
 
 scospc4    	.ctext "                                  "  
 		mess(scospc4,colblack,1,0,$9A)
       
-sco8m       .ctext "   MAXOIDEN         9000           "
+sco8m       .ctext "   MAXOIDEN         9000          "
 		mess(sco8m,colyellow,1,6,$9A)
  
 scoln3      .ctext "  ............................................."
@@ -431,7 +435,7 @@ scoln3      .ctext "  ............................................."
 sco10       .ctext "ANDERE PUNKTE"
 		mess(sco10,colred,1,0,$DC)
 
-sco11       .ctext "  REAKTOID          5000           "
+sco11       .ctext "  REAKTOID          5000          "
 		mess(sco11,colyellow,1,7,$9A)
 
 scospc5    	.ctext "                                  "     
@@ -443,16 +447,16 @@ sco12       .ctext "    OXOID           100           "
 scospc6    	.ctext "                                  " 
 		mess(scospc6,colblack,1,0,$9A)    
        
-sco13       .ctext "    OXOID         VARIABEL           "
+sco13       .ctext "    OXOID         VARIABEL        "
 		mess(sco13,colyellow,1,9,$9A)
 
 scoln4      .ctext "  ............................................."
 		mess(scoln4,colwhite,1,0,$80)
  
-sco14       .ctext "INFO/PUNKTE"
+sco14       .ctext "INFOsPUNKTE"
 		mess(sco14,colred,1,0,$DC)
 
-sco15       .ctext "SAUERSTOFFBONUS IST 100 x O2"
+sco15       .ctext "SAUERSTOFFBONUS IST 100 X O2"
 		mess(sco15,colyellow,1,0,$90)
 
 sco16       .ctext "BEI LEVELENDE."

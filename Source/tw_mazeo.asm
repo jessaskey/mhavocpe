@@ -301,12 +301,12 @@ endre1  lda objst+zreactor      ;Make sure reactor is not alive
 ;* but only if there is at least one max defined on this level
 ;****************************************************************
 maxsound
+        lda #-1
+		sta temp2				;No max sounds by default
 		lda gamest
 		ifmi
 			lda mzgame
 			ifmi
-				lda #-1
-				sta temp2				;No max sounds by default
                 ;-----------------------------------------------
                 ;BUG #215 - Level 27 Maxoid Trip Pad Shots
                 ;-----------------------------------------------
@@ -315,40 +315,38 @@ maxsound
 					;loop through each max and get the lowest value
 					ldx #zmax+nmmax-1
 					begin					
-						lda objst,X
+						lda objst,X         ;used on this level?
 						ifne
 							ifpl				;max can actually die, so make sure he 'aint dead
-								and #$10			;is this max active?
-								ifne
-									jsr maxpy			;check max/pyroid collision
-									ifeq				;zero if max is still alive
-										;X is max index, will be checked against Rex
-										;*************************************************
-										;I think these are irrelevant, take them out?
-										;txa
-										;tay
-										;*************************************************
-										jsr colchkx			;temp1 will have abs value of X distance between Rex and max 
-										lda temp1
-										sta temp3
-										lda temp1+1
-										sta temp3+1			;Save X distance in temp3
-										jsr colchky			;temp1 will have abs value of Y distance between Rex and max 
-										lda temp1
-										adc temp3
-										sta temp3
-										lda temp1+1
-										adc temp3+1
-										sta temp3+1			;Sum of X and Y distances are now in temp3... 
-										;now which is smaller, our running total or this max robot?
-										lda temp2			;Has the highest 
-										cmp temp3+1
-										ifcs
-											lda temp3+1
-											sta temp2
-										endif
-									endif
-								endif
+                                bit bit20           ;bit test, maintain A
+                                ifeq                ;make sure not dying
+                                    ;lda objst,X        ;no longer needed because of bit above
+                                    and #$10			;is this max active?
+                                    ifne
+                                        jsr maxpy			;check max/pyroid collision
+                                        ;X is max index, will be checked against Rex
+                                        jsr colchkx			;temp1 will have abs value of X distance between Rex and max 
+                                        lda temp1
+                                        sta temp3
+                                        lda temp1+1
+                                        sta temp3+1			;Save X distance in temp3
+                                        jsr colchky			;temp1 will have abs value of Y distance between Rex and max 
+                                        clc
+                                        lda temp1
+                                        adc temp3
+                                        sta temp3
+                                        lda temp1+1
+                                        adc temp3+1
+                                        sta temp3+1			;Sum of X and Y distances are now in temp3... 
+                                        ;now which is smaller, our running total or this max robot?
+                                        lda temp2			;Has the highest so far
+                                        cmp temp3+1
+                                        ifcs
+                                            lda temp3+1
+                                            sta temp2
+                                        endif
+                                    endif
+                                endif
 							endif
 						endif
 						dex
@@ -356,19 +354,28 @@ maxsound
 					eqend
 				;endif
 				lda temp2
-				;temp2 has the value we need to send if it is different than last time
-				cmp maxsnd			;is it different than what we sent last?
-				ifne
-					sta maxsnd
-					;send it
-					jsr setmaxv 		;Send A as Max sound param
-				endif
-
+                ifpl
+                    cmp #4
+                    ifcs
+                        lda #3
+                    endif
+                    tax 
+                    lda maxsnds,X
+                    cmp lastmax			;is it different than what we sent last?
+                    ifne
+                        sta lastmax
+                        jsr dosound
+                    endif
+                endif
 			endif
 		endif
 		rts
-
-
+        
+maxsnds   .db snd_maxmv3
+          .db snd_maxmv2
+          .db snd_maxmv1
+          .db snd_maxmv0
+          
 ;*******************************************************
 ; Max + Trip Pad Pyroid Collisions
 ; 
@@ -376,8 +383,7 @@ maxsound
 ; 4 hits will kill max, pyroid always dies on hitting
 ; max tho.
 ;
-; X contains current Max index
-; Will return -1 in A if Max dies, zero otherwise
+; X contains current Max index, must protect value
 ; Y will be used for Pyroid index
 ;*******************************************************
 maxpy	;check each pyroid
@@ -385,19 +391,19 @@ maxpy	;check each pyroid
 		begin    
 			lda objst,Y				;Fireball status
 			ifpl
-				and #$10				;Check to see if this is a trip pad pyroid (bit $10 is set if so)
+				and #$10				;Check to see if this is a trip pad pyroid (bit $10 is set if so), ignore other pyroids
 				ifne
 					jsr cmpxyx				;compare X
 					lda temp1+1				
 					ifeq					;MSB must be zero
-						lda #$28				;Hardcoded X width of Max robots
+						lda #$0C				;Hardcoded X width of Max robots
 						cmp temp1
 						ifcs
 							;Hit on X, now do Y
 							jsr cmpxyy				;Compare Y
 							lda temp1+1				;MSB must be zero
 							ifeq
-								lda #$48				;Hardcoded Y height of Max robots
+								lda #$30				;Hardcoded Y height of Max robots
 								cmp temp1
 								ifcs					;In same Y block as pyroid?
 									;we need to save X in case we destroy it below 
@@ -407,16 +413,19 @@ maxpy	;check each pyroid
 									lda maxdata-zmax,X
 									and #$C0
 									cmp #$C0			;is max at 3 hits already?
-									ifeq					
-										lda #$80			;Max will die
+									ifeq	
+                                        lda #snd_kilmax
+                                        jsr dosound
+                                        jsr dodelay
+										lda #$37			;Max will die, Set dying flag(20), maintain active flag(10) and set counter to 7
 										sta objst,X
-										lda rands+1
-										and #1
-										tax 				;We can destroy X here because we will restore before leaving
-										lda _maxsnds2,X		;Max is unhappy/died
-										jsr dosound
+										;lda rands+1
+										;and #1
+										;tax 				;We can destroy X here because we will restore before leaving
 										lda #$90
 										jsr bpont2          ;And 9000 points, this also destroys A and X
+                                        lda #sp_maxbeback		;Max is unhappy/died
+										jsr dosound
 									else
 										lda maxdata-zmax,X
 										clc					;Add (1) to the hit count
@@ -444,13 +453,11 @@ maxpy	;check each pyroid
 			dey 
             cpy #zfire+8
 		miend
-_maxex	lda #0
-		rts	
+_maxex	rts	
 
 ;max gets hit
 _maxsnds1 	.db sp_maxahhhh,sp_maxohhhh
-;max dies	
-_maxsnds2	.db sp_maxbeback,sp_maxeeeeww
+
 
 cmpxyx	sec
 		lda objxl,X
@@ -466,7 +473,7 @@ cmpxyx	sec
 		
 cmpxyy	sec
 		lda objyl,X
-		sbc objyl,Y 				;Same X block as pyroid?
+		sbc objyl,Y 				;Same Y block as pyroid?
 		sta temp1
 		lda objyh,X
 		sbc objyh,Y
@@ -602,7 +609,7 @@ posmo   lda tspark              ;Beaming, move nothing... woo hoo!
             lda objst,X
             ifne_
                 ifmi                    ;Exploding??
-                    lda objst,X
+                    ;lda objst,X        ;Not needed because loaded above?
                     clc 
                     adc #08             ;Explosion speed
                     sta objst,X
@@ -1675,7 +1682,9 @@ drpod2              lda #$68                ;Called from Man draw routine in TWM
 		;*************************************************************
 		;* Max objst notes:
 		;* 
+        ;* Bit 80 - Dead or Alive
 		;* Bit 40 - Draw Bit, if this is clear, then the object will not draw
+        ;* Bit 20 - Dying
 		;* Bit 10 - Active bit, if Max is active, then this is set, otherwise he is inactive
 		;* Bit 08 - XFlip for controlling direction Max is pointing
 		;* Bit 07 - 7 Frames of data for Max rotation
@@ -1689,9 +1698,10 @@ drpod2              lda #$68                ;Called from Man draw routine in TWM
 ?max5       bmi ?max1           
             and #$10				;Check active flag
             ifeq
-                ;max will only activate if Rex is alive
+                ;max will only activate if Rex is alive and not activly dying
                 lda objst+zman
-                ifpl
+                and #$A0
+                ifeq
                     ;max is not 'activated' yet, no motion but check for trigger
                     lda maxdata-zmax,X
                     and #$0F
@@ -1737,56 +1747,74 @@ drpod2              lda #$68                ;Called from Man draw routine in TWM
                     endif
                 endif
             else
-				;Check for collisions to stop
-                jsr movtng2  	;move object, check all wall collisions, skips clock slowdown
-				
-				;Set the X velocity we think Max should have
-				ldx temp9
-				jsr colchkx         ;this sets position diff in temp1,temp1+1 and side between Max and Rex     
-				jsr getmaxv   
-				sta velxh,X
-				
-				;Max Animation steps, has to happen after X checking due to temp2 usage below
                 lda objst,X
-                tay             ;save for below
-                and #$0f
-                ;now we do animation based upon x motion
-                tax
-                lda temp2       ;Get back Z status for movement or not
-                ifeq
-                    ;no motion, use the non-motion table          
-                    lda mnonm,X
-                else
-                    lda mmot,X
-                    tax             ;X now has the new frame data that needs split based upon direction
-                    lda side
-                    ifmi
-                        txa
-                        ;positive motion, use MSB
-                        lsr A
-                        lsr A
-                        lsr A
-                        lsr A
-                    else
-                        ;negative motion, use LSB
-                        txa
+                and #$20
+                ifne
+                    ;dying, just deincrement max counter
+                    lda frame
+                    and #07
+                    ifeq
+                        lda objst,X
+                        and #07
+                        ifne
+                            dec objst,X
+                        else
+                            lda #($80+$40+$20+$10)      ;Max is finally dead and gone
+                            sta objst,X
+                        endif
                     endif
+                else
+                    ;Check for collisions to stop
+                    jsr movtng2  	;move object, check all wall collisions, skips clock slowdown
+                    
+                    ;Set the X velocity we think Max should have
+                    ldx temp9
+                    jsr colchkx         ;this sets position diff in temp1,temp1+1 and side between Max and Rex     
+                    jsr getmaxv   
+                    sta velxh,X
+                    
+                    ;Max Animation steps, has to happen after X checking due to temp2 usage below
+                    lda objst,X
+                    tay             ;save for below
+                    and #$0f
+                    ;now we do animation based upon x motion
+                    tax
+                    lda temp2       ;Get back Z status for movement or not
+                    ifeq
+                        ;no motion, use the non-motion table          
+                        lda mnonm,X
+                    else
+                        lda mmot,X
+                        tax             ;X now has the new frame data that needs split based upon direction
+                        lda side
+                        ifmi
+                            txa
+                            ;positive motion, use MSB
+                            lsr A
+                            lsr A
+                            lsr A
+                            lsr A
+                        else
+                            ;negative motion, use LSB
+                            txa
+                        endif
+                    endif
+                    and #$0f
+                    sta temp1       		;This is our new animation frame
+                    tya             		;get back original status
+                    and #$f0
+                    ora temp1   
+                    ldx temp9				;must restore X
+                    sta objst,X     		;save the new status with updated animation data
+                                        
+                    ;Set Y velocity
+                    jsr colchky			;Y between Max and Rex 
+                    jsr getmaxv       	;Will return velocity
+                    sta velyh,X  
+                    
+                    ;Stop Max if he has hit any walls
+                    jsr bumpmax	
                 endif
-                and #$0f
-                sta temp1       		;This is our new animation frame
-                tya             		;get back original status
-                and #$f0
-                ora temp1   
-                ldx temp9				;must restore X
-                sta objst,X     		;save the new status with updated animation data
-									
-				;Set Y velocity
-				jsr colchky			;Y between Max and Rex 
-				jsr getmaxv       	;Will return velocity
-				sta velyh,X  
-				
-				;Stop Max if he has hit any walls
-				jsr bumpmax	
             endif
 			
             jsr locate              ;Place it!
@@ -1811,23 +1839,39 @@ drpod2              lda #$68                ;Called from Man draw routine in TWM
 				tya 
 				ifmi   
 					ldx #ztoken
+        
+        ;Check if Rex in same or adjacent Y stamp (distance MSB is 0 or 1)
 					jsr colchky
-					lda temp1
-					sta temp2				;Save MSB distance in Y for later
-					lda temp1+1
-					ifeq
+                    clc             ;Don't rotate "1" into bit 7
+                    ror A           ;Push distance MSB bit 0 into Carry
+                    ifeq            ;If accum is now 0 Rex was in same or adjacent stamp
+					    lda temp1       ;Load distance LSB
+                        ror A           ;Divide total distance by 2 (carry held MSB bit 0)
+					    sta temp2		;Save distance for later
+
+
+        ;Check if Rex in same or adjacent X stamp (distance MSB is 0 or 1)
 						jsr colchkx
-						ifeq
-							;Now the two MSB distances exist in temp1:x and temp2:y, we need the smaller of the two
-							lda	temp2     		;Load second number into accumulator
-							cmp	temp1     		;Compare the numbers
-							ifcc    			;DONE if first is less than or equal to second.
-								lda temp1
+                        clc             ;Don't rotate "1" into bit 7
+                        ror A           ;Push distance MSB bit 0 into Carry
+                        ifeq            ;If accum is now 0 Rex was in same or adjacent stamp
+					        lda temp1       ;Load distance LSB
+                            ror A           ;Divide total distance by 2 (carry held MSB bit 0)
+
+
+		;Now the two distances exist in accum:x and temp2:y
+                            clc
+                            adc temp2       ;add the 2 disances together to get "relative" distance
+
+
+                            ifcs            ;if overflows then too far away, use 0 intensity
+                                lda #$00
+                            else
+							    and #$F0	;combined distance/16 (result = 0-16 brightness) in upper nibble
+							    eor #$F0    ;invert bits (closer is brighter)
 							endif
-							and #$F0
-							eor #$F0
-							sta temp1			;for hex color below
-							lda obsst+1	
+                            sta temp1		;for hex color below
+							lda obsst+1
 							and #3
 							sta temp2
 							jsr drawtok					;in TW_MAP
@@ -1953,7 +1997,7 @@ drpod2              lda #$68                ;Called from Man draw routine in TWM
             ifeq
 ?trn20          jmp ?trnnxt
             endif
-            lda objst,X
+            ;lda objst,X            ;can remove now since above is JMP
             ;and #~tr_match
             ;sta objst,X             ;Clear it if it was set, so that we don't do this again
             and #tr_match           ;This flag marks a transporter to go to
@@ -2734,21 +2778,43 @@ getstat ldx temp9           ;Recall object index
 ;* Outputs: vectors to vglist                 
 ;*                                            
 ;* Uses: A,X,Y,temp7,temp8,temp9              
-;**********************************************       
+;**********************************************     
 drawmax
         lda #$30
         ldx #$72            ;scale
         jsr vgadd2
         ldx temp9           ;Object x
-        jsr gmaxstat
-        stx temp1+1         ;Save Maxstat here
-        ldx temp9
-        lda objst,X         ;lda maxdata-zmax,X
-        and #$10
+        lda objst,X
+        ldy #maxrob_vpg           ;Stat and page select
+        bit bit08
         ifne
-            lda #colred+$E0    ;Red. Active.
+            ldy #maxrob_vpg+xflip     ;flip
+        endif
+        sty temp1+1         ;Save Maxstat here
+        ;ldx temp9          ;Not needed because vars are still good from above now
+        ;lda objst,X        
+        bit bit20           ;$20
+        ifne
+            and #07             ;get brightness
+            asl A               ;x2 and shift to top nybble
+            asl A
+            asl A
+            asl A
+            asl A
+            ora #colflash       ;for dying
+            pha
+            lda temp1+1         ;also set sparkle 
+            ora #v_sparkle
+            sta temp1+1
+            pla
         else
-            lda #colred+$A0    ;Dim Red. Inactive (was $60 before BLR feedback)
+            ;lda objst,X         ;a still contains objst,X because of bit above
+            and #$10
+            ifne
+                lda #colred+$E0    ;Red. Active.
+            else
+                lda #colred+$A0    ;Dim Red. Inactive (was $60 before BLR feedback)
+            endif
         endif
         ldx temp1+1
         jsr vgadd2          ;Color of body, maxpage and flip
@@ -2807,16 +2873,6 @@ drawmax
          endif 
          rts
          
-gmaxstat
-        lda objst,X
-        ;sta temp9+1
-        and #08
-        ifeq
-            ldx #maxrob_vpg           ;Stat and page select
-        else
-            ldx #maxrob_vpg+xflip     ;Else flip
-        endif
-        rts
 
 ;********************************************
 ; Finish Drawing Cannon
@@ -4042,9 +4098,9 @@ stashkeys
 		begin
 			lda objst,X
 			ifne
-				and #$10			;In possesion??
+				bit bit10			;$10 In possesion??
 				ifne
-					lda objst,X
+					;lda objst,X        ;no longer needed because of bit above
 					and #$0F
 					sta wrpdat			;Save the color of the first key found in pocket
 					rts					;leave early!!!!!
@@ -4075,4 +4131,4 @@ unstashkeys
 			ccend
 		endif
 		rts
-		
+		        

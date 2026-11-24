@@ -1,14 +1,14 @@
 .module aux0
 
-backstory        .EQU  $2704
-endstory         .EQU  $279a
+backstory        .EQU  $2722
+endstory         .EQU  $27b8
 geths            .EQU  $2010
-hstbl            .EQU  $20fa
-messptrl         .EQU  $27fe
-messptrh         .EQU  $28bc
-messscol         .EQU  $297a
-messypos         .EQU  $2a38
-messxpos         .EQU  $2af6
+hstbl            .EQU  $2106
+messptrl         .EQU  $281c
+messptrh         .EQU  $28da
+messscol         .EQU  $2998
+messypos         .EQU  $2a56
+messxpos         .EQU  $2b14
 mtmes0           .EQU  $0000
 mtmes1           .EQU  $0001
 mtmes2           .EQU  $0002
@@ -102,7 +102,7 @@ mcmod1           .EQU  $00b6
 mcmod2           .EQU  $00b7
 mcmod3           .EQU  $00b8
 mpromise         .EQU  $00b9
-resfirew         .EQU  $22e6
-scormsg          .EQU  $2416
-storydes         .EQU  $2763
-update           .EQU  $22f6
+resfirew         .EQU  $22f2
+scormsg          .EQU  $2434
+storydes         .EQU  $2781
+update           .EQU  $2302

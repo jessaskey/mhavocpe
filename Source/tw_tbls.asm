@@ -92,6 +92,13 @@ geths   lda updcur			;Are we doing top 3... if so, then show some fireworks too!
                         lda updcur          ;Where entered in this table
                         cmp #(3*3)          ;In Top 3?
                         ifcc                    ;Yes, okay to write into EEROM
+                            ;Also top 3 score will give you a chance to hear from Obiwan
+                            lda rands
+                            and #$07
+                            ifeq
+                                lda #sp_forcebe
+                                jsr dosnd2          ;Ignore game over flag
+                            endif
                             lda #-1
                             sta wrhflg          ;Set flag to write
                         endif
@@ -432,11 +439,10 @@ resfirew
 ;********************************************
     .sbttl "Check for High Score"
 ;********************************************
-hscend  =   36d     ;Top of high scores
-hinend  =   27d     ;Top of initials
+hscend  =   9*4     ;Top of high scores
+hinend  =   9*3     ;Top of initials
     
-update
-		lda #-1
+update  lda #-1
         sta updcur      ;Will guess none available
         ldx #04
         lda player      ;Player 2
@@ -469,12 +475,16 @@ upda20  ldx temp4           ;Which score to check
             cpy #hscend+4       ;Past last one??
         csend
         rts 
-        
-upda30  stx temp2               ;Save which player?
+
+;New high score qualified for table, need to adjust everything now        
+upda30  stx temp2               ;Save which player? P1=0 P2=4
         sty temp2+1             ;Save score index
         ldy temp3               ;Which inital index
         sty updcur              ;Save which entry
-?upd35  ldy #hscend             ;Need to move everybody down
+        lda #9
+        sta temp1+1
+;?upd35  
+        ldy #hscend             ;Need to move everybody down
         ldx #hinend             ;High initial end
         begin
             cpx updcur          ;Loop until done or end
@@ -493,6 +503,13 @@ upda30  stx temp2               ;Save which player?
             sta hscore+2,Y
             lda hscore-1,Y
             sta hscore+3,Y
+            txa                 ;Save X so we can update tesster with straight count index
+            pha
+            ldx temp1+1
+            lda gtesser-1,X
+            sta gtesser,X
+            pla 
+            tax                 ;restore X
             dex 
             dex 
             dex 
@@ -500,6 +517,7 @@ upda30  stx temp2               ;Save which player?
             dey 
             dey 
             dey 
+            dec temp1+1
         eqend                   ;Loop until end or done
 ?upd45  ;* Set up for new initials
         ldy temp4               ;Get 0 or 4

@@ -164,18 +164,10 @@ scormsg lda strtst          ;Story status on??
             sty temp3           ;Save Y
             tax 
             lda vgmsga,X        ;C Get correct JSRL
-            ; bit foreign         ;D Want 'foreign' letters?
-            ; ifmi
-                ; lda formsg,X    ;C Get alternate char set
-            ; endif
             ldy temp1
             sta (vglist,Y)
             iny 
             lda vgmsga+1,X
-            ; bit foreign         ;D Want 'foreign' letters?
-            ; ifmi
-                ; lda formsg+1,X          ;C Get alternate char set
-            ; endif
             sta (vglist,Y)
             iny 
             sty temp1               ;Save Y
@@ -199,7 +191,7 @@ picjsr  .word picfish-1       ;Dummy call
         .word picmax-1
         .word picreac-1
         .word pixoxy-1
-        .word picoxy2-1
+        .word picoxy2-1         ;Oxygen
 
 picjse  ;End of table
 

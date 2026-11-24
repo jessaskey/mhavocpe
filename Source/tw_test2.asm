@@ -77,11 +77,11 @@ betat	ldx #stmbtest
 ;* game.                    
 ;*************************************************    
 teststat1 
-        lda gotdata
+        lda dataflag
         ifeq
             jsr ?getstats       ;Get the GAMMA Stats only once per self test
-            lda #$80
-            sta gotdata
+            lda #-1
+            sta dataflag
         endif
         ;static text
         lda #(?ststat1&$ff)
@@ -182,107 +182,107 @@ teststat1
 ;****************************************
 ; Second Statistics Screen
 ;****************************************
-?mzstaty = $26		;Y position where maze stats start
-?mzstahy = $30		;Y position where maze stat header is located (typically +4 from actual stats)
+; ?mzstaty = $26		;Y position where maze stats start
+; ?mzstahy = $30		;Y position where maze stat header is located (typically +4 from actual stats)
 
-teststat2
-		;static text
-        lda #(?ststat2&$ff)
-        sta stextp
-        lda #(?ststat2/256d)
-        sta stextp+1
-        jsr statict
-        ;maze stat header
-        jsr setcolyellow
-        jsr vgcntr
-        lda #$8F
-        ldx #?mzstahy
-        jsr vgvtr5 
-        jsr ?stathead
-        jsr vgcntr
-        lda #$38
-        ldx #?mzstahy+10d
-        jsr vgvtr5 
-        jsr ?stathead
+; teststat2
+		; ;static text
+        ; lda #(?ststat2&$ff)
+        ; sta stextp
+        ; lda #(?ststat2/256d)
+        ; sta stextp+1
+        ; jsr statict
+        ; ;maze stat header
+        ; jsr setcolyellow
+        ; jsr vgcntr
+        ; lda #$8F
+        ; ldx #?mzstahy
+        ; jsr vgvtr5 
+        ; jsr ?stathead
+        ; jsr vgcntr
+        ; lda #$38
+        ; ldx #?mzstahy+10d
+        ; jsr vgvtr5 
+        ; jsr ?stathead
 
-        lda #$D4
-        ldx #$70
-        jsr vgadd2          ;Scale down a bit to make fit
-        lda #27d            ;28 mazes
-        sta temp9
-        lda # ubyte(stb_mzstats)
-        sta temp2+1
-        lda # lbyte(stb_mzstats)
-        sta temp2
-        lda #?mzstaty
-        sta temp6+1     ;Starting Y
-        lda #01
-        sta temp6       ;Store the first level number
-        begin
-			sta watchdog        ;kick the doggie
-            jsr vgcntr
-            lda temp9
-            cmp #13d
-            ifge
-                ifeq
-                    ;reset Y position for next list
-                    lda #?mzstaty
-                    sta temp6+1     ;Starting Y
-                    jmp ?col2
-                else
-                    lda #$80       ;Starting X
-                    ldx temp6+1
-                    jsr vgvtr5      ;Position
-                    ;lda #$C8       ;More X to the left
-                    ;ldx #00
-                    ;jsr vgvtr5      ;Position
-					VGADD_VCTRS(0,-56,hidden)	;More X to the left
-                endif
-            else
-?col2           lda #$08       ;Starting X for Column #2
-                ldx temp6+1
-                jsr vgvtr5      ;Position
-            endif
-            lda #($F0+colgreen)
-            ldx #$60
-            jsr vgadd2 
-            ;ldy #vgjchl-vgmsga
-            JSR_VGCHAR(idxchar_l)      ;Letter 'L' 
-            lda temp6            
-            jsr decimal         ;In decimal
-            ldy #01
-            lda #temp7
-            clc
-            jsr digits
+        ; lda #$D4
+        ; ldx #$70
+        ; jsr vgadd2          ;Scale down a bit to make fit
+        ; lda #27d            ;28 mazes
+        ; sta temp9
+        ; lda # ubyte(stb_mzstats)
+        ; sta temp2+1
+        ; lda # lbyte(stb_mzstats)
+        ; sta temp2
+        ; lda #?mzstaty
+        ; sta temp6+1     ;Starting Y
+        ; lda #01
+        ; sta temp6       ;Store the first level number
+        ; begin
+			; sta watchdog        ;kick the doggie
+            ; jsr vgcntr
+            ; lda temp9
+            ; cmp #13d
+            ; ifge
+                ; ifeq
+                    ; ;reset Y position for next list
+                    ; lda #?mzstaty
+                    ; sta temp6+1     ;Starting Y
+                    ; jmp ?col2
+                ; else
+                    ; lda #$80       ;Starting X
+                    ; ldx temp6+1
+                    ; jsr vgvtr5      ;Position
+                    ; ;lda #$C8       ;More X to the left
+                    ; ;ldx #00
+                    ; ;jsr vgvtr5      ;Position
+					; VGADD_VCTRS(0,-56,hidden)	;More X to the left
+                ; endif
+            ; else
+; ?col2           lda #$08       ;Starting X for Column #2
+                ; ldx temp6+1
+                ; jsr vgvtr5      ;Position
+            ; endif
+            ; lda #($F0+colgreen)
+            ; ldx #$60
+            ; jsr vgadd2 
+            ; ;ldy #vgjchl-vgmsga
+            ; JSR_VGCHAR(idxchar_l)      ;Letter 'L' 
+            ; lda temp6            
+            ; jsr decimal         ;In decimal
+            ; ldy #01
+            ; lda #temp7
+            ; clc
+            ; jsr digits
         
-            lda #($F0 + colwhite)
-            ldx #$60
-            jsr vgadd2 
+            ; lda #($F0 + colwhite)
+            ; ldx #$60
+            ; jsr vgadd2 
             
-            lda #03         ;Do sets of 4 statistics
-            sta temp9+1
-            begin     
-                ldy #02
-                jsr ?copyd           ;Output 2 digits
-                lda temp2
-                clc
-                adc #02
-                sta temp2
-                lda temp2+1
-                adc #00
-                sta temp2+1     ;Move to next stat
-                ;ldy #00
-                JSR_VGCHAR(idxchar_space)      ;Space
-                dec temp9+1     ;Next Set 
-            miend
-            inc temp6       ;Increment displayed L#
-            lda temp6+1
-            sec 
-            sbc #$0A
-            sta temp6+1     ;Move down next line
-            dec temp9
-        miend
-        rts 
+            ; lda #03         ;Do sets of 4 statistics
+            ; sta temp9+1
+            ; begin     
+                ; ldy #02
+                ; jsr ?copyd           ;Output 2 digits
+                ; lda temp2
+                ; clc
+                ; adc #02
+                ; sta temp2
+                ; lda temp2+1
+                ; adc #00
+                ; sta temp2+1     ;Move to next stat
+                ; ;ldy #00
+                ; JSR_VGCHAR(idxchar_space)      ;Space
+                ; dec temp9+1     ;Next Set 
+            ; miend
+            ; inc temp6       ;Increment displayed L#
+            ; lda temp6+1
+            ; sec 
+            ; sbc #$0A
+            ; sta temp6+1     ;Move down next line
+            ; dec temp9
+        ; miend
+        ; rts 
 
 
 ;***********************************************
@@ -291,7 +291,7 @@ teststat2
 ?getstats    
         sei 
         lda #$80
-        sta nogamma     ;Stop Gamma requests
+        sta nogamma             ;Stop Gamma requests
         cli
         lda #g_sstawx           ;Request Xlife+Warp Data
         jsr xmit                ;Send it away
@@ -312,15 +312,15 @@ teststat2
             cpx #-1
         eqend
         sta watchdog
-        lda #g_sstamz        ;Now Maze Stats
-        jsr xmit
-        ldx #g_numstmz-1     ;Number of Maze Stats
-        begin
-            jsr ?rcvst
-            sta stb_mzstats,X
-            dex
-            cpx #-1
-        eqend
+        ; lda #g_sstamz        ;Now Maze Stats
+        ; jsr xmit
+        ; ldx #g_numstmz-1     ;Number of Maze Stats
+        ; begin
+            ; jsr ?rcvst
+            ; sta stb_mzstats,X
+            ; dex
+            ; cpx #-1
+        ; eqend
         lda #00
         sta nogamma     ;Gamma Stuff allowed again
         rts
@@ -366,21 +366,22 @@ teststat2
 
 ?ststat1 
 		.db stmgmstat,stmact1pg,-1
-?ststat2
-		.db stmgmstat,-1
+
+;?ststat2
+;		.db stmgmstat,-1
         
-?stathead
-        lda #$D4
-        ldx #$70
-        jsr vgadd2          ;Scale down a bit to make fit
-        JSR_VGCHAR(idxchar_s)	;S
-		VGADD_VCTRS(0,32,hidden)
-        JSR_VGCHAR(idxchar_l)	;L
-		VGADD_VCTRS(0,32,hidden)
-        JSR_VGCHAR(idxchar_b)	;B
-		VGADD_VCTRS(0,32,hidden)
-        JSR_VGCHAR(idxchar_a) 	;A 
-		rts
+; ?stathead
+        ; lda #$D4
+        ; ldx #$70
+        ; jsr vgadd2          ;Scale down a bit to make fit
+        ; JSR_VGCHAR(idxchar_s)	;S
+		; VGADD_VCTRS(0,32,hidden)
+        ; JSR_VGCHAR(idxchar_l)	;L
+		; VGADD_VCTRS(0,32,hidden)
+        ; JSR_VGCHAR(idxchar_b)	;B
+		; VGADD_VCTRS(0,32,hidden)
+        ; JSR_VGCHAR(idxchar_a) 	;A 
+		; rts
 
 ;**********************************************
     .sbttl "BIPS Check"
@@ -608,6 +609,8 @@ iodisp	ldx #stminpout
         jsr stmesg          ;'--- INPUTS/OUTPUTS ---'  
         ;Show Roller Value
         jsr vgcntr
+        ;ORDER IS Y, X
+        VGADD_VCTRS(60,-12,hidden)
 		lda #($F0+colgreen)
         ldx #$60        	;Color GREEN
         jsr vgadd2          ;Add stat
@@ -616,38 +619,98 @@ iodisp	ldx #stminpout
         lda #thisleta       ;So Display can use it
         ldy #01
         jsr digits          ;Display the roller value
-        ;Position for options
+        ;BIG NUMBERS Now
+        lda #01          
+        jsr vgscalz                 
         jsr vgcntr
-		VGADD_VCTRS(-104,-64,hidden)
-        lda #01             ;Scale 1
-        jsr vgscalz          ;Big Numbers
-        jsr ?optn2          ;Output option switches
-		jsr ?cpuid
+
+        VGADD_VCTRS(12,-36,hidden)
+		lda #($F0+colwhite)
+        ldx #$60        	;Color WHITE
+        jsr vgadd2          ;Add stat
+		lda #07             ;8 Switches
+        sta temp2
+
+        lda #g_getdip0  ;GAME Options @ 13/14S - POKEY DIPS (inverted) 
+        jsr xmitr
+		jsr dis01
+		
+        VGADD_VCTRS(-12,-64,hidden)
+		
+        ldx #07
+        stx temp2
+        jsr dodelay     
+        lda #g_getdip1  ;COIN Options @ 8S - Straight DIPS
+        jsr xmitr
+        cli 
+		jsr dis01
+        
+        ;CPU IDENTIFIER
+        lda #($F0+colblue)
+        ldx #$60        	;Color BLUE
+        jsr vgadd2          ;Add stat
+		
+        VGADD_VCTRS(-12,-64,hidden)
+		
+        ldx #07
+        stx temp2
+		lda d6502			;If the CPU ID made it through all the self test code, it is here
+        jsr dis01
+        ;GAMMA SWITCHES
+        VGADD_VCTRS(-12,-64,hidden)   
+        lda #($F0+colorange)
+        ldx #$60        	;Color Orange
+        jsr vgadd2          ;Add stat
+        lda #07             ;8 Switches
+        sta temp2  
+        jsr getswitch       ;Get GAMMA input switches
+		jsr	dis01	
+        ;ALPHA INPUTS
+        VGADD_VCTRS(-12,-64,hidden)  
+		sei                             ;No interrupts while reading switch
+        lda #($E0+colred)
+        ldx #$60        	;Color WHITE
+        jsr vgadd2          ;Add stat
+        ldx #07
+        stx temp2
+        lda #o_resetg+o_resetb          ;PLAYER 1 = 0 to see
+        sta outputs
+        lda inputs
+        jsr dis01
+		VGADD_VCTRS(-12,-64,hidden)  
+        ldx #07
+        stx temp2
+        lda #o_swtchmux+o_resetg+o_resetb       ;Back to Player 1 = 1
+        sta outputs
+        lda inputs                      ;Remaining switches
+        jsr dis01
+        cli 
         rts
 
 ;********************************************
 ; Settings Management
 ;********************************************
 gsettings
-		jsr doconfirm		;Show confirm if needed
-		lda gammawait
-		ifne
-			;Waiting for Gamma to return clear
-			jsr getgdon
-			ifeq
-				;yes, it is done
-				lda #g_sndstop
-				jsr xmit
-				lda #0				;Clear the data flag so it is fetched again
-				sta gotdata
-				sta gammawait
-			else
-				;Waste some time
-				jsr do3del
-			endif
-			rts
-		endif
-		lda gotdata
+		; jsr doconfirm		;Show confirm if needed
+		; lda gammawait
+		; ifne
+			; ;Waiting for Gamma to return clear
+			; jsr getgdon
+			; ifeq
+				; ;yes, it is done
+				; lda #snd_c6         ;kill beeps (only!)
+				; jsr xmit
+				; lda #0				;Clear the data flag so it is fetched again
+				; sta gammawait
+                ; sta dataflag
+			; else
+				; ;Waste some time
+				; jsr do3del
+			; endif
+			; rts
+		; endif
+        
+		lda dataflag
 		ifeq
 			;first time, get settings from Gamma
 			jsr initoption      ;Get Option data
@@ -664,8 +727,8 @@ gsettings
 			;Roller Multiplier
 			lda rollmult
 			sta set_rollmult
-			lda #$80
-            sta gotdata
+			lda #-1
+            sta dataflag
 		endif
 		sta watchdog
 		ldx #stmgsetts
@@ -762,8 +825,9 @@ gsettings
 		;Draw the selector triangle
 		lda setsel
 		ifne
+            jsr vgcntr 
 			vgadd_scale(ywin_off,binscal2,$00)
-			lda #$28
+			lda #$48
 			ldx setsel
 			begin
 				cpx #7
@@ -782,14 +846,21 @@ gsettings
 			vgadd_stat(sparkle_off,xflip_off,0,$F,colyellow) 
 			VGADD_JSR(char_ltri)	
 		endif
-		
         sta watchdog
-		;Done with messages
+        
+        jsr doconfirm
+        jsr dofinish        ;CC when gamma still busy, CS when done
+        ifcc
+            rts                 ;return if waiting on Gamma still, won't check fire or shield either (below)
+        endif
+		
 		;Fire Buton
 		lda #2
 		jsr chkbut
 		ifcs
 			;move to next
+            lda #0
+            sta bconfirm            ;fire button cancels any confirmation waiting
 			inc setsel
 			lda setsel
 			cmp #08
@@ -799,24 +870,27 @@ gsettings
 			endif
 		endif
 		
-		sta watchdog
 		jsr updroller
 		
 		ldx setsel
 		ifne
 			;check roller status now..
-			lda rollcnt
+			lda rollcnt     ;-1, 0, 1 valid values. (Bumps one option each time)
 			ifne
 				dex				;Zero based
 				ldy whatram,X
 				clc
-				adc 0,Y
-				sta 0,Y
+				adc 0,Y     ;Bump option up/down 1
 				cmp settop,X
-				ifcs
-					lda setlow,X
-					sta 0,Y
+				ifpl
+					lda settop,X
+                else
+				    cmp setlow,X
+				    ifmi
+					    lda setlow,X
+                    endif               
 				endif
+				sta 0,Y     ;Save new option setting
 			endif
 			lda #0				;Clear our accum counter
 			sta rollcnt		
@@ -837,7 +911,7 @@ gsettings
 						cmp #07
 						ifeq
 							;reset from DIPS
-							lda #snd_b1d
+							lda #snd_c7
 							jsr xmit
 							jsr do3del
 							lda #g_clro
@@ -891,7 +965,7 @@ chkchngs
 ;for each value of setsel, which RAM location should we increment?		
 whatram .db set_cmode,set_diff,set_lives,set_bonus,set_attsd,set_rollmult
 setlow	.db $00  	 ,$00  	  ,$03      ,$00      ,$00      ,$00
-settop	.db $03+1	 ,$03+1   ,$06+1    ,$03+1    ,$01+1    ,$01+1
+settop	.db $03 	 ,$03     ,$06      ,$03      ,$01      ,$01
 
 savesets
 		sta watchdog
@@ -958,53 +1032,5 @@ getcol	cmp setsel
 		endif
 		rts
 		
-;********************************************
-    .sbttl "Display Option Switches"
-;********************************************
-?optn2  jsr vgcntr
-		VGADD_VCTRS(-40,-28,hidden)
-		lda #($F0+colwhite)
-        ldx #$60        	;Color WHITE
-        jsr vgadd2          ;Add stat
-		lda #07             ;8 Switches
-        sta temp2
-		sei                 ;No interrupts while reading switch
-        ; lda #o_resetg+o_resetb          ;Drop player select for these switches, keep procs running tho
-        ; sta outputs
-        ; lda inputs
-        ; jsr dis01
-		; VGADD_VCTRS(8,-64,hidden)
-        ; ldx #07
-        ; stx temp2
-        
-        ; lda #o_swtchmux+o_resetg+o_resetb       ;Reselect self test stuff, keep procs running too
-        ; sta outputs
-        ; lda inputs          ;Remaining switches
-        ; cli 
-        ; jmp dis01
-
-        lda #g_getdip0  ;GAME Options @ 13/14S - POKEY DIPS (inverted) 
-        jsr xmitr
-		jsr dis01
-		VGADD_VCTRS(8,-64,hidden)
-		ldx #07
-        stx temp2
-        jsr dodelay     
-        lda #g_getdip1  ;COIN Options @ 8S - Straight DIPS
-        jsr xmitr
-        cli 
-		jmp dis01
-
-;********************************************
-    .sbttl "CPU IDENTIFIER"
-;********************************************
-?cpuid	lda #($F0+colblue)
-        ldx #$60        	;Color BLUE
-        jsr vgadd2          ;Add stat
-		VGADD_VCTRS(16,-64,hidden)
-		ldx #07
-        stx temp2
-		lda d6502			;If the CPU ID made it through all the self test code, it is here
-        jmp dis01
 		
-.export teststat1,teststat2,iodisp,testgr,testcs,testco,testcr,testbip,testhy,gsettings,betat
+.export teststat1,iodisp,testgr,testcs,testco,testcr,testbip,testhy,gsettings,betat

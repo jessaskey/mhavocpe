@@ -24,16 +24,16 @@
         mess(mlevel,colyellow,1,-$50,$9E)   ;Level
 		
         mess(bolif,colcyan,1,$a0,$C8)       ;Bonus Every
-        mess(elife,colpurple,1,$a8,$CD)     ;Lives
+        mess(elife,colpurple,1,$a8,$CE)     ;Lives
         mess(cont,colwhite,1,$60,$D0)       ;Condition
 		
-        mess(mwred,colred2,1,$a2,$C4)       ;Red (For Warp Description)
-        mess(mwyel,colyellow,1,$a2,$C4)     ;Yellow 
-        mess(mwgrn,colgreen,1,$a2,$C4)      ;Green
-        mess(mwaqu,colcyan,1,$a2,$C7)       ;Aqua
-        mess(mwblue,colblue,1,$a2,$C7)      ;Blue
-        mess(mwpurp,colpurple,1,$a2,$C4)    ;Purple
-        mess(mwpink,colpink,1,$a2,$C7)      ;Pink
+        mess(mwred,colred2,1,$a3,$C4)       ;Red (For Warp Description)
+        mess(mwyel,colyellow,1,$a3,$C4)     ;Yellow 
+        mess(mwgrn,colgreen,1,$a3,$C4)      ;Green
+        mess(mwaqu,colcyan,1,$a3,$C7)       ;Aqua
+        mess(mwblue,colblue,1,$a3,$C7)      ;Blue
+        mess(mwpurp,colpurple,1,$a3,$C4)    ;Purple
+        mess(mwpink,colpink,1,$a3,$C7)      ;Pink
         ;mess(mwspkl,flacol,1,$a2,$C3)       ;Flash   
         ;mess(mwstrn,colred2,1,$a2,$C4)      ;Strange           
         mess(ccrit,colred,1,$60,$10)        ;Critical
@@ -199,7 +199,7 @@ addm2       .ctext "TO START AT LEVEL "
 addm1       .ctext "PRESS START WITHIN    SECONDS"
 			cmess(addm1,colcyan,1,4,addm1_,0)         ;Add Time Message
 playr       .ctext "PLAYER "
-			cmess(playr,colyellow,1,$24,playr_,1)     ;Player (Big)
+			cmess(playr,colyellow,1,$34,playr_,2)     ;Player (Big)
 			
 tmes0       .ctext "DESTROY FISH ROBOTS"
 tmes1       .ctext "DESTROY ENEMY SHIPS"
@@ -275,9 +275,9 @@ his     .ctext "HIGH SCORES"
         cmess(his,colred,0,$48,his_*2,0)          ;High Scores
 		
 enin    .ctext "ENTER YOUR INITIALS"
-        cmess(enin,colyellow,1,$34,enin_,0)      ;Enter your initials
+        cmess(enin,colyellow,1,$24,enin_,1)      ;Enter your initials
 
-getout  .ctext "GET OUT"
+getout  .ctext "GET OUT!"
         mess(getout,colred2,0,0,$EB)        ;Get Out!!
 
 pub0    .ctext "HOLD  BUTTON"
@@ -287,7 +287,7 @@ pub1    .ctext "FOR HIGHER JUMPS"
         mess(pub1,colwhite,1,0,$D0)         ;For Higher Jumps
 
 gtsc    .ctext "GREAT SCORE"
-		cmess(gtsc,colgreenr,0,$48,gtsc_*2,0)      ;Great Score
+		cmess(gtsc,colgreenr,0,$48,gtsc_*2,1)      ;Great Score
 
 ledit   .ctext "MAJOR HAVOC LEVEL EDITOR"
 		cmess(ledit,colwhite,1,0,ledit_,0)		;Major Havoc Level Editor
@@ -309,7 +309,7 @@ mwyel       .ctext "ENTER YELLOW WARP-- "
 mwgrn       .ctext "ENTER GREEN WARP--- "
 mwaqu       .ctext "ENTER AQUA WARP--- "            
 mwblue      .ctext "ENTER BLUE WARP--- "        
-mwpurp      .ctext "ENTER PURPLE WARP--- "            
+mwpurp      .ctext "ENTER PURPLE WARP-- "            
 mwpink      .ctext "ENTER PINK WARP--- " 
 
 #IF TOURNAMENT_EDITION != 0

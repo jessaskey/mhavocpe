@@ -58,12 +58,13 @@ function Output-ROMS() {
 	$MazeCollectionName = (Select-String -Path 'lst/auxpgm_6.lst' 'MAZECOLLECTION\: ([\S ]*)$' -AllMatches).Matches.Groups[1].Value
 	$BuildDate = Get-Date -Format "dddd MM/dd/yyyy HH:mm K"
 	
-	("BuildDate: " + $BuildDate + "`r`nVersion: " + $MajorVersion + $MinorVersion + "`r`nLanguage: " + $LanguageCode + "`r`nEdition: " + $EditionCode + "`r`nCollection: " + $MazeCollectionName + "`r`nSpeech: " + $SpeechValue) | Set-Content -Path 'rom\buildinfo.txt'
+	("BuildDate: " + $BuildDate + "`r`nVersion: " + $MajorVersion + $MinorVersion + "`r`nLanguage: " + $LanguageCode + "`r`nEdition: " + $EditionCode + "`r`nCollection: " + $MazeCollectionName + "`r`nSpeech: " + $SpeechCode) | Set-Content -Path 'rom\buildinfo.txt'
     
     $FileName = ("rom\\" + $FilePrefix)
 	If ($LanguageCode -ne 'en') { $FileName = ($FileName + $LanguageCode) }
 	If ($EditionCode -eq "tournament") { $FileName = ($FileName + $TournamentPrefix) }	
 	$FileName = ($FileName + $MajorVersion + $MinorVersion)
+    #If ($SpeechCode -eq "lpc") { $FileName = ($FileName + "_" + $SpeechCode) }
      
 	#Copy the Speech ROM to target always
 	cmd /c copy /b rom\mhavocpe.x1 ($FileName + ".x1") >$null
@@ -73,7 +74,7 @@ function Output-ROMS() {
 			Get-ChildItem -Path rom\buildinfo.txt, rom\136002-125.6c,($FileName+".1l"),($FileName+".1mn"),($FileName+".1np"),($FileName+".1q"),($FileName+".6h"),($FileName+".6jk"),($FileName+".6kl"),($FileName+".9s"),($FileName+".x1") | Compress-Archive -Force -DestinationPath $TargetArchive
 		}
 		'lpc' {
-			Get-ChildItem -Path rom\buildinfo.txt, rom\136002-125.6c,($FileName+".1l"),($FileName+".1mn"),($FileName+".1np"),($FileName+".1q"),($FileName+".6h"),($FileName+".6jk"),($FileName+".6kl"),($FileName+".9s") | Compress-Archive -Force -DestinationPath $TargetArchive
+			Get-ChildItem -Path rom\buildinfo.txt, rom\136002-125.6c,($FileName+".1l"),($FileName+".1mn"),($FileName+".1np"),($FileName+".1q"),($FileName+".6h"),($FileName+".6jk"),($FileName+".6kl"),($FileName+"lpc.9s") | Compress-Archive -Force -DestinationPath $TargetArchive
 		}
 	}
     
@@ -122,7 +123,7 @@ function Build-Files() {
     If ($LanguageCode -ne 'en') { $FileNamePrefix = ($FileNamePrefix + $LanguageCode)}
 	If ($EditionCode -eq "tournament") { $FileNamePrefix = ($FileNamePrefix + $TournamentPrefix) }
 	$FileNamePrefix = ($FileNamePrefix + $MajorVersion + $MinorVersion)	
-	If ($SpeechCode -eq "lpc") { $FileNamePrefix = ($FileNamePrefix + "_" + $SpeechCode) }
+	#If ($SpeechCode -eq "lpc") { $FileNamePrefix = ($FileNamePrefix + "_" + $SpeechCode) }
 	
 	.\split obj\mh_alpha.obj 16384 >$null
 	cmd /c copy /b obj\mh_alpha.obj.1 ($FileNamePrefix + ".1mn") >$null
@@ -133,13 +134,15 @@ function Build-Files() {
     cmd /c copy /b obj\mh_vrom.obj ($FileNamePrefix + ".6kl") >$null
 	cmd /c copy /b obj\mh_vrom0.obj + obj\mh_vrom1.obj ($FileNamePrefix + ".6h") /B >$null
 	cmd /c copy /b obj\mh_vrom2.obj + obj\mh_vrom3.obj ($FileNamePrefix + ".6jk") /B >$null
-	cmd /c copy /b obj\mh_gamma.obj ($FileNamePrefix + ".9s") >$null
     
-    cmd /c copy /b obj\mh_gamma.obj ($FileNamePrefix + ".9s") >$null
-	
-	#.\split obj\mh_beta.obj 16384
-	#cmd /c copy /b obj\mh_beta.obj.1 rom\$Driver.1bc
-	#cmd /c copy /b obj\mh_beta.obj.2 rom\$Driver.1d
+    Switch($SpeechCode) {
+		'adpcm' {
+			cmd /c copy /b obj\mh_gamma.obj ($FileNamePrefix + ".9s") >$null
+		}
+		'lpc' {
+			cmd /c copy /b obj\mh_gamma.obj ($FileNamePrefix + "lpc.9s") >$null
+		}
+    }
 }
 
 #**********************************

@@ -212,7 +212,11 @@ header  jsr vgcntr
         lda #00
         ldx #$71
         jsr vgadd2
-		VGADD_VCTRS(43,18,hidden)	
+#IF LANGUAGE = 1
+        VGADD_VCTRS(43,14,hidden)       ;for German, we need to move the Oxygen label over left more
+#ELSE
+		VGADD_VCTRS(43,18,hidden)       ;Normal for English and French
+#ENDIF        
         ldx #moxyg
         jsr msgnop
         jsr vgcntr

@@ -274,7 +274,7 @@ shipout ;Do Ship Routine
 bumpini lda blowst      ;End Maze Sequence?
 		ifeq
 			jsr stpg0
-			jsr sendmstat   ;Send this level's Maze stats now..
+			;jsr sendmstat   ;Send this level's Maze stats now..
 			lda isfinal
 			ifne   
 				jmp prephw		;Set Homeworld as completed! YAY!!   		
@@ -379,6 +379,7 @@ dospace lda #04         ;Set to Third person play level
 ;*********************************************************
 ;* Hack for Developing and Level Edtior, the ship will
 ;* always land straight down. :-)
+;* INSTRUCTION LENGTH NEUTRAL
 ;*********************************************************        
 #IF ((DEBUG > 0) | (LEVEL_EDITOR > 0))
         lda #00
@@ -668,13 +669,23 @@ startspace
         lda s_statx,X   ;Station XH
         sta statxh
         lda s_statxl,X
-        sta statxl
-        lda s_staty,X
-        sta statyl      ;Set Y
-        sta statyh      ;*** Temp Start Position ***
+        sta statxl              
+;******************************************************
+; Issue #228 - Station starts really low on screen
+; https://github.com/jessaskey/mhavocpe/issues/228
+; Stores a zero in staty for the hidden mazes
+;******************************************************        
         lda #00
         sta saucvl      ;Stop Saucer Motion
         sta saucvd
+        ldy difcty      ;Only load table when not in final hidden levles
+        cpy #maxdif
+        ifne
+            lda s_staty,X
+        endif
+        sta statyl      ;Set Y
+        sta statyh      ;*** Temp Start Position ***
+;******************************************************
         rts 
         
 s_statm     .byte $80,$C0,$00,$80 			;Station Motion
@@ -1519,21 +1530,6 @@ shipdis2
 							jsr dohwani
 							jsr stpg0
 						else
-							;Animation done, is story done?
-							; lda vxstat
-							; and #$10
-							; ifne
-								; ;set ship to center
-								; lda #$84
-								; sta shipxl      ;Postion Ship
-								; lda #$04
-								; sta shipxh
-								; lda #$24
-								; sta shipyl      ;Place Y Position
-								; lda #$08
-								; sta shipyh 
-								; jmp ?dtact		
-							; endif
 							jsr endstory			;Do final story
 						endif
 					endif
@@ -2637,6 +2633,7 @@ bumpgame
         sta piccur          ;Make him run
         sta tspark
         sta nodraw          ;Clear these just in case
+        sta jumpst
 #IF DISABLE_HCOUNT = 0		
 		sta hcount			;Clear our IRQ counter so the maze can load still too
 #ENDIF

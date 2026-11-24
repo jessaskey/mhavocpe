@@ -379,7 +379,15 @@ disptact
             ldx ?whathint,Y
             jsr mesg_rtp5           ;Put up warp info
             jsr vgcntr
+#IF LANGUAGE = 2
 			VGADD_VCTRS(89,-100,hidden)
+#ELSE
+#IF LANGUAGE = 1
+			VGADD_VCTRS(89,-124,hidden)	;German message begins with Warp #
+#ELSE
+			VGADD_VCTRS(89,-100,hidden)
+#ENDIF
+#ENDIF
             ldy perm1  
             lda wdigits,Y
             sta perm4           ;Number of digits (2 or 3)
@@ -532,17 +540,19 @@ disptact
             ; lda expdth,X
             ; sta incded
 ; #ENDIF
-            sed                 ;*** DECIMAL MODE ***
-            lda st_warps
-            clc 
-            adc #01             ;Another warp taken
-            sta st_warps
-            lda st_warps+1
-            adc #00
-            ifcc
-                sta st_warps+1         ;Don't wrap
-            endif
-            cld                 ;*** END DECIMAL MODE ***
+            ;This section is redundant because we are incrementing in warpstat above
+            ;https://github.com/jessaskey/mhavocpe/issues/222
+            ; ; sed                 ;*** DECIMAL MODE ***
+            ; ; lda st_warps
+            ; ; clc 
+            ; ; adc #01             ;Another warp taken
+            ; ; sta st_warps
+            ; ; lda st_warps+1
+            ; ; adc #00
+            ; ; ifcc
+                ; ; sta st_warps+1         ;Don't wrap
+            ; ; endif
+            ; ; cld                 ;*** END DECIMAL MODE ***
             
             ;NO POINTS FOR WARPING ANYMORE!!!!!
             ;ldx #00
@@ -1014,23 +1024,23 @@ warpstat
 ?teltab .db -1  ;Level 1
         .db -1  ;Level 2
         .db -1  ;Level 3
-        .db 00  ;Level 4  = Red
-        .db -1  ;Level 5
+        .db -1  ;Level 4 
+        .db 00  ;Level 5 = Show Red
         .db -1  ;Level 6
         .db -1  ;Level 7
         .db -1  ;Level 8
-        .db 01  ;Level 9  = Yellow
-        .db 02  ;Level 10 = Green
-        .db -1  ;Level 11
+        .db -1  ;Level 9
+        .db 01  ;Level 10 = Show Yellow
+        .db 02  ;Level 11 = Show Green
         .db -1  ;Level 12
-        .db 03  ;Level 13 = Aqua
-        .db -1  ;Level 14
+        .db -1  ;Level 13
+        .db 03  ;Level 14 = Show Aqua
         .db -1  ;Level 15
         .db -1  ;Level 16  
-        .db 04  ;Level 17 = Blue
-        .db -1  ;Level 18 
-        .db 05  ;Level 19 = Purple
-        .db -1  ;Level 20 
+        .db -1  ;Level 17
+        .db 04  ;Level 18 = Show Blue
+        .db -1  ;Level 19
+        .db 05  ;Level 20 = Show Purple 
         .db -1  ;Level 21 = Final Maze
         .db -1  ;Level 22 = Final Maze 
         .db -1  ;Level 23 = Final Maze
@@ -1051,24 +1061,24 @@ warpstat
 ?whichw .db 0   ;Level 1
         .db 0   ;Level 2
         .db 0   ;Level 3
-        .db 1   ;Level 4
-        .db 1   ;Level 5
+        .db 1   ;Level 4 
+        .db 1   ;Level 5 - Show Red(0) here
         .db 1   ;Level 6
         .db 1   ;Level 7
         .db 1   ;Level 8
-        .db 2   ;Level 9
-        .db 3   ;Level 10
-        .db 3   ;Level 11
+        .db 2   ;Level 9 
+        .db 3   ;Level 10 - Show Yellow(1) here
+        .db 3   ;Level 11 - Show Green(2) here
         .db 3   ;Level 12
-        .db 4   ;Level 13
-        .db 4   ;Level 14
+        .db 4   ;Level 13 
+        .db 4   ;Level 14 - Show Aqua(3) here
         .db 4   ;Level 15
         .db 4   ;Level 16
         .db 5   ;Level 17
-        .db 5   ;Level 18
+        .db 5   ;Level 18 - Show Blue(4) here
         .db 6   ;Level 19
-        .db 6   ;Level 20
-        .db -1  ;Level 21 - Final Maze
+        .db 6   ;Level 20 - Show Purple here
+        .db -1  ;Level 21 - Final Maze 
         .db -1  ;Level 22 - Final Maze
         .db -1  ;Level 23 - Final Maze
         .db -1  ;Level 24 - Final Maze

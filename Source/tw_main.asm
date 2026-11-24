@@ -24,7 +24,7 @@ pwron
                 ifvc
                     ifcc
                         tsx
-                        cpx #$BD         ;Check for MAME, MAME starts with the SP = $01BD
+                        cpx #$FD         ;Check for MAME, MAME starts with the SP = $01FD
                         ifeq
                             lda #$80
                             sta d6502      ;0 = NOT MAME, 1 = MAME
@@ -56,11 +56,11 @@ pwron
         ;********************************************
 		sei             		
         ldx #$FF
-        txs                     ;init stack     
-        lda   #o_swtchmux       ;select player 1 so we can read self test switch input
-        sta   outputs           ;book it
-        lda   inputs            ;Self Test??
-        and   #i_slftstbit      ;see if on
+        txs                   ;init stack     
+        lda #o_swtchmux       ;select player 1 so we can read self test switch input
+        sta outputs           ;book it
+        lda inputs            ;Self Test??
+        and #i_slftstbit      ;see if on
         ifeq
 			ldy d6502
             jmp selftest            ;Do self test
@@ -116,6 +116,7 @@ start   sta rampg              	;Page normal RAM and ROM
             ifne
 				begin					
 					jsr pulselig	;Bad things, pulse light, forever!!
+                    sta watchdog
 				doloop
             endif
         endif
@@ -124,10 +125,9 @@ start   sta rampg              	;Page normal RAM and ROM
 		lda #sp_test ;sp_maxback ;snd_hiddenbk3 
 #ELSE	
 		lda #snd_j3				;Start Explosion Sound
-#ENDIF	
-		
+#ENDIF			
         jsr dosnd2				;Always
-	
+        jsr do3del
 		;Gamma is good.... get a bunch of info from it to start
         jsr gethsall            ;Get all High Score info
 		jsr do3del
@@ -135,6 +135,13 @@ start   sta rampg              	;Page normal RAM and ROM
 		jsr do3del
         jsr wrpin               ;Get defined Warp codess
         cli                     ;Start Progress
+        
+        ;***********
+        ; REMOVE THIS - Test MAX only
+        ;lda #snd_maxmv1
+        ;jsr dosnd2	
+        ;***********
+        
         ;*********************************************************************************
         ;This is the start of the main loop - Game is running from here out
         ;*********************************************************************************	
@@ -323,7 +330,7 @@ dovggo      sta vggo            ;And Start VGGO
 ?dospks         jsr stpg2
                 jsr sparks          ;all the sparkly angles and such      	
             endif
-bit20		jsr stpg0
+            jsr stpg0
             ;*********************************************************
             ;* Time Management here
 			.sbttl "Time/Oxygen Counters"
@@ -666,7 +673,6 @@ coincred
 			jsr getswitch   ;Get Start Switches
 			sta lastswitch
 			lda demo
-			;cmp #3
 			ifne
 				lda adden
 				ifeq
@@ -793,43 +799,32 @@ coincred
 			endif
 		endif
 		rts
-		
+
+;Initialization routine for both 1 and 2 Player games		
 initstart		
 		jsr stpg2
 		jsr gminit            ;Re-Init Game
-		jsr stpg0
-		inc manstat           ;Turn on Man        
+        ;*********************************************************************************        
 		;*********************************************************************************
-		;* Design Time First Level Setting:
-		;* This will be set in the havoc.ah file which calls this file. It is a quick
-		;* developer way to have the game start on a specific level. STARTLEVEL should
-		;* not be defined on released code.
-		;*********************************************************************************
-#IF (((DEBUG != 0) & (STARTLEVEL != 1)) | (LEVEL_EDITOR != 0))
-levelst                         
-		lda #STARTLEVEL-1     ;Make Zero based
-		sta sellvl
-.export levelst
-;#ELSE
-;		lda	sellvl            ;Where to start, this can be set from a continuation or fresh @0
-#ENDIF
+        jsr stpg6           ;Start Maze is always on PAGE 6
+        lda levelst         ;Special byte on Page 6 that specifies level start for single level editor runs
+        ifpl
+            sta sellvl          ;Save it here
+        endif
+        jsr stpg0           ;Restore ROM page to 0
 		;*********************************************************************************
 		;*********************************************************************************
+		inc manstat           ;Turn on Man 
 		jsr	thisone				;Target level in sellvl!!!!!!
 		jsr newscore                                              
-		;jsr   incstuf - replaced this with direct code below
-; #IF ENABLE_ADAPTIVE_DIFFICULTY != 0
-		; ldx dif4mz
-		; lda expdth,X
-		; sta incded
-; #ENDIF
 		rts
 		
 ;Which command to send to Gamma for Coin Counter 'clicks'
-;  0: Aux Coin so it sends a beep sound command
-;  1: Coin Counter #1
-;  2: Conn Counter #2
-whcounter  .db snd_b2c, g_cn1, g_cn2
+;  0: Coin Counter #1 (right)
+;  1: Conn Counter #2 (left)
+;  2: Aux Coin so it sends a beep sound command
+
+whcounter .db g_cnr, g_cnl, snd_b2c   ;.db snd_b2c, g_cn1, g_cn2
      
 ; #IF ENABLE_ADAPTIVE_DIFFICULTY != 0	 
 ; ;Determines how many times a person may die on each
@@ -904,13 +899,19 @@ dowaste         lda vecram+1		;in normal situations, so lets draw a black box to
         lda c_intct
         lsr A               ;Interrupts are every 4ms
         ifcc                ;So do coin/LETA routine every other time = 8ms
-            lda out1s
-            and #(~o_swtchmux)  ;Make sure player 0
-            sta outputs
-            jsr moolah          ;Do Coin Routine
-            lda inputs          ;Self Test??
-            and #$10            ;See if on
-            ifne
+            lda testmode
+            ifeq
+                
+                lda out1s
+                and #(~o_swtchmux)  ;Make sure player 0
+                sta outputs
+                jsr moolah          ;Do Coin Routine
+                ;put back
+                lda out1s
+                sta outputs
+                ;lda inputs          ;Self Test??
+                ;and #$10            ;See if on
+                ;ifne                ;No Self Test
                 bit nogamma         ;Gamma On Hold? : minus if holding
                 ifpl
                     jsr getleta         ;Gamma shoudl be ready... Get LETA data
@@ -1300,7 +1301,28 @@ dostory
                     lda perm1
                     sbc #$0C            ;down a little under the logo
                     tax
-                    lda #$FC            ;a little left of center
+#IF LANGUAGE = 0
+    #IF TOURNAMENT_EDITION = 0
+                    lda #$FC            ;English - The Promised End
+    #ELSE
+                    lda #$F4            ;English - Tournament Edition
+    #ENDIF
+#ENDIF
+#IF LANGUAGE = 1
+    #IF TOURNAMENT_EDITION = 0
+                    lda #$EC            ;German - DAS VERSPROCHENE ENDE
+    #ELSE
+                    lda #$04            ;German - TURNIERAUSGABE
+    #ENDIF
+#ENDIF
+#IF LANGUAGE = 2
+    #IF TOURNAMENT_EDITION = 0
+                    lda #$04            ;French - LA FIN PROMISE
+    #ELSE
+                    lda #$F4            ;French - fDITION DU TOURNOI
+    #ENDIF
+#ENDIF
+
                     jsr vgvtr5          ;Vertical Position                
                     ;do color
                     lda temp8
@@ -1578,6 +1600,7 @@ mspace  lda maznum
 resetmem
 		ldx #00
         stx vgreset             ;Stop the Vector Generator
+        stx testmode            ;NOT in test mode if here
         begin
             lda #$C0                    ;Set all to RTSL
             sta vecram,X

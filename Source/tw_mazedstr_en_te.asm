@@ -42,7 +42,7 @@ mzh30b  .ctext "OR WASTE IT BRILLIANTLY"
         czmess(mzh30b,$48,mzh30b_)
 mzh31a  .ctext "DO YOU HAVE ENOUGH CLONES LEFT"
         czmess(mzh31a,$50,mzh31a_)
-mzh31b  .ctext "TO MAKE IT TO THE MOTHERSHIP?"
+mzh31b  .ctext "TO MAKE IT TO THE MAINFRAME?"
         czmess(mzh31b,$48,mzh31b_)
 mzh32a  .ctext "IF YOU CANT FIND YOUR BALANCE"
         czmess(mzh32a,$50,mzh32a_)

@@ -3,23 +3,23 @@
 ;********************************************************************
 ;* Device Declarations - This allows the macro STSND to start
 ;*                       logical named channels more easily.
-NUMPOKEY    =   4
+; NUMPOKEY    =   4
 
-POKEY_CH0     =   0   ;Channel Offsets
-POKEY_CH1     =   4
-POKEY_CH2     =   8
-POKEY_CH3     =   12
+; POKEY_CH0     =   0   ;Channel Offsets
+; POKEY_CH1     =   4
+; POKEY_CH2     =   8
+; POKEY_CH3     =   12
 
 ;Some DEFAULT values
 DEFAULT_VOLUME  =   $07     ;This is the volume set upon start until overridden by the specific sound def
 
-;* 4 Channels per Pokey
-NUM_CHANNELS  =   4*NUMPOKEY
+; ;* 4 Channels per Pokey
+; NUM_CHANNELS  =   4*NUMPOKEY
 
-POKEY_0  =   POKEYBASE
-POKEY_1  =   POKEYBASE + $08
-POKEY_2  =   POKEYBASE + $10
-POKEY_3  =   POKEYBASE + $18
+; POKEY_0  =   POKEYBASE
+; POKEY_1  =   POKEYBASE + $08
+; POKEY_2  =   POKEYBASE + $10
+; POKEY_3  =   POKEYBASE + $18
 
 
 ; Quad pokey hookup (based on schematics):

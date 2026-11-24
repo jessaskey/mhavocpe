@@ -71,28 +71,22 @@ chka1    .chk $8000,$BFFF,IDENTIFIER_AL
 #include ./tw_main.asm
 #include ./tw_slave.asm
 #include ./tw_mess.asm
-
-;Make TEST routines up high
-;.org $EE00
-
 #include ./tw_test.asm 
+
+    orgchk($fff9,$)
 
 ;********************************
 ;* Alpha High Checksum
 ;********************************
 chka2   .chk $C000,$FFFF,IDENTIFIER_AH
 
-#if $ > $FFFA \ .error "Alpha HIGH has extended outside of design size." \ #endif
-
 ;******************************************
 ;* Don't forget to do the entry points!!! 
 ;******************************************	
-	.org $fffa
-	
-		.word pwron
-		.word pwron
-		.word irq
-
+	.org $fffa	
+    .word pwron
+    .word pwron
+    .word irq
 	.end
 
 ;****************************************
@@ -101,9 +95,7 @@ chka2   .chk $C000,$FFFF,IDENTIFIER_AH
 ; Temps
 .export temp1,temp2,temp3,temp4,temp5,temp6,temp7,temp8,temp9,tempa
 .export perm1,perm2,perm3,perm4,perm5
-
 .export updflg,frame,wrhflg,pl1last,pl2last,digits,hscore,gtesser,vdata,mtim,colchkx,colchky
-
 .export updwho,updcur,updint,rgdr,wrpdl,initl,jblast,jbstat
 
 ; Vector Routines
@@ -116,9 +108,7 @@ chka2   .chk $C000,$FFFF,IDENTIFIER_AH
 ;,prepare,linmult,linscal,dist,webmult, 
 
 .export sphere,fighter,spacemaze,spacefort
-
 .export breakx
-
 .export vecram
 .export player,score,dostop,dodelay,dosound,out1s,bonusa,shipst 
 .export map0,map1,map2,map3,map4,map5,map6
@@ -189,6 +179,7 @@ chka2   .chk $C000,$FFFF,IDENTIFIER_AH
 
 ; Object Enums
 .export objtypetab,obj_max
+.export bit01,bit02,bit04,bit08,bit10,bit20,bit40,bit80
 
 ;Stuff for TWTACT
 .export shpsch,shpscl,seqst,seqx,seqp,condition,brstat,ttime,targf,newscore
@@ -224,7 +215,8 @@ chka2   .chk $C000,$FFFF,IDENTIFIER_AH
 .export nextmz,nxtmaz_rtpg2,nxtlvl,incmaz,newbrk
 
 ;Stuff for TWMAZE & TWMAZEO
-.export tr_hidden,tr_match,tr_left,tr_right,tr_special,drawtok,maxsnd,setmaxv
+.export tr_hidden,tr_match,tr_left,tr_right,tr_special,drawtok,lastmax
+;maxsnd,setmaxv
 ;,tokvisi
 
 .export oxystat
@@ -254,7 +246,7 @@ chka2   .chk $C000,$FFFF,IDENTIFIER_AH
 .export ckbase,castsnd
 
 ;Stuff for TWTEST
-.export gotdata,stextp,statict,scol,setcolwhite,setcolyellow,stmesg,stmesgc,warpcolrtp1,statbuff
+.export stextp,statict,scol,setcolwhite,setcolyellow,stmesg,stmesgc,warpcolrtp1,statbuff
 .export copymem,gammaerr,thisleta,getleta,o_swtchmux,dis01,initoption,diftbl,sndatt,cmodem
 .export stb_game1,stb_game2,stb_atime1,stb_atime2,stb_xwarps,stb_extlie,stb_mzstats
 .export stcmodz,stmlivem,bonusmg,setsel,gamlvsx
@@ -263,16 +255,17 @@ chka2   .chk $C000,$FFFF,IDENTIFIER_AH
 .export stmpaux,stmfiresel,stmrollsel,stmmfail,stmmpass,stmesgv
 .export stmrollx1,stmrollx2
 .export stmsndon,stmsndoff,stmlddips
-.export chkbut,thisleta,lastleta,lastdir,doconfirm,bconfirm,nobut,gammawait,getgdon
+.export chkbut,thisleta,lastleta,lastdir,doconfirm,dofinish,bconfirm,nobut,gammawait,getgdon
 .export set_cmode,set_diff,set_lives,set_bonus,set_rollmult,set_attsd
 .export rollcnt,setoptn0,setoptn1,do3del,updroller,d6502,showversion,shromsum,pgvetbl
 .export comram,comtestbase
+.export dataflag
 
 ;Message exports
 .export msg_x,msg_y,msg_idx
 
 
-.export sendmstat
+;.export sendmstat
 .export resframe
 
 ;****************************************
@@ -286,7 +279,7 @@ chka2   .chk $C000,$FFFF,IDENTIFIER_AH
 ;****************************************
 ; Special Exports for Level Editor
 ;****************************************
-.export chka2                         
+;.export levelst                         
 
 ;;***************************************
 ;* Special Exports for Trace tooling
