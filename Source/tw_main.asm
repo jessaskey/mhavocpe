@@ -253,29 +253,6 @@ doggie      sta watchdog      ;Wake up Doggie!!!
             ifeq
                 inc frame+1
             endif
-			;*******************************************************
-			; Special stuff for demo mode in main loop
-			;*******************************************************
-			lda demo        ;is Demo Mode
-            ;cmp #03         ;Demo Mode yes
-            ifne			;Demo Mode yes
-				lda adden
-				ifmi
-					lda #0
-					sta frame+1         ;Hold Here
-					;sta addmn           ;Allow select of any level
-					;sta add4mz
-					lda #3				;Keeps the timer sitting @ this many seconds
-					sta addtim
-;#IF (DEBUG = 1)
-					lda #28d		;This allows us to warp into the Final Station and the Hidden levels sitting at 25-28
-;#ELSE
-;					lda #maxdif
-;#ENDIF
-					;sta adddif
-					sta add4mz
-				endif
-            endif
             ;*********************************************************
             ;* Flash Color updates
             ;*********************************************************
@@ -442,15 +419,76 @@ main2       sei                 ;still hold if here
             sta outputs
             lda inputs          ;get the status of the self test switch
             cli 				;Enable IRQ again
-            and #i_slftstbit    ;mask out the other switches
+            and #i_slftstbit    ;Test for Self Test switch
             ifeq
                 jmp selftest        ;Do Self Test
                 lda out1s
                 and #(~o_swtchmux)  ;Put the switch mux back to the player inputs
                 sta outputs
                 jmp ?loopend        ;SHORT LOOP!
-				;*****************************************
+                ;*****************************************
             endif
+
+			;*******************************************************
+			; Special stuff for demo mode in main loop
+			;*******************************************************
+            ;********************************************************
+            ;* Freeze Mode
+            ;* This mode is for hardware debugging purposes. Allows the
+            ;* Vector Generator to be "paused" on a single frame. The
+            ;* Aux Coin switch can be pressed to advance a single frame
+            ;* for each activation.
+            ;* NOTE:
+            ;* -Uses DIP SW 1 at 8S. ON position enables Freeze
+            ;* -ONLY available in Demo Mode play.
+            ;* -This is a main loop function. That means that Powering up
+            ;*  with the Self Test active works as expected.
+            ;* -Because the DIP switch had previous functionality assigned
+            ;*  in the original game, Freeze mode is ONLY activated on a
+            ;*  positive transition. I.e. If you boot up in Demo Mode with
+            ;*  the Freeze DIP ON it is ignored. The DIP must be turned
+            ;*  off and then ON again to freeze. This should keep users
+            ;*  from powering up and thinking the game is DOA.
+            ;* -Warning text is displayed on the Game Settings self test 
+            ;*  screen if Demo Mode is enabled, AND the Freeze DIP is
+            ;*  currently enabled.
+            ;********************************************************
+            lda demo
+            ;cmp #03
+            ifne                ;Yes Demo Mode
+				lda adden
+				ifmi
+					lda #0
+					sta frame+1         ;Hold Here
+					;sta addmn           ;Allow select of any level
+					;sta add4mz
+					lda #3				;Keeps the timer sitting @ this many seconds
+					sta addtim
+;#IF (DEBUG = 1)
+					lda #28d		;This allows us to warp into the Final Station and the Hidden levels sitting at 25-28
+;#ELSE
+;					lda #maxdif
+;#ENDIF
+					;sta adddif
+					sta add4mz
+				endif
+                lda #g_getdip1  ;COIN Options @ 8S - Straight DIPS
+                jsr xmitr       ;Do retry xmit and recieve
+                cli
+                and #$80        ;SW1 on? (bit will be 0)
+                ifeq
+                                ;Freeze mode Requested:
+                    lda demo    ;Must see a positive transition on the Freeze DIP
+                                ;(off to on) after boot to enter Freeze mode 1st time.
+                    ifmi
+                        jsr freezemode      ;Do freeze mode
+                    endif
+                else
+                    lda #-1
+                    sta demo    ;Freeze DIP was off, set flag to indicate it was off.
+                endif
+            endif
+
             lda #00
             sta vdata           ;Convienient Place to Zero These
             sta vdata+1
@@ -711,9 +749,11 @@ coincred
 						sta twopl             ;Indicate 2 Players
 						sta rampg             ;Select High RAM
 						sta player            ;Set to Player 1 for Init Stuff
+						sta wrplvs            ;Give 1 extra life for warping at start
 						lda slives            ;Number of Lives per game
 						sta lives+1
 						lda	#0
+                        sta diedyet           ;Clear this
 						sta	pl2int            ;Player 2 has not played
 						sta tspark
 						sta objst+zstuf+1
@@ -768,6 +808,8 @@ coincred
 					sta objst+zstuf+2
 					;lda basedif				;Load base difficulty
 					;sta incdif				;Reset incremental difficulty from DIPS
+                    lda #01
+					sta wrplvs              ;Give 1 extra life for warping at start
 					lda slives            	;# lives from DIP's
 					sta lives						
 					;--------------------------------------------------------------
@@ -960,10 +1002,11 @@ dowaste         lda vecram+1		;in normal situations, so lets draw a black box to
             ifpl
                 inc tframe          ;True Frame Counter
                 lda tframe
-                cmp #$34             ;$34 here is approd 1 second
+                cmp #$34             ;$34 here is approx 1 second
                 ifeq
-                    lda player          ;Which player
+                    lda twopl           ;How many players for this game
                     asl A               ;x2 please
+                    asl A               ;x4 please
                     tax
                     sed                 ;**** Caution Decimal Mode ****
                     lda st_gtime1,X
@@ -974,6 +1017,12 @@ dowaste         lda vecram+1		;in normal situations, so lets draw a black box to
                         lda st_gtime1+1,X
                         adc #00
                         sta st_gtime1+1,X
+                        lda st_gtime1+2,X
+                        adc #00
+                        sta st_gtime1+2,X
+                        lda st_gtime1+3,X
+                        adc #00
+                        sta st_gtime1+3,X
                     endif
                     cld                 ;**** End Decimal Mode ****
                     lda #00
@@ -2114,6 +2163,13 @@ nxtlvl  lda toktarg
 			sta dif4mz
 			lda #0
 			sta toktarg				;Clear the redirect so we don't come back here again
+
+            ;Award player Tesser for High Score when they reach the level.
+			lda lasttok				;Which tesseract?
+			tay
+			lda bitflags,Y
+			ora tokpock
+			sta tokpock
 		else
 			lda tokretr
 			ifmi

@@ -4,6 +4,10 @@
   <IsDirty>false</IsDirty>
   <Files>
     <ProjectFile>
+      <Filename>mh_beta.asm</Filename>
+      <Args>-wmhtext.tab</Args>
+    </ProjectFile>
+    <ProjectFile>
       <Filename>auxpgm_0.asm</Filename>
       <Args>-wmhtext.tab</Args>
     </ProjectFile>

@@ -7,7 +7,14 @@ $TournamentPrefix = 'te'
 $MinorVersion = (Select-String -Path 'havoc.ah' '^MINOR_VERSION =\s?\$(\d+)\s?$' -AllMatches).Matches.Groups[1].Value
 $MajorVersion = (Select-String -Path 'havoc.ah' '^MAJOR_VERSION =\s?\$(\d+)\s?$' -AllMatches).Matches.Groups[1].Value
 
-$FolderPath = "C:\Users\jaskey\Documents\GitHub\jessaskey\mhavocpe\ROMs\_builds\"
+#$FolderPath = "C:\Users\jaskey\Documents\GitHub\jessaskey\mhavocpe\ROMs\_builds\"
+$ScriptLocation = (Get-Location).Path
+#echo $ScriptLocation
+("Script... " + $ScriptLocation)
+
+$FolderPath = [System.IO.Path]::Combine( $ScriptLocation, "..\..\mhavocpe\ROMs\_builds\" )
+#echo $FolderPath
+("Output destination... " + (Resolve-Path $FolderPath).Path)
 
 function Build-Edition() {
 	param([string]$OutputPath, [string]$LanguageCode, [string]$MajorVersion, [string]$MinorVersion)
@@ -50,8 +57,13 @@ function Output-ROMS() {
     #echo this
     ("Building... " + $TargetArchive)
     $TargetArchive = ($OutputPath + "\\" + $TargetArchive)
-    $LstArchive = ($OutputPath + "\\" + $LstArchive)
     
+    $LstPath = $OutputPath + "\\_listings"
+    if (![System.IO.Directory]::Exists($LstPath)) {
+        New-Item -Path ($LstPath) -ItemType Directory
+    }
+    $LstArchive = ($LstPath + "\\" + $LstArchive)
+        
     Build-Files $LanguageCode
 	Build-Files $LanguageCode
 	

@@ -16,6 +16,9 @@ copy /b obj\mh_gamma.obj rom\mhavocpe.9s
 split obj\mh_beta.obj 16384
 copy /b obj\mh_beta.obj.1 rom\mhavocpe.1bc
 copy /b obj\mh_beta.obj.2 rom\mhavocpe.1d
+#split obj\mh_beta.obj 16384
+#copy /b obj\mh_beta.obj.1 rom\mhavocpe.1bc
+#copy /b obj\mh_beta.obj.2 rom\mhavocpe.1d
 
 del obj\mh_alpha.obj.1
 del obj\mh_alpha.obj.2

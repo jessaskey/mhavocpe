@@ -54,10 +54,9 @@ seqcon  bit gamest          ;Playing??
         ifeq                ;End of Game
             ;Both players are over, send some stats
             jsr sendgstat
-            jsr do3del
             jsr sendwstat
-            jsr do3del
             ;Game Just over... check warp level
+            lda #00             ;be explicit even tho stats return with 0 in accum.
 			sta	rampg			;Make sure RAM set
 			ldx	wrplvl			;Get Player 1's level
 			lda	twopl			;2 Player Game?
@@ -71,33 +70,26 @@ seqcon  bit gamest          ;Playing??
 			endif
             ;X = Greater of the 2 players (or Player 1's if only 1 Player Game)
             ;We don't know what page where are currently at, so set and store
-			lda	#01
+			lda	#01         ;assume player 2
+            cmp player
+            ifeq
+                lda #00     ;write out player 1 first
+            endif
 			sta	rampg
 			stx	wrplvl
 			lda	player		;Restore to Correct Page
 			sta	rampg
 			stx	wrplvl		;Save both
-			;now get correct current level, tesser levels go back to original level
-			lda tokretr
-			ifmi
-				and #$7F
-			else 
-				lda dif4mz       ;So Back up one level
-			endif
-            cmp #20d         ;Max add-a-coin level is 20(dif=1, maz=3)
-            ifcs
-                lda #20d
-            endif
-            sta add4mz
+            lda add4mz
             ;ora adddif      ;Skip Message??
             ifne      ;Skip if wave 0, level 0
+				ldx #$10            ;Select-a-level
 				lda demo
-				ifne
-					lda #0				;skip in demo
-				else
-					lda #$10            ;Select-a-level when not in demo
+				ifne                ;When in demo
+					ldx #00			;Skip going directly to Add-a-Coin after game
+                                    ;Instead, demo forces this on game start
 				endif
-				sta addtim
+				stx addtim
             endif
             jmp ?psc10          ;And get out of here
         endif
@@ -489,28 +481,45 @@ plrsel	lda	cabsel			;Need to worry about cabinet?? 1=upright 0=cocktail
 			lda add4mz
 			cmp dif4mz
             ifcc                ;Yes, Better
-?psc90          lda dif4mz
-				sta add4mz
-				;lda difcty
-                ;sta adddif      ;This guy was higher.. xfer
-                ;lda maznum
-                ;sta addmn
-                ;HACK: Removed from Select-A-Level 
-				;lda mzgame
-				;sta addmz           ;Save this to see where we were
-				;END HACK
-            else
-                ifeq                    ;Same difficulty level
-                    lda add4mz
-					cmp dif4mz
-					;lda addmn
-                    ;cmp maznum          ;at a different level
-                    bcc ?psc90          ;Yep.... set higher
-                    ifeq                    ;If same, set this guy in the maze
-                        bit mzgame          ;In Maze??
-                        bmi ?psc90          ;Yep, made it to this level
+                ;now get correct current level, tesser levels go back to original level
+                lda tokretr
+                ifmi                ;Is a Secret level in the works?
+                    bit toktarg
+                    ifpl            ;We've advanced into the secret level?
+                        and #$7F    ;Yep, So we can go back to the orig level
+                    else
+                        lda dif4mz  ;Nope, Back up one level
                     endif
+                else 
+                    lda dif4mz       ;So Back up one level
                 endif
+                cmp #20d         ;Max add-a-coin level is 20
+                ifcs
+                    lda #20d
+                endif
+                sta add4mz
+;?psc90          lda dif4mz
+;				sta add4mz
+;				;lda difcty
+;                ;sta adddif      ;This guy was higher.. xfer
+;                ;lda maznum
+;                ;sta addmn
+;                ;HACK: Removed from Select-A-Level 
+;				;lda mzgame
+;				;sta addmz           ;Save this to see where we were
+;				;END HACK
+;            else
+;                ifeq                    ;Same difficulty level
+;                    lda add4mz
+;					cmp dif4mz
+;					;lda addmn
+;                    ;cmp maznum          ;at a different level
+;                    bcc ?psc90          ;Yep.... set higher
+;                    ifeq                    ;If same, set this guy in the maze
+;                        bit mzgame          ;In Maze??
+;                        bmi ?psc90          ;Yep, made it to this level
+;                    endif
+;                endif
             endif
             lda demo        ;Demo Mode??
             ;cmp #03         ;Demo Mode
@@ -550,7 +559,6 @@ plrsel	lda	cabsel			;Need to worry about cabinet?? 1=upright 0=cocktail
 				endif
 #ENDIF
 			endif
-			;endif
         endif
         rts        
 

@@ -1,3 +1,0 @@
-.module beta
-
-comtestbase      .EQU  $07f0

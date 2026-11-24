@@ -109,19 +109,14 @@ moolah  ;lda inputs
             miend
         ;endif
         ;Moved in from Mainloop
-        ;*********************************************************************
-        ;Isssue #224 - https://github.com/jessaskey/mhavocpe/issues/224
-        lda demo
-        bne ?freep
-        ;*********************************************************************
 		lda c_cmode         ;Free Play??
 		ifeq
-?freep		lda c_crdt
-            cmp #2              ;If less than 2 credits, make it 2 
-            ifcc
+            lda c_crdt
+            cmp #2              ;If not 2 credits, make it 2 
+            ifne
                 lda #02
-                sta c_crdt         ;Free Play
-                sta c_oldc			;Also save here so there isn't a coin sound on start
+                sta c_crdt      ;Free Play
+                sta c_oldc		;Also save here so there isn't a coin sound on start
             endif
         endif
         

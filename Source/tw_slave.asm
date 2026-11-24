@@ -150,40 +150,65 @@ getgdon	sei             ;Hold IRQ's
         cli 
         rts 		
 
-;*************************************************************
+;*****************************************************
 ; Option Switches Master Reference from GAMMA
-;
-; Game Pricing @8S - Default off OFF
-; MSB						  LSB
-; 1   2   3   4   5   6   7   8 
-;---------------------------------
-; 						 Off Off	1 Coin 1 Play (Default)
-; 						 On  On		1 Coin 2 Plays
-; 						 On  Off	2 Coins 1 Play
-; 						 Off On		Free Play
-;
-; Game Settings @12/13S - Default all OFF
-; MSB						  LSB
-; 1   2   3   4   5   6   7   8 
-;---------------------------------
-; Off Off							3 Lives (Default)
-; On  On							4 Lives
-; On  Off							5 Lives 
-; Off On							6 Lives 
-; 		  On  On 					Hard Difficulty
-;         Off Off					Medium Diffiulty (Default)
-;		  Off On					Easy Difficulty
-;         On  Off					DEMO Mode
-;                 On  On 			Bonus @ 50,000
-;                 Off Off			Bonus @ 100,000 (Default)
-;                 Off On			Bonus @ 200,000
-;                 On  Off			No Bonus
-;   					   On		Silent Attract Mode
-;                          Off 		Sound in Attract Mode (Default)
-;                              On   Roller Multiplier x2
-;                              Off  Roller Multiplier x1 (Default)
-;       
-;*******************************************************************
+;*****************************************************
+;*
+;*    MAJOR HAVOC The Promised End DIP SWITCH SETTINGS -  $=Default
+;*
+;*      Option Switches are loaded from DIP and then stored
+;*      in EEROM, since they can be modified from Self Test
+;*      we will always return the RAM/Settings value.
+;*
+;*      The only way to apply the settings on DIP is to 
+;*      do a reset in the Self Test.
+;*
+;*    DIP Switch at position 13/14S
+;*                                      MSB                                LSB
+;*                                      1    2    3    4    5    6    7    8
+;*    STARTING LIVES                  _________________________________________
+;*        3                          $|Off |Off |    |    |    |    |    |    |
+;*        4                           | On | On |    |    |    |    |    |    |
+;*        5                           | On |Off |    |    |    |    |    |    |
+;*        6                           |Off | On |    |    |    |    |    |    |
+;*    GAME DIFFICULTY                 |    |    |    |    |    |    |    |    |
+;*     Hard                           |    |    | On | On |    |    |    |    |
+;*     Medium                        $|    |    |Off |Off |    |    |    |    |
+;*     Easy                           |    |    |Off | On |    |    |    |    |
+;*     Demo                           |    |    | On |Off |    |    |    |    |
+;*    BONUS LIFE                      |    |    |    |    |    |    |    |    |
+;*     50,000                         |    |    |    |    | On | On |    |    |
+;*     100,000                       $|    |    |    |    |Off |Off |    |    |
+;*     200,000                        |    |    |    |    |Off | On |    |    |
+;*     No Bonus Life                  |    |    |    |    | On |Off |    |    |
+;*    ATTRACT MODE SOUND              |    |    |    |    |    |    |    |    |
+;*     Silence                        |    |    |    |    |    |    | On |    |
+;*     Sound                         $|    |    |    |    |    |    |Off |    |
+;*    ROLLER MULTIPLIER               |    |    |    |    |    |    |    |    |
+;*     2x                             |    |    |    |    |    |    |    | On |
+;*     1x                            $|    |    |    |    |    |    |    |Off |
+;*                                    -----------------------------------------
+;*
+;*    DIP Switch at position 8S
+;*                                      MSB                                LSB
+;*                                      1    2    3    4    5    6    7    8
+;*                                    _________________________________________
+;*    Free Play                       |    |    |    |    |    |    | On |Off |
+;*     1 Coin for 1 Game             $|    |    |    |    |    |    |Off |Off |
+;*     1 Coin for 2 Games             |    |    |    |    |    |    | On | On |
+;*     2 Coins for 1 Game             |    |    |    |    |    |    |Off | On |
+;*    UNUSED                          |    |    |    |    |    |    |    |    |
+;*                                    |    |    |    |    |    | xx |    |    |
+;*                                    |    |    |    |    | xx |    |    |    |
+;*                                    |    |    |    | xx |    |    |    |    |
+;*                                    |    |    | xx |    |    |    |    |    |
+;*                                    |    | xx |    |    |    |    |    |    |
+;*    FREEZE MODE                     |    |    |    |    |    |    |    |    |
+;*     Freeze (step with Aux SW)      | On |    |    |    |    |    |    |    |
+;*     Normal (Default)              $|Off |    |    |    |    |    |    |    |
+;*                                    -----------------------------------------
+;*
+;*****************************************************
 ;00	50K			10	01
 ;01	No Bonus	11	00
 ;10	200K		01  11
@@ -201,16 +226,11 @@ getgdon	sei             ;Hold IRQ's
 ;01 FREE  00
 ;11 1C1P  10
 
-;dip_emask0	= $E5 	;$E4
-;dip_emask1	= $01
-
-
 getoptn sei             ;Hold IRQ's 
-        lda #g_getset1  ;PRICE Options @ 8S - Straight DIPS
+        lda #g_getopt1  ;PRICE Options @ 8S - Straight DIPS
         jsr xmitr
 		;TODO: See if we can take this weird config away, it appears that this was the 'quick' way to change 
 		;the default coin mode from 1 coin 1 play to 2 coins 1 play.
-		;eor #dip_emask1	;Invert switch #7, this is normal operation.
         and #03			;Only allow through Coin Mode bits
 		sta c_cmode     ;cmode after mask
 						; 00 = Free Play
@@ -219,49 +239,60 @@ getoptn sei             ;Hold IRQ's
 						; 03 = 2 Coin 1 Play
 		;Wait some time for GAMMA to settle
         jsr dodelay     
-        lda #g_getset0  ;PLAY Options @ 13/14S - POKEY DIPS (inverted)
+        lda #g_getopt0  ;PLAY Options @ 13/14S - POKEY DIPS (inverted)
         jsr xmitr
         cli 
 		;set up all RAM now with different settings
-		;eor #dip_emask0	;#$23            ;So all off is default
-		tay 				;Keep EOR'ed data in Y for many times below
+        tay 				;Keep 13/14S data in Y for many times below
+
 		;Roller Multiplier
         and #01
-        sta rollmult        ;Roller multiplier 0 = 1x, 1 = 2x
-        tya 
-
+        sta rollmult        ;0 = 1x, 1 = 2x
+        
+        ;Sounds in Attract
+        tya
         lsr A
         and #01
-        sta sndatt      	;Sounds in Attract
+        sta sndatt      	;0 = Off, 1 = On
+        
+        ;Bonus Life bottom 3 bits
         tya 
         lsr A
         lsr A
-        and #03         	;Bonus Life bottom 3 bits
+        and #03
         sta nxtbonus        ;Bonus Score level	
 							; 00 = No Bonus
 							; 01 = 50K Bonus
 							; 02 = 100K Bonus
 							; 03 = 200K Bonus
+
+        ;Difficulty
         tya 
         lsr A
         lsr A
         lsr A
-        lsr A           	;Next two bits = Difficulty
+        lsr A
         and #03
-		sta rawgamedif     	;Save base Difficulty
-							; 00 = Easy 
-							; 01 = Medium
-							; 02 = Hard
-							; 03 = Demo/Medium)
+        sta rawgamedif      ;Save base Difficulty
+                            ; 00 = Easy 
+                            ; 01 = Medium
+                            ; 02 = Hard
+                            ; 03 = Demo/Medium)
+
+        ;Demo Mode
         cmp #03
         ifeq				;demo mode 
-			lda #1				;always medium difficulty
-			ldx #-1		
-		else
-			ldx #0
+            lda #1          ;always medium difficulty
+            ldx #$7f        ;Always clear Freeze bit to 0 at boot
+                            ;This avoids booting directly into freeze mode
+                            ;if the DIP is active. (Game looks DoA)
+        else
+            ldx #0
         endif
-		stx demo
-		sta gamedif
+        stx demo
+        sta gamedif
+
+        ;Number of Lives
         tya             ;Get options again
         rol A
         rol A
@@ -279,12 +310,10 @@ getoptn sei             ;Hold IRQ's
 ;Send Play Options in A to GAMMA		
 setoptn0 
 		ldx #g_setopt0
-		;eor #dip_emask0		;Mask back to correct values
 		jmp ?sendone		;send X and then A
 
 ;Send Pricing Options in A to GAMMA		
 setoptn1 
-		;eor #dip_emask1		;Inverts
 		ldx #g_setopt1
 		jmp ?sendone		;send X and then A
 		
@@ -437,7 +466,7 @@ sendhs  sei             ;Hold IRQ's
         ifne
             brk
         endif
-        ;jsr do3del      ;Wait before next? Maybe not needed?
+        jsr do3del      ;Wait before next? Maybe not needed?
         ;Allow IRQ Sends again
         lda #00
         sta nogamma
@@ -488,6 +517,7 @@ sendgstat
             brk             ;Not okay
         endif
         sta watchdog
+        jsr do3del      ;Wait before next? Maybe not needed?
         cli 
         lda #00
         sta nogamma
@@ -534,6 +564,7 @@ sendwstat
             brk             ;Not okay
         endif
         sta watchdog
+        jsr do3del      ;Wait before next? Maybe not needed?
         cli 
         lda #00
         sta nogamma

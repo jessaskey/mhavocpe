@@ -291,6 +291,13 @@ bumpini lda blowst      ;End Maze Sequence?
 #IF (LEVEL_EDITOR == 0)
 			sta tactde      ;Still Want tact next time
 #ENDIF
+            ;Easter egg if player doesn't warp all in one tact
+            ;For every maze completed without dying, allow
+            ;the player to grab another xlife when warping
+            bit diedyet
+            ifpl            ;Only available if player has not died
+                inc wrplvs  ;add another xLife award when warping
+            endif
 			jsr nextmz      ;Set up next maze
 			lda maznum
 			sec

@@ -21,7 +21,7 @@ addm1       .ctext "DRvCKE START WxHREND    SEKUNDEN"
         cmess(addm1,colcyan,1,4,addm1_,0)         ;Add Time Message
 		
 playr       .ctext "SPIELER " 
-        cmess(playr,colyellow,1,$24,playr_,1)     ;Player (Big)
+        cmess(playr,colyellow,1,$34,playr_,1)     ;Player (Big)
 		
 tmes0       .ctext "ZERSTpRE FISCHROBOTER"
 		mess(tmes0,colcyan,1,$48,$BC)       ;Destroy fish robotos
@@ -164,7 +164,7 @@ his         .ctext "HOHE ERGEBNISSE"
 		cmess(his,colred,0,$48,his_*2,2)          ;High Scores
 
 enin        .ctext "INITIALE EINGEBEN"
-        cmess(enin,colyellow,1,$34,enin_,0)      ;Enter your initials
+        cmess(enin,colyellow,1,$24,enin_,0)      ;Enter your initials
 
 getout      .ctext "RAUS!"
         mess(getout,colred2,0,0,$EB)        ;Get Out!!

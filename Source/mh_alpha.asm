@@ -192,7 +192,7 @@ chka2   .chk $C000,$FFFF,IDENTIFIER_AH
 ; #ENDIF
 
 ;.export litral,litra2,litra3,
-.export litrast,strtst,strtyl,strtyh,strtln,slives,c_cmode
+.export litrast,strtst,strtyl,strtyh,strtln,slives,wrplvs,c_cmode
 
 .export thisone_rtpg5,mesg_rtp5,bitflags,tokcolor,tokretr,toktarg,thisone
 
@@ -256,7 +256,7 @@ chka2   .chk $C000,$FFFF,IDENTIFIER_AH
 .export stmrollx1,stmrollx2
 .export stmsndon,stmsndoff,stmlddips
 .export chkbut,thisleta,lastleta,lastdir,doconfirm,dofinish,bconfirm,nobut,gammawait,getgdon
-.export set_cmode,set_diff,set_lives,set_bonus,set_rollmult,set_attsd
+.export set_cmode,set_diff,set_lives,set_bonus,set_rollmult,set_attsd,dofrzsw
 .export rollcnt,setoptn0,setoptn1,do3del,updroller,d6502,showversion,shromsum,pgvetbl
 .export comram,comtestbase
 .export dataflag

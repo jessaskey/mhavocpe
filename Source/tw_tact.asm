@@ -533,6 +533,8 @@ disptact
             dec sellvl          ;Make it zero based 
             jsr thisone_rtpg5   ;Set up new level, call the special one to keep this page tho
             jsr newscore        ;Give them points
+            lda #00
+            sta sellvl
             lda #snd_b3b
             jsr dosound
 ; #IF ENABLE_ADAPTIVE_DIFFICULTY != 0
@@ -1941,6 +1943,7 @@ whatmes		.block	___vbnumwrp
 			sta ttime
 			ldx player
 			inc lives,X			;Extra Man!
+			jsr ?incStat
 			lda #$50            ;5000 points
 			jsr bpont2          ;Bonus!!!!
 			jsr dodelay         ;Thanks peter!
@@ -1955,13 +1958,37 @@ whatmes		.block	___vbnumwrp
 		rts
 				
 ;* Add a Life Here! *
-?addlif ldx player
-        lda slives
-        clc 
-        adc #01
-        sta lives,X
-        lda #snd_c4
-        jmp dosound       
+?addlif lda wrplvs
+		ifne
+			dec wrplvs
+			ldx player
+			lda #01
+			clc 
+			adc lives,X
+			sta lives,X
+			jsr ?incStat
+		endif
+		;Always make the xLife sound for every warp that could
+		;give an xLife, the orig game did this.
+		;This is a hint for the Easter Egg
+		lda #snd_c4
+		jmp dosound       
+		rts
+
+
+?incStat	sed					;Decimal mode
+			lda	st_extlie
+			clc
+			adc	#01
+			sta	st_extlie
+			lda	st_extlie+1
+			adc	#00
+			ifcc
+				sta	st_extlie+1
+			endif
+			cld					;Exit Decimal mode
+			rts
+
 
 ;* Message for normal Warp Hints *
 ?whathint    .byte mwarp0,mwarp1,mwarp2,mwarp3

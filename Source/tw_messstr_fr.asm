@@ -228,7 +228,7 @@ endtxxx     .ctext " "
         cmess(press,colred,1,$24,press_,0)        ;Press Start
         cmess(addm2,colcyan,1,-6,addm2_,2)        ;Rest of Message
         cmess(addm1,colcyan,1,4,addm1_,0)         ;Add Time Message
-        cmess(playr,colyellow,1,$24,playr_,1)     ;Player
+        cmess(playr,colyellow,1,$34,playr_,1)     ;Player
 		mess(tmes0,colcyan,1,$48,$98)       	;Destroy fish robotos
         mess(tmes1,colcyan,1,$48,$A3)       	;Shoot all fighters
         mess(tmes2,colcyan,1,$48,$A0)       ;Hit...    
