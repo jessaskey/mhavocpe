@@ -167,6 +167,12 @@ if (![System.IO.Directory]::Exists($OutputPath)) {
 	New-Item -Path ($OutputPath) -ItemType Directory
 }
 
+#delete intermdiate output files before building.
+remove-Item -Path ".\exp" -Recurse -Force -ErrorAction Ignore
+remove-Item -Path ".\lst" -Recurse -Force -ErrorAction Ignore
+remove-Item -Path ".\obj" -Recurse -Force -ErrorAction Ignore
+remove-Item -Path ".\sym" -Recurse -Force -ErrorAction Ignore
+
 Build-Edition $OutputPath 'en' $MajorVersion $MinorVersion
 Build-Edition $OutputPath 'de' $MajorVersion $MinorVersion
 Build-Edition $OutputPath 'fr' $MajorVersion $MinorVersion
